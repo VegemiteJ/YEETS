@@ -142,15 +142,26 @@ public class TSPIO
 	}
 
 	/**
+	 * As described by the documentation
+	 * (elib.zib.de/pub/mp-testdata/tsp/tsplib/doc.ps) section 2.1
 	 * 
-	 * @param a
-	 * @param b
+	 * <pre>
+	 * Let x[i], y[i] ... be the coordinates of node i.
+	 * In the 2-dimensional case the distance between two points i and j is computed as follows:
+	 * xd = x[i] - x[j];
+	 * yd = y[i] - y[j];
+	 * dij = nint( sqrt( xd*xd + yd*yd) + 0.5 );
+	 * </pre>
+	 * 
+	 * @param i
+	 * @param j
 	 * @return the 2D euclidean distance between a and b
 	 */
-	private double euclideanDistance2D(Point a, Point b)
+	private double euclideanDistance2D(Point i, Point j)
 	{
-		return Math.sqrt(Math.pow(a.getX() - b.getX(), 2)
-				+ Math.pow(a.getY() - b.getY(), 2));
+		double xd = i.getX() - j.getX();
+		double yd = i.getY() - j.getY();
+		return Math.round(Math.sqrt(xd * xd + yd * yd) + 0.5);
 	}
 
 	// TODO : Fill in after we have Instance
