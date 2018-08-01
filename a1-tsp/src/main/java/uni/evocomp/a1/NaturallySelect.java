@@ -1,3 +1,4 @@
+package uni.evocomp.a1;
 /**
  * Natural selection is the differential survival
  * and reproduction of individuals due to differences in phenotype. It is a key

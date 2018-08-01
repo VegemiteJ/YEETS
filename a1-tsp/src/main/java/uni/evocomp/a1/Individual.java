@@ -1,3 +1,5 @@
+package uni.evocomp.a1;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
