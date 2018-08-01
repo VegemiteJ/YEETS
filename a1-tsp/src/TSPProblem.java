@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.lang.String;
 
 // TODO : See whether we need to have this actually handle the IO, or whether IO
 // is separate and gets passed to this.
@@ -26,7 +29,7 @@ public class TSPProblem
 		this.comment = new String(src.getComment());
 		this.type = new String(src.getType());
 		this.edgeWeightType = new String(src.getEdgeWeightType());
-		this.weights = new List<>(src.getWeights());
+		this.weights = new ArrayList<>(src.getWeights());
 	}
 
 	public TSPProblem(String name, String comment, String type,
