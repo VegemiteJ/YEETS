@@ -1,3 +1,5 @@
+package uni.evocomp.a1;
+
 import java.io.File;
 import java.awt.Point;
 import java.io.BufferedReader;
