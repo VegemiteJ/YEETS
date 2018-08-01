@@ -84,7 +84,7 @@ public class Individual
 		{
 			out += String.valueOf(it.next()) + "\n";
 		}
-		out += "-1\n"; // terminates the tour
+		out += "-1"; // terminates the tour
 		return out;
 	}
 }
