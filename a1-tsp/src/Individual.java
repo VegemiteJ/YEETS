@@ -70,12 +70,6 @@ public class Individual
 		return genotype;
 	}
 
-	// TODO : Figure out whether getting cost should be from the Individual or the TSPProblem. One way to do it would be Individual.getCost(TSPProblem). Or TSPProblem.getCost(Individual).
-	public double getCost()
-	{
-		return 0.0;
-	}
-
 	@Override
 	public String toString()
 	{
