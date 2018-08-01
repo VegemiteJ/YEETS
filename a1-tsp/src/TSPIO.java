@@ -7,8 +7,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class TSPIO
 {
@@ -162,6 +164,98 @@ public class TSPIO
 		double xd = i.getX() - j.getX();
 		double yd = i.getY() - j.getY();
 		return Math.round(Math.sqrt(xd * xd + yd * yd) + 0.5);
+	}
+
+	/**
+	 * 
+	 * @param r a Reader to a ".opt.tour" file
+	 * @return an Individual whose genotype is the optimal solution
+	 * @throws IOException
+	 * @throws NullPointerException
+	 */
+	public Individual readSolution(Reader r)
+			throws IOException, NullPointerException
+	{
+		// Read each line of the reader into a string
+		try (BufferedReader br = new BufferedReader(r))
+		{
+			boolean header = true; // 1 for header, 0 for body
+			String line = new String();
+			String name = new String();
+			String comment = new String();
+			String type = new String();
+			String edgeWeightType = new String();
+			int dimension = 0;
+			Set<Integer> solution = new HashSet<>();
+			for (int i = 1; (line = br.readLine()) != null
+					|| line.trim().equals("EOF"); i++)
+			{
+				// Read header
+				if (header)
+				{
+					String[] split = line.trim().split(" : ");
+					switch (split[0])
+					{
+					case "NAME":
+						if (split.length < 2)
+						{
+							throw new IOException("Bad " + split[0]
+									+ " format on line " + i + ": " + line);
+						}
+						name = split[1];
+						break;
+					case "COMMENT":
+						if (split.length < 2)
+						{
+							throw new IOException("Bad " + split[0]
+									+ " format on line " + i + ": " + line);
+						}
+						comment = split[1];
+						break;
+					case "TYPE":
+						if (split.length < 2)
+						{
+							throw new IOException("Bad " + split[0]
+									+ " format on line " + i + ": " + line);
+						}
+						type = split[1];
+						break;
+					case "DIMENSION":
+						if (split.length < 2)
+						{
+							throw new IOException("Bad " + split[0]
+									+ " format on line " + i + ": " + line);
+						}
+						dimension = Integer.parseInt(split[1]);
+						//						points = new ArrayList<>(dimension);
+						break;
+					case "TOUR_SECTION":
+						header = false;
+						break;
+					case "EOF":
+						break;
+					default:
+						break;
+					}
+				}
+				else // read body
+				{
+					if (line.equals("EOF"))
+					{
+						break;
+					}
+
+					String[] split = line.trim().split(" "); // should be a single entry
+					if (split.length != 1)
+					{
+						throw new IOException(
+								"Bad body format on line " + i + ": " + line);
+					}
+					solution.add(Integer.parseInt(split[0]));
+				}
+			}
+			return new Individual(solution);
+		}
 	}
 
 	// TODO : Fill in after we have Instance
