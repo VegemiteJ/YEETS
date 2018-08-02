@@ -1,6 +1,7 @@
 package uni.evocomp.a1;
 
-import java.awt.Point;
+import uni.evocomp.util.Pair;
+
 import java.util.List;
 
 /**
@@ -19,5 +20,5 @@ public interface Mutate {
    * @param i Individual on which to perform a mutation operation
    * @param pairs List of Points whose x and y dictate which indices to use when mutating
    */
-  public void run(Individual i, List<Point> pairs);
+  public void run(Individual i, List<Pair> pairs);
 }

@@ -1,6 +1,7 @@
 package uni.evocomp.a1;
 
-import java.awt.Point;
+import uni.evocomp.util.Pair;
+
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -23,10 +24,10 @@ public class Swap implements Mutate {
   }
 
   @Override
-  public void run(Individual i, List<Point> pairs) {
-    for (Iterator<Point> it = pairs.iterator(); it.hasNext();) {
-      Point p = it.next();
-      swap(i, (int) p.getX(), (int) p.getY());
+  public void run(Individual i, List<Pair> pairs) {
+    for (Iterator<Pair> it = pairs.iterator(); it.hasNext();) {
+      Pair p = it.next();
+      swap(i, (int) p.first, (int) p.second);
     }
   }
 
