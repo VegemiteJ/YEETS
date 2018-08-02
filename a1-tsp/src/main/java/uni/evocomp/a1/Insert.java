@@ -7,7 +7,7 @@ import uni.evocomp.util.Pair;
 public class Insert implements Mutate {
 
   /**
-   * Move the second to follow the first, shifting the rest along to accomodate. As the indices n
+   * Move the second to follow the first, shifting the rest along to accommodate. As the indices n
    * and m are not necessarily ordered, must extract the highest and lowest
    * 
    * @param i Individual on which to perform a mutation operation
@@ -15,8 +15,12 @@ public class Insert implements Mutate {
    * @param m last index to insert
    */
   private void insert(Individual i, int n, int m) {
+    // Out of bounds
+    if (n < 0 || m < 0 || n >= i.getGenotype().size() || m >= i.getGenotype().size()) {
+      return;
+    }
     int first = Math.min(n, m);
-    int second = Math.min(n, m);
+    int second = Math.max(n, m);
 
     try {
       i.getGenotype().add(first + 1, i.getGenotype().get(second));

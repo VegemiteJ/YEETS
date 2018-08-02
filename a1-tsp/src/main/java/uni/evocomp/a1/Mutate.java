@@ -17,7 +17,8 @@ public interface Mutate {
    * Perform a list of mutation operations on an Individual
    * 
    * @param i Individual on which to perform a mutation operation
-   * @param pairs List of Pair whose <code>first</code> and <code>second</code> dictate which indices to use when mutating
+   * @param pairs List of Pair whose <code>first</code> and <code>second</code> dictate which
+   *        indices to use when mutating
    */
   public void run(Individual i, List<Pair<Integer, Integer>> pairs);
 }

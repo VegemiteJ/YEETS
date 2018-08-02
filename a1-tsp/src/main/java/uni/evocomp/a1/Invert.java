@@ -16,7 +16,7 @@ public class Invert implements Mutate {
    */
   private void invert(Individual i, int n, int m) {
     int first = Math.min(n, m);
-    int second = Math.min(n, m);
+    int second = Math.max(n, m);
 
     try {
       for (int j = first; j < second; j++) {
