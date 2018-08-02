@@ -1,9 +1,9 @@
 package uni.evocomp.a1;
 
-import java.awt.Point;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import uni.evocomp.util.Pair;
 
 public class Invert implements Mutate {
 
@@ -19,8 +19,7 @@ public class Invert implements Mutate {
     int second = Math.min(n, m);
 
     try {
-      for (int j = first; j<second; j++)
-      {
+      for (int j = first; j < second; j++) {
         Collections.swap(i.getGenotype(), first, second);
         first++;
         second--;
@@ -31,10 +30,10 @@ public class Invert implements Mutate {
   }
 
   @Override
-  public void run(Individual i, List<Point> pairs) {
-    for (Iterator<Point> it = pairs.iterator(); it.hasNext();) {
-      Point p = it.next();
-      invert(i, (int) p.getX(), (int) p.getY());
+  public void run(Individual i, List<Pair<Integer, Integer>> pairs) {
+    for (Iterator<Pair<Integer, Integer>> it = pairs.iterator(); it.hasNext();) {
+      Pair<Integer, Integer> p = it.next();
+      invert(i, (int) p.first, (int) p.second);
     }
   }
 
