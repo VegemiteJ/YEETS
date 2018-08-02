@@ -19,6 +19,9 @@ public interface Mutate {
    * @param i Individual on which to perform a mutation operation
    * @param pairs List of Pair whose <code>first</code> and <code>second</code> dictate which
    *        indices to use when mutating
+   * @throws IndexOutOfBoundsException
+   * @throws NullPointerException
    */
-  public void run(Individual i, List<Pair<Integer, Integer>> pairs);
+  public void run(Individual i, List<Pair<Integer, Integer>> pairs)
+      throws IndexOutOfBoundsException, NullPointerException;
 }
