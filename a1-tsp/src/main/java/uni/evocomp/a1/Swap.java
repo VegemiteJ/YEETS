@@ -1,5 +1,6 @@
 package uni.evocomp.a1;
 
+import uni.evocomp.util.IntegerPair;
 import uni.evocomp.util.Pair;
 
 import java.util.Collections;
@@ -10,7 +11,7 @@ public class Swap implements Mutate {
 
   /**
    * Perform a swap on position n and m of i's genotype
-   * 
+   *
    * @param i Individual on which to perform a mutation operation
    * @param n first index to swap
    * @param m last index to swap
@@ -24,11 +25,10 @@ public class Swap implements Mutate {
   }
 
   @Override
-  public void run(Individual i, List<Pair> pairs) {
-    for (Iterator<Pair> it = pairs.iterator(); it.hasNext();) {
+  public void run(Individual i, List<IntegerPair> pairs) {
+    for (Iterator<IntegerPair> it = pairs.iterator(); it.hasNext(); ) {
       Pair p = it.next();
       swap(i, (int) p.first, (int) p.second);
     }
   }
-
 }
