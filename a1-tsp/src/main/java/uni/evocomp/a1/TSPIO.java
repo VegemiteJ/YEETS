@@ -188,7 +188,7 @@ public class TSPIO
 			String type = new String();
 			String edgeWeightType = new String();
 			int dimension = 0;
-			Set<Integer> solution = new HashSet<>();
+			List<Integer> solution = new ArrayList<>();
 			for (int i = 1; (line = br.readLine()) != null
 					|| line.trim().equals("EOF"); i++)
 			{
