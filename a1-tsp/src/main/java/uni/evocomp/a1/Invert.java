@@ -3,6 +3,7 @@ package uni.evocomp.a1;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import uni.evocomp.util.IntegerPair;
 import uni.evocomp.util.Pair;
 
 /**
@@ -15,7 +16,6 @@ import uni.evocomp.util.Pair;
 public class Invert implements Mutate {
 
   /**
-   * 
    * @param individual Individual on which to perform a mutation operation
    * @param n first index to insert
    * @param m last index to insert
@@ -35,12 +35,11 @@ public class Invert implements Mutate {
   }
 
   @Override
-  public void run(Individual individual, List<Pair<Integer, Integer>> pairs)
+  public void run(Individual individual, List<IntegerPair> pairs)
       throws IndexOutOfBoundsException, NullPointerException {
-    for (Iterator<Pair<Integer, Integer>> it = pairs.iterator(); it.hasNext();) {
-      Pair<Integer, Integer> p = it.next();
+    for (Iterator<IntegerPair> it = pairs.iterator(); it.hasNext();) {
+      Pair p = it.next();
       invert(individual, (int) p.first, (int) p.second);
     }
   }
-
 }

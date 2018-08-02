@@ -6,7 +6,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
-import uni.evocomp.util.Pair;
+import uni.evocomp.util.IntegerPair;
 
 /**
  * 
@@ -34,54 +34,56 @@ public class SwapTest {
   @Test
   public void testSwapValid() {
     Individual i = new Individual(new ArrayList<>(original));
-    m.run(i, new ArrayList<>(Arrays.asList(new Pair<>(1, 4))));
+    m.run(i, new ArrayList<>(Arrays.asList(new IntegerPair(1, 4))));
     assertEquals(Arrays.asList(1, 5, 3, 4, 2), i.getGenotype());
   }
 
   @Test
   public void testSwapSameIndex() {
     Individual i = new Individual(new ArrayList<>(original));
-    m.run(i, new ArrayList<>(Arrays.asList(new Pair<>(2, 2))));
+    m.run(i, new ArrayList<>(Arrays.asList(new IntegerPair(2, 2))));
     assertEquals(original, i.getGenotype());
   }
 
   @Test
   public void testSwapBadOrder() {
     Individual i = new Individual(new ArrayList<>(original));
-    m.run(i, new ArrayList<>(Arrays.asList(new Pair<>(4, 1))));
+    m.run(i, new ArrayList<>(Arrays.asList(new IntegerPair(4, 1))));
     assertEquals(Arrays.asList(1, 5, 3, 4, 2), i.getGenotype());
   }
 
   @Test(expected = IndexOutOfBoundsException.class)
   public void testSwapOutOfBoundsLow() {
     Individual i = new Individual(new ArrayList<>(original));
-    m.run(i, new ArrayList<>(Arrays.asList(new Pair<>(-1, 4))));
+    m.run(i, new ArrayList<>(Arrays.asList(new IntegerPair(-1, 4))));
+    assertEquals(original, i.getGenotype());
   }
 
   @Test(expected = IndexOutOfBoundsException.class)
   public void testSwapOutOfBoundsHigh() {
     Individual i = new Individual(new ArrayList<>(original));
-    m.run(i, new ArrayList<>(Arrays.asList(new Pair<>(1, 10))));
+    m.run(i, new ArrayList<>(Arrays.asList(new IntegerPair(1, 10))));
+    assertEquals(original, i.getGenotype());
   }
 
   @Test
   public void testSwapMultipleValid() {
     Individual i = new Individual(new ArrayList<>(original));
-    m.run(i, new ArrayList<>(Arrays.asList(new Pair<>(0, 3), new Pair<>(3, 4))));
+    m.run(i, new ArrayList<>(Arrays.asList(new IntegerPair(0, 3), new IntegerPair(3, 4))));
     assertEquals(Arrays.asList(4, 2, 3, 5, 1), i.getGenotype());
   }
 
   @Test
   public void testSwapMultipleInverse() {
     Individual i = new Individual(new ArrayList<>(original));
-    m.run(i, new ArrayList<>(Arrays.asList(new Pair<>(0, 3), new Pair<>(3, 0))));
+    m.run(i, new ArrayList<>(Arrays.asList(new IntegerPair(0, 3), new IntegerPair(3, 0))));
     assertEquals(original, i.getGenotype());
   }
 
   @Test(expected = NullPointerException.class)
   public void testSwapNullIndividual() {
     Individual i = null;
-    m.run(i, new ArrayList<>(Arrays.asList(new Pair<>(0, 4))));
+    m.run(i, new ArrayList<>(Arrays.asList(new IntegerPair(0, 4))));
   }
 
   @Test(expected = NullPointerException.class)
