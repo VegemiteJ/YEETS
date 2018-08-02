@@ -55,7 +55,14 @@ public class SwapTest extends TestCase {
   @Test
   public void testSwapMultipleValid() {
     Individual i = new Individual(new ArrayList<Integer>(original));
-    m.run(i, new ArrayList<Point>(Arrays.asList(new Point(1, 10))));
+    m.run(i, new ArrayList<Point>(Arrays.asList(new Point(0, 3), new Point(3, 4))));
+    assertEquals(i.getGenotype(), Arrays.asList(4, 2, 3, 5, 1));
+  }
+
+  @Test
+  public void testSwapMultipleInverse() {
+    Individual i = new Individual(new ArrayList<Integer>(original));
+    m.run(i, new ArrayList<Point>(Arrays.asList(new Point(0, 3), new Point(3, 0))));
     assertEquals(i.getGenotype(), original);
   }
 }
