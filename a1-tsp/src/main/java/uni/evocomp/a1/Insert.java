@@ -4,12 +4,16 @@ import java.util.Iterator;
 import java.util.List;
 import uni.evocomp.util.Pair;
 
+/**
+ * Move the second to follow the first, shifting the rest along to accommodate. As the indices n and
+ * m are not necessarily ordered, must extract the highest and lowest
+ * 
+ * @author Namdrib
+ *
+ */
 public class Insert implements Mutate {
 
   /**
-   * Move the second to follow the first, shifting the rest along to accommodate. As the indices n
-   * and m are not necessarily ordered, must extract the highest and lowest
-   * 
    * 
    * @param i Individual on which to perform a mutation operation
    * @param n first index to insert
@@ -19,10 +23,10 @@ public class Insert implements Mutate {
    */
   private void insert(Individual i, int n, int m)
       throws IndexOutOfBoundsException, NullPointerException {
-    if (i == null) {
-      throw new NullPointerException();
+    // Out of bounds
+    if (n < 0 || m < 0 || n >= i.getGenotype().size() || m >= i.getGenotype().size()) {
+      throw new IndexOutOfBoundsException();
     }
-
     int first = Math.min(n, m);
     int second = Math.max(n, m);
 

@@ -8,6 +8,11 @@ import org.junit.Before;
 import org.junit.Test;
 import uni.evocomp.util.Pair;
 
+/**
+ * 
+ * @author Namdrib
+ *
+ */
 public class InvertTest {
 
   private List<Integer> original;
@@ -17,6 +22,13 @@ public class InvertTest {
   public void setUp() throws Exception {
     original = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
     m = new Invert();
+  }
+  
+  @Test
+  public void testInvertEmptyList() {
+    Individual i = new Individual(new ArrayList<>(original));
+    m.run(i, new ArrayList<>());
+    assertEquals(original, i.getGenotype());
   }
 
   @Test
@@ -47,14 +59,14 @@ public class InvertTest {
     assertEquals(Arrays.asList(1, 5, 4, 3, 2), i.getGenotype());
   }
 
-  @Test
+  @Test(expected = IndexOutOfBoundsException.class)
   public void testInvertOutOfBoundsLow() {
     Individual i = new Individual(new ArrayList<>(original));
     m.run(i, new ArrayList<>(Arrays.asList(new Pair<>(-1, 4))));
     assertEquals(original, i.getGenotype());
   }
 
-  @Test
+  @Test(expected = IndexOutOfBoundsException.class)
   public void testInvertOutOfBoundsHigh() {
     Individual i = new Individual(new ArrayList<>(original));
     m.run(i, new ArrayList<>(Arrays.asList(new Pair<>(1, 10))));
@@ -73,5 +85,17 @@ public class InvertTest {
     Individual i = new Individual(new ArrayList<>(original));
     m.run(i, new ArrayList<>(Arrays.asList(new Pair<>(0, 3), new Pair<>(3, 0))));
     assertEquals(original, i.getGenotype());
+  }
+
+  @Test(expected = NullPointerException.class)
+  public void testInvertNullIndividual() {
+    Individual i = null;
+    m.run(i, new ArrayList<>(Arrays.asList(new Pair<>(0, 4))));
+  }
+
+  @Test(expected = NullPointerException.class)
+  public void testInvertNullPairs() {
+    Individual i = new Individual(new ArrayList<>(original));
+    m.run(i, null);
   }
 }

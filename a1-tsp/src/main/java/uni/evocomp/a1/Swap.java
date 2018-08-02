@@ -5,10 +5,16 @@ import java.util.Iterator;
 import java.util.List;
 import uni.evocomp.util.Pair;
 
+/**
+ * 
+ * Perform a swap on position n and m of i's genotype
+ * 
+ * @author Namdrib
+ *
+ */
 public class Swap implements Mutate {
 
   /**
-   * Perform a swap on position n and m of i's genotype
    * 
    * @param i Individual on which to perform a mutation operation
    * @param n first index to swap

@@ -5,10 +5,16 @@ import java.util.Iterator;
 import java.util.List;
 import uni.evocomp.util.Pair;
 
+/**
+ * 
+ * Pick two alleles at random and then invert the substring between them.
+ * 
+ * @author Namdrib
+ *
+ */
 public class Invert implements Mutate {
 
   /**
-   * Pick two alleles at random and then invert the substring between them.
    * 
    * @param i Individual on which to perform a mutation operation
    * @param n first index to insert

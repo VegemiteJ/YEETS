@@ -8,6 +8,11 @@ import org.junit.Before;
 import org.junit.Test;
 import uni.evocomp.util.Pair;
 
+/**
+ * 
+ * @author Namdrib
+ *
+ */
 public class InsertTest {
 
   private List<Integer> original;
@@ -17,6 +22,13 @@ public class InsertTest {
   public void setUp() throws Exception {
     original = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
     m = new Insert();
+  }
+
+  @Test
+  public void testInsertEmptyList() {
+    Individual i = new Individual(new ArrayList<>(original));
+    m.run(i, new ArrayList<>());
+    assertEquals(original, i.getGenotype());
   }
 
   @Test
@@ -40,18 +52,16 @@ public class InsertTest {
     assertEquals(Arrays.asList(1, 2, 5, 3, 4), i.getGenotype());
   }
 
-  @Test
+  @Test(expected = IndexOutOfBoundsException.class)
   public void testInsertOutOfBoundsLow() {
     Individual i = new Individual(new ArrayList<>(original));
     m.run(i, new ArrayList<>(Arrays.asList(new Pair<>(-1, 4))));
-    assertEquals(original, i.getGenotype());
   }
 
-  @Test
+  @Test(expected = IndexOutOfBoundsException.class)
   public void testInsertOutOfBoundsHigh() {
     Individual i = new Individual(new ArrayList<>(original));
     m.run(i, new ArrayList<>(Arrays.asList(new Pair<>(1, 10))));
-    assertEquals(original, i.getGenotype());
   }
 
   @Test
@@ -66,5 +76,17 @@ public class InsertTest {
     Individual i = new Individual(new ArrayList<>(original));
     m.run(i, new ArrayList<>(Arrays.asList(new Pair<>(0, 3), new Pair<>(3, 0))));
     assertEquals(Arrays.asList(1, 3, 4, 2, 5), i.getGenotype());
+  }
+
+  @Test(expected = NullPointerException.class)
+  public void testInsertNullIndividual() {
+    Individual i = null;
+    m.run(i, new ArrayList<>(Arrays.asList(new Pair<>(0, 4))));
+  }
+
+  @Test(expected = NullPointerException.class)
+  public void testInsertNullPairs() {
+    Individual i = new Individual(new ArrayList<>(original));
+    m.run(i, null);
   }
 }
