@@ -23,7 +23,7 @@ public class SwapTest {
     original = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
     m = new Swap();
   }
-  
+
   @Test
   public void testSwapEmptyList() {
     Individual i = new Individual(new ArrayList<>(original));

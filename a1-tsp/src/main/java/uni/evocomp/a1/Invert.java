@@ -16,30 +16,30 @@ public class Invert implements Mutate {
 
   /**
    * 
-   * @param i Individual on which to perform a mutation operation
+   * @param individual Individual on which to perform a mutation operation
    * @param n first index to insert
    * @param m last index to insert
    * @throws IndexOutOfBoundsException
    * @throws NullPointerException
    */
-  private void invert(Individual i, int n, int m)
+  private void invert(Individual individual, int n, int m)
       throws IndexOutOfBoundsException, NullPointerException {
     int first = Math.min(n, m);
     int second = Math.max(n, m);
 
-    for (int j = first; j < second; j++) {
-      Collections.swap(i.getGenotype(), first, second);
+    for (int i = first; i < second; i++) {
+      Collections.swap(individual.getGenotype(), first, second);
       first++;
       second--;
     }
   }
 
   @Override
-  public void run(Individual i, List<Pair<Integer, Integer>> pairs)
+  public void run(Individual individual, List<Pair<Integer, Integer>> pairs)
       throws IndexOutOfBoundsException, NullPointerException {
     for (Iterator<Pair<Integer, Integer>> it = pairs.iterator(); it.hasNext();) {
       Pair<Integer, Integer> p = it.next();
-      invert(i, (int) p.first, (int) p.second);
+      invert(individual, (int) p.first, (int) p.second);
     }
   }
 
