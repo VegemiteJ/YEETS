@@ -8,11 +8,11 @@ import java.lang.String;
 // is separate and gets passed to this.
 public class TSPProblem
 {
-	String				name;
-	String				comment;
-	String				type;			// tour or TSP
-	String				edgeWeightType;	// For this assignment, will always be EUC_2D, but it can be EUC_3D
-	List<List<Double>>	weights;
+	private String				name;
+	private String				comment;
+	private String				type;			// tour or TSP
+	private String				edgeWeightType;	// For this assignment, will always be EUC_2D, but it can be EUC_3D
+	private List<List<Double>>	weights;
 
 	public TSPProblem()
 	{
