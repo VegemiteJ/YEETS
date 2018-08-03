@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Random;
 import java.util.Set;
 import uni.evocomp.util.Util;
@@ -25,7 +24,7 @@ public class TournamentSelection implements SelectSurvivors {
     }
     // Iterate over HashSet and add individuals to the tournament list
     List<Individual> tournamentList = new ArrayList<>();
-    List<Individual> survivorList = new ArrayList<>();
+    Set<Individual> survivorSet = new HashSet<>();
     Iterator<Integer> itr = s.iterator();
     List<Individual> individualList = new ArrayList<>(population.getPopulation());
     while (itr.hasNext()) {
@@ -35,18 +34,16 @@ public class TournamentSelection implements SelectSurvivors {
     // https://stackoverflow.com/questions/49122512/sorting-an-arraylist-based-on-the-result-of-a-method
     tournamentList.sort((o1, o2) -> Util.calculateFitness(o1) - Util.calculateFitness((o2)));
 
-    // TODO: choose the best individual with probability p
+    // Choose the best individual with probability p, 2nd with p(1-p), 3rd with p(1-p)^2 etc.
+    int i = 0;
     for (Individual individual : tournamentList) {
-      
+      if (rand.nextFloat() < (p*Math.pow((1-p), i))) {
+        survivorSet.add(individual);
+      }
+      i++;
     }
-
-    // choose the second best with probability p*(1-p)
-
-    // 3rd: p*(1-p)^2)
-
-    // etc
-
-    Population survivorPopulation = new Population(new HashSet<>(survivorList));
+    // Construct the surviving population from the individual set
+    Population survivorPopulation = new Population(survivorSet);
     return survivorPopulation;
   }
 
