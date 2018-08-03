@@ -22,7 +22,7 @@ public class EvaluateEuclidTest extends TestCase {
         }
         testProblem = new TSPProblem("", "", "", "", weights);
 
-        e = new EvaulateEuclid();
+        e = new EvaluateEuclid();
     }
 
     @Test
