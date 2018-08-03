@@ -15,7 +15,7 @@ public class TournamentSelection implements SelectSurvivors {
   private Double p;
 
   @Override
-  public Population selectSurvivors(Population population, Random rand) {
+  public Population selectSurvivors(Population population, TSPProblem problem, Random rand) {
     // choose k random individuals from population
     // Use a HashSet to generate k unique integers
     Set<Integer> s = new HashSet<>();
@@ -32,7 +32,7 @@ public class TournamentSelection implements SelectSurvivors {
     }
     // Sort the list based on fitness
     // https://stackoverflow.com/questions/49122512/sorting-an-arraylist-based-on-the-result-of-a-method
-    tournamentList.sort((o1, o2) -> Util.calculateFitness(o1) - Util.calculateFitness((o2)));
+    tournamentList.sort((o1, o2) -> Util.calculateFitness(o1, problem) - Util.calculateFitness((o2, problem)));
 
     // Choose the best individual with probability p, 2nd with p(1-p), 3rd with p(1-p)^2 etc.
     int i = 0;

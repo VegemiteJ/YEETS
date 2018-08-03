@@ -50,5 +50,5 @@ interface SelectSurvivors {
    * 
    * @return a Population object with only surviving individuals
    */
-  public Population selectSurvivors(Population population, Random rand);
+  public Population selectSurvivors(Population population, TSPProblem problem, Random rand);
 }
