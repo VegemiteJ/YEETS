@@ -1,6 +1,6 @@
 package uni.evocomp.a1;
 
-import uni.evocomp.util.Bounds;
+import uni.evocomp.util.Util;
 import uni.evocomp.util.IntegerPair;
 import uni.evocomp.util.Pair;
 
@@ -29,7 +29,7 @@ public class Jump implements Mutate {
 
   private void jumpSingle(Individual i, Pair<Integer, Integer> pair) {
     List<Integer> data = i.getGenotype();
-    if (!Bounds.inBounds(data, pair.first) || !Bounds.inBounds(data, pair.second)) {
+    if (!Util.inBounds(data, pair.first) || !Util.inBounds(data, pair.second)) {
       throw new IndexOutOfBoundsException(
           String.format("Jump called with invalid index %d, %d\n", pair.first, pair.second));
     }
