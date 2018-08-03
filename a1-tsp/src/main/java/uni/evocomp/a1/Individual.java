@@ -12,7 +12,6 @@ import java.util.List;
  * permutation of all the cities (from 1-n)
  * 
  * @author Namdrib
- *
  */
 public class Individual {
   List<Integer> genotype; // the tour, elements should be 1-n

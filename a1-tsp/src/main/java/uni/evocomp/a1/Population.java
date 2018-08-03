@@ -34,13 +34,14 @@ public class Population {
       population.add(new Individual(indSize));
     }
   }
+
   /**
    * Initialise a population using a Set of Individuals
+   * 
    * @param individualSet
    * @author joshuafloh
    */
-  public Population(Set<Individual> individualSet)
-  {
+  public Population(Set<Individual> individualSet) {
     this();
     this.population = individualSet;
     this.size = individualSet.size();
