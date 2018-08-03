@@ -10,29 +10,57 @@ import java.util.Set;
 public class TournamentSelection implements SelectSurvivors {
   // TODO: Decide whether to store these here or pass them directly to the function
   private Evaluate evaluate;
-  private Integer tournamentSize;
+  private Integer tournamentSize; // TODO: This could be a proportion instead of a fixed size
+  private Double survivalProportion;
   private Double p;
 
   TournamentSelection() {
     this.evaluate = new EvaluateEuclid();
   }
 
+  TournamentSelection(Integer tournamentSize, Double survivalProportion, Double p) {
+    this();
+    this.tournamentSize = tournamentSize;
+    this.survivalProportion = survivalProportion;
+    this.p = p;
+  }
+
   @Override
   public Population selectSurvivors(Population population, TSPProblem problem, Random rand) {
-    // choose k random individuals from population
-    // Use a HashSet to generate k unique integers
-    Set<Integer> s = new HashSet<>();
-    while (s.size() < tournamentSize) {
-      s.add(rand.nextInt(population.size));
-    }
-    // Iterate over HashSet and add individuals to the tournament list
-    List<Individual> tournamentList = new ArrayList<>();
     Set<Individual> survivorSet = new HashSet<>();
-    Iterator<Integer> itr = s.iterator();
-    List<Individual> individualList = new ArrayList<>(population.getPopulation());
-    while (itr.hasNext()) {
-      tournamentList.add(individualList.get(itr.next()));
+
+    // Keep running tournaments until the limit has been reached
+    while (survivorSet.size() < (int) (survivalProportion * population.size)) {
+      runTournament(population, problem, rand, survivorSet);
     }
+    // Construct the surviving population from the individual set
+    Population survivorPopulation = new Population(survivorSet);
+    return survivorPopulation;
+  }
+
+  private void runTournament(Population population, TSPProblem problem, Random rand,
+      Set<Individual> survivors) {
+    Set<Integer> s = new HashSet<>();
+    List<Individual> tournamentList = new ArrayList<>();
+
+    // choose k random individuals from population
+    if (tournamentSize > population.size) {
+      while (s.size() < tournamentSize) {
+        s.add(rand.nextInt(population.size));
+      }
+      
+      // Iterate over HashSet and add individuals to the tournament list
+      List<Individual> individualList = new ArrayList<>(population.getPopulation());
+      Iterator<Integer> itr = s.iterator();
+      while (itr.hasNext()) {
+        tournamentList.add(individualList.get(itr.next()));
+      }
+    }
+    // if k < pop.size, use the whole population
+    else {
+      tournamentList = new ArrayList<>(population.getPopulation());
+    }
+
     // Sort the list based on fitness
     // https://stackoverflow.com/questions/49122512/sorting-an-arraylist-based-on-the-result-of-a-method
     tournamentList
@@ -42,14 +70,13 @@ public class TournamentSelection implements SelectSurvivors {
     int i = 0;
     for (Individual individual : tournamentList) {
       if (rand.nextFloat() < (p * Math.pow((1 - p), i))) {
-        survivorSet.add(individual);
+        survivors.add(individual);
+        if (survivors.size() < (int) (survivalProportion * population.size)) {
+          break;
+        }
       }
       i++;
     }
-    // Construct the surviving population from the individual set
-    Population survivorPopulation = new Population(survivorSet);
-    return survivorPopulation;
   }
-
 }
 
