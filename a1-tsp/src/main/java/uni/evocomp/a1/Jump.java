@@ -1,8 +1,8 @@
 package uni.evocomp.a1;
 
-import uni.evocomp.util.Util;
 import uni.evocomp.util.IntegerPair;
 import uni.evocomp.util.Pair;
+import uni.evocomp.util.Util;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public class Jump implements Mutate {
 
   private void printArr(List<Integer> arr) {
     for (Integer i : arr) {
-      System.out.print(String.format("%d ",i));
+      System.out.print(String.format("%d ", i));
     }
     System.out.println();
   }

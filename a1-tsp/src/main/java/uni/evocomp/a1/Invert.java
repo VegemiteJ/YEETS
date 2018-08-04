@@ -1,17 +1,16 @@
 package uni.evocomp.a1;
 
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
 import uni.evocomp.util.IntegerPair;
 import uni.evocomp.util.Pair;
 
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+
 /**
- * 
  * Pick two alleles at random and then invert the substring between them.
- * 
- * @author Namdrib
  *
+ * @author Namdrib
  */
 public class Invert implements Mutate {
 
@@ -37,7 +36,7 @@ public class Invert implements Mutate {
   @Override
   public void run(Individual individual, List<IntegerPair> pairs)
       throws IndexOutOfBoundsException, NullPointerException {
-    for (Iterator<IntegerPair> it = pairs.iterator(); it.hasNext();) {
+    for (Iterator<IntegerPair> it = pairs.iterator(); it.hasNext(); ) {
       Pair p = it.next();
       invert(individual, (int) p.first, (int) p.second);
     }

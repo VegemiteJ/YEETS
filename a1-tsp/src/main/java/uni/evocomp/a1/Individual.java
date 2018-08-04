@@ -7,8 +7,8 @@ import java.util.List;
 
 /**
  * Used to store a single trial/solution of the TSP problem.
- * <p>
- * As such, it should contain a Set of numbers, where each number is a city, representing a
+ *
+ * <p>As such, it should contain a Set of numbers, where each number is a city, representing a
  * permutation of all the cities (from 1-n)
  *
  * @author Namdrib
@@ -59,7 +59,7 @@ public class Individual {
   @Override
   public String toString() {
     String out = new String();
-    for (Iterator<Integer> it = genotype.iterator(); it.hasNext();) {
+    for (Iterator<Integer> it = genotype.iterator(); it.hasNext(); ) {
       out += String.valueOf(it.next()) + "\n";
     }
     out += "-1"; // terminates the tour

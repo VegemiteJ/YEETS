@@ -1,16 +1,16 @@
 package uni.evocomp.a1;
 
-import java.util.Iterator;
-import java.util.List;
 import uni.evocomp.util.IntegerPair;
 import uni.evocomp.util.Pair;
+
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Move the second to follow the first, shifting the rest along to accommodate. As the indices n and
  * m are not necessarily ordered, must extract the highest and lowest
- * 
- * @author Namdrib
  *
+ * @author Namdrib
  */
 public class Insert implements Mutate {
 
@@ -24,7 +24,9 @@ public class Insert implements Mutate {
   private void insert(Individual individual, int n, int m)
       throws IndexOutOfBoundsException, NullPointerException {
     // Out of bounds
-    if (n < 0 || m < 0 || n >= individual.getGenotype().size()
+    if (n < 0
+        || m < 0
+        || n >= individual.getGenotype().size()
         || m >= individual.getGenotype().size()) {
       throw new IndexOutOfBoundsException();
     }
@@ -38,7 +40,7 @@ public class Insert implements Mutate {
   @Override
   public void run(Individual i, List<IntegerPair> pairs)
       throws IndexOutOfBoundsException, NullPointerException {
-    for (Iterator<IntegerPair> it = pairs.iterator(); it.hasNext();) {
+    for (Iterator<IntegerPair> it = pairs.iterator(); it.hasNext(); ) {
       Pair p = it.next();
       insert(i, (int) p.first, (int) p.second);
     }
