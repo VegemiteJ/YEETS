@@ -3,9 +3,15 @@ package uni.evocomp.a1;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * A population in an evolutionary algorithm represents a set of solutions, which is a set of
+ * individuals
+ * 
+ * @author Namdrib
+ *
+ */
 public class Population {
-  Set<Individual> population;
-  int size;
+  private Set<Individual> population;
 
   public Population() {
     population = new HashSet<>();
@@ -28,9 +34,8 @@ public class Population {
    */
   public Population(int popSize, int indSize) {
     this();
-    this.size = popSize;
 
-    for (int i = 0; i < this.size; i++) {
+    for (int i = 0; i < getSize(); i++) {
       population.add(new Individual(indSize));
     }
   }
@@ -44,7 +49,19 @@ public class Population {
   public Population(Set<Individual> individualSet) {
     this();
     this.population = individualSet;
-    this.size = individualSet.size();
+  }
+
+  /**
+   * Adds a single Individual to the Population
+   * 
+   * @param i Individual to add
+   */
+  public void add(Individual i) {
+    population.add(i);
+  }
+
+  public int getSize() {
+    return population.size();
   }
 
   public Set<Individual> getPopulation() {

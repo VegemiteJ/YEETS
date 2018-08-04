@@ -45,18 +45,18 @@ public class TournamentSelectionTest extends TestCase {
     Individual i4 = new Individual(Arrays.asList(1, 3, 2, 4, 5)); // 54
     Individual i5 = new Individual(Arrays.asList(5, 2, 1, 4, 3)); // 52
     Individual i6 = new Individual(Arrays.asList(1, 5, 2, 4, 3)); // 48
-    population.population.add(i1);
-    population.population.add(i2);
-    population.population.add(i3);
-    population.population.add(i4);
-    population.population.add(i5);
-    population.population.add(i6);
+    population.add(i1);
+    population.add(i2);
+    population.add(i3);
+    population.add(i4);
+    population.add(i5);
+    population.add(i6);
     // seed the randomstub TODO: use proper seeds
     rand.setInt(Arrays.asList(1));
     rand.setDoubles(Arrays.asList(0.0));
     Population result = tournament.selectSurvivors(population, problem, rand);
     // population should be halved
-    assertEquals(3, result.population.size());
+    assertEquals(3, result.getSize());
     // TODO: check the survivor to see they're who we expect
   }
 
