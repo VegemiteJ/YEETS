@@ -10,6 +10,8 @@ import java.util.Random;
  * 
  * The advantage of using this class is that it can act as a random object but generate predictable behaviour
  * 
+ * TODO: Right now this only works with ints and floats, potentially look at using templates to make it work
+ * for any type in the future?
  * @author joshuafloh
  *
  */
@@ -21,14 +23,17 @@ public class RandomStub extends Random {
   private int floatCounter;
   
   // Methods
-  // TODO: Implement these
   @Override
   public int nextInt() {
-    return 0;
+    int i = ints.get(intCounter%ints.size());
+    intCounter++;
+    return i;
   }
   @Override
   public float nextFloat() {
-    return 0;
+    float f = floats.get(floatCounter%floats.size());
+    floatCounter++;
+    return f;
   }
   
   public void setInt(List<Integer> list) {
