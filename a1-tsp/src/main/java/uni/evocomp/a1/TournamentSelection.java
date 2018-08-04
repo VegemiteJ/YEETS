@@ -30,9 +30,11 @@ public class TournamentSelection implements SelectSurvivors {
     Set<Individual> survivorSet = new HashSet<>();
 
     // Keep running tournaments until the limit has been reached
-    while (survivorSet.size() < (int) (survivalProportion * population.size)) {
+    System.out.println((int) (survivalProportion * population.population.size()));
+    while (survivorSet.size() < (int) (survivalProportion * population.population.size())) {
       runTournament(population, problem, rand, survivorSet);
     }
+    System.out.println(survivorSet.size());
     // Construct the surviving population from the individual set
     Population survivorPopulation = new Population(survivorSet);
     return survivorPopulation;
@@ -46,7 +48,7 @@ public class TournamentSelection implements SelectSurvivors {
     // choose k random individuals from population
     if (tournamentSize > population.size) {
       while (s.size() < tournamentSize) {
-        s.add(rand.nextInt(population.size));
+        s.add(rand.nextInt(population.population.size()));
       }
 
       // Iterate over HashSet and add individuals to the tournament list

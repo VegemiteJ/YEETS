@@ -22,7 +22,7 @@ public class TournamentSelectionTest extends TestCase {
     // set up the random stub
     rand = new RandomStub();
     TSPIO io = new TSPIO();
-    try (Reader r = new FileReader("testmaps/test1.tsp")) {
+    try (Reader r = new FileReader("src/test/java/uni/evocomp/a1/testmaps/test1.tsp")) {
       problem = io.read(r);
     } catch (IOException e) {
       e.printStackTrace();
@@ -36,7 +36,7 @@ public class TournamentSelectionTest extends TestCase {
 
   @Test
   public void test1() {
-    tournament = new TournamentSelection(2, 0.5, 0.8);
+    tournament = new TournamentSelection(2, 0.5, 1.0);
     Population population = new Population();
     // construct individuals using integer lists
     Individual i1 = new Individual(Arrays.asList(1, 2, 3, 4, 5)); // 40
@@ -53,10 +53,10 @@ public class TournamentSelectionTest extends TestCase {
     population.population.add(i6);
     // seed the randomstub TODO: use proper seeds
     rand.setInt(Arrays.asList(1));
-    rand.setDoubles(Arrays.asList(1.0));
+    rand.setDoubles(Arrays.asList(0.0));
     Population result = tournament.selectSurvivors(population, problem, rand);
     // population should be halved
-    assertEquals(result.size, 3);
+    assertEquals(3, result.population.size());
     // TODO: check the survivor to see they're who we expect
   }
 
