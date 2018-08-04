@@ -19,8 +19,8 @@ public class RandomStub extends Random {
   // Fields
   private List<Integer> ints;
   private int intCounter;
-  private List<Float> floats;
-  private int floatCounter;
+  private List<Double> doubles;
+  private int doubleCounter;
   
   // Methods
   @Override
@@ -30,16 +30,16 @@ public class RandomStub extends Random {
     return i;
   }
   @Override
-  public float nextFloat() {
-    float f = floats.get(floatCounter%floats.size());
-    floatCounter++;
-    return f;
+  public double nextDouble() {
+    Double d = doubles.get(doubleCounter%doubles.size());
+    doubleCounter++;
+    return d;
   }
   
   public void setInt(List<Integer> list) {
     this.ints = list;
   }
-  public void setFloats(List<Float> list) {
-    this.floats = list;
+  public void setDoubles(List<Double> list) {
+    this.doubles = list;
   }
 }

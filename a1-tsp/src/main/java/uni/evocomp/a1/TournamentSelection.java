@@ -69,7 +69,7 @@ public class TournamentSelection implements SelectSurvivors {
     // Choose the best individual with probability p, 2nd with p(1-p), 3rd with p(1-p)^2 etc.
     int i = 0;
     for (Individual individual : tournamentList) {
-      if (rand.nextFloat() < (p * Math.pow((1 - p), i))) {
+      if (rand.nextDouble() < (p * Math.pow((1 - p), i))) {
         survivors.add(individual);
         if (survivors.size() < (int) (survivalProportion * population.size)) {
           break;
