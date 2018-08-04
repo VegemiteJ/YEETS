@@ -9,6 +9,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.Properties;
+import uni.evocomp.util.Util;
 
 public class Main {
 
@@ -72,27 +73,6 @@ public class Main {
     }
   }
 
-  /**
-   * 
-   * @param <T>
-   * @param name name of class object to create
-   * @return an object of type <code><T></code>
-   * @throws ClassNotFoundException
-   * @throws InstantiationException
-   * @throws IllegalAccessException
-   * @throws IllegalArgumentException
-   * @throws InvocationTargetException
-   */
-  @SuppressWarnings({"rawtypes", "unchecked"})
-  private static <T> T classFromName(String name)
-      throws ClassNotFoundException, InstantiationException, IllegalAccessException,
-      IllegalArgumentException, InvocationTargetException {
-    Class cl = Class.forName(name, true, Thread.currentThread().getContextClassLoader());
-    Constructor constructors[] = cl.getConstructors();
-    T out = (T) constructors[0].newInstance(new Object[0]);
-    return out;
-  }
-
   // TODO : Benchmark function
   public static void benchmark(String propertiesFileName, int populationSize, int timesToRun) {
     // TODO : Read a .properties file to figure out which implementations to use
@@ -110,12 +90,13 @@ public class Main {
     try (InputStream input = new FileInputStream(propertiesFileName)) {
       prop.load(input);
 
-      evaluate = (Evaluate) classFromName(prop.getProperty("Evaluate", "EvaluateEuclid"));
-      selectParents = (SelectParents) classFromName(prop.getProperty("SelectParents", ""));
-      recombine = (Recombine) classFromName(prop.getProperty("Recombine", "EdgeRecombination"));
-      mutate = (Mutate) classFromName(prop.getProperty("Mutate", "Swap"));
-      selectSurvivors = (SelectSurvivors) classFromName(
-          prop.getProperty("SelectSurvivors", "TournamentSelection"));
+      evaluate = (Evaluate) Util.classFromName(prop.getProperty("Evaluate", "EvaluateEuclid"));
+      selectParents = (SelectParents) Util.classFromName(prop.getProperty("SelectParents", ""));
+      recombine =
+          (Recombine) Util.classFromName(prop.getProperty("Recombine", "EdgeRecombination"));
+      mutate = (Mutate) Util.classFromName(prop.getProperty("Mutate", "Swap"));
+      selectSurvivors = (SelectSurvivors) Util
+          .classFromName(prop.getProperty("SelectSurvivors", "TournamentSelection"));
     } catch (Exception ex) {
       ex.printStackTrace();
     }

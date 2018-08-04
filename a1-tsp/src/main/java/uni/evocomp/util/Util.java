@@ -1,6 +1,8 @@
 package uni.evocomp.util;
 
 import java.awt.Point;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 public class Util {
@@ -35,4 +37,26 @@ public class Util {
     double yd = i.second - j.second;
     return Math.round(Math.sqrt(xd * xd + yd * yd) + 0.5);
   }
+
+  /**
+   * 
+   * @param <T>
+   * @param name name of class object to create
+   * @return an object of type <code><T></code>
+   * @throws ClassNotFoundException
+   * @throws InstantiationException
+   * @throws IllegalAccessException
+   * @throws IllegalArgumentException
+   * @throws InvocationTargetException
+   */
+  @SuppressWarnings({"rawtypes", "unchecked"})
+  public static <T> T classFromName(String name)
+      throws ClassNotFoundException, InstantiationException, IllegalAccessException,
+      IllegalArgumentException, InvocationTargetException {
+    Class cl = Class.forName(name, true, Thread.currentThread().getContextClassLoader());
+    Constructor constructors[] = cl.getConstructors();
+    T out = (T) constructors[0].newInstance(new Object[0]);
+    return out;
+  }
+
 }
