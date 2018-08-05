@@ -7,17 +7,17 @@ import uni.evocomp.util.Pair;
 
 
 public class Jump implements Mutate {
+
   /**
    * Perform a list of mutation operations on an Individual
    *
-   * @param problem
    * @param individual Individual on which to perform a mutation operation
    * @param pairs List of Points whose x and y dictate which indices to use when mutating
    */
   @Override
   public void run(TSPProblem problem, Individual individual, List<IntegerPair> pairs) {
     for (Pair p : pairs) {
-      jumpSingle(individual, p);
+      jumpSingle(problem, individual, p);
     }
   }
 
@@ -28,7 +28,10 @@ public class Jump implements Mutate {
     System.out.println();
   }
 
-  private void jumpSingle(Individual i, Pair<Integer, Integer> pair) {
+  private void jumpSingle(TSPProblem problem, Individual i, Pair<Integer, Integer> pair) {
+    double cost = i.getCost();
+    cost -= calculateDifferentialCost(problem, i, pair.first, pair.second);
+
     List<Integer> data = i.getGenotype();
     if (!Bounds.inBounds(data, pair.first) || !Bounds.inBounds(data, pair.second)) {
       throw new IndexOutOfBoundsException(
@@ -47,5 +50,29 @@ public class Jump implements Mutate {
       }
       data.set(pair.second, value);
     }
+
+    cost += calculateDifferentialCost(problem, i, pair.first, pair.second);
+    i.setCost(cost);
   }
+
+  private double calculateDifferentialCost(TSPProblem problem, Individual individual, int n, int m) {
+    double differentialCost = 0.0;
+    int idxI = individual.getGenotype().get(n);
+    int idxJ = individual.getGenotype().get(m);
+
+    // (i-1,i)
+    if (idxI - 1 >= 0) {
+      differentialCost += problem.getWeights().get(idxI - 1).get(idxI);
+    }
+    // (i,i+1)
+    if (idxI < problem.getSize()) {
+      differentialCost += problem.getWeights().get(idxI).get(idxI + 1);
+    }
+    // (j,j+1)
+    if (idxJ + 1 < problem.getSize()) {
+      differentialCost += problem.getWeights().get(idxJ).get(idxJ + 1);
+    }
+    return differentialCost;
+  }
+
 }
