@@ -57,13 +57,16 @@ public class Util {
    * @return
    */
   public static String createMap(String name, String comment, String type, int dimension,
-      String edgeWeightType, List<String> coords) {
+      String edgeWeightType, List<String> coords, boolean eof) {
     String out = "NAME : " + name + "\nCOMMENT : " + comment + "\nTYPE : " + type + "\nDIMENSION : "
         + dimension + "\nEDGE_WEIGHT_TYPE : " + edgeWeightType + "\nNODE_COORD_SECTION\n";
     for (String s : coords) {
       out += s + "\n";
     }
-    out += "EOF\n";
+    if (eof)
+    {
+      out += "EOF\n";
+    }
     return out;
   }
 
