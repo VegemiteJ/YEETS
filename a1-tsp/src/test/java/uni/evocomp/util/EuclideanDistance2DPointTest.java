@@ -1,10 +1,9 @@
-package uni.evocomp.a1;
+package uni.evocomp.util;
 
 import static org.junit.Assert.*;
 import java.awt.Point;
 import org.junit.Before;
 import org.junit.Test;
-import uni.evocomp.util.Util;
 
 public class EuclideanDistance2DPointTest {
 

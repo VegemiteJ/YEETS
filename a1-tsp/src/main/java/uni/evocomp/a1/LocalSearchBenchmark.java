@@ -11,18 +11,9 @@ public class LocalSearchBenchmark {
     new LocalSearchBenchmark();
   }
 
-  public static final String[] testNames = {
-    "tests/eil51",
-    "tests/pcb442",
-    "tests/eil76",
-    "tests/eil101",
-    "tests/kroA100",
-    "tests/kroC100",
-    "tests/kroD100",
-    "tests/lin105",
-    "tests/pr2392",
-    "tests/usa13509"
-  };
+  public static final String[] testNames =
+      {"tests/eil51", "tests/pcb442", "tests/eil76", "tests/eil101", "tests/kroA100",
+          "tests/kroC100", "tests/kroD100", "tests/lin105", "tests/pr2392", "tests/usa13509"};
 
   public static final Mutate[] mutationFunctions = {new Jump(), new Swap(), new Invert()};
   public static final String[] mutationNames = {"Jump", "Exchange", "2-Opt"};
@@ -42,9 +33,10 @@ public class LocalSearchBenchmark {
     TSPIO io = new TSPIO();
     ArrayList<Pair<TSPProblem, Individual>> benchmarks = new ArrayList<>();
     for (String testString : testNames) {
-      try {
-        TSPProblem problem = io.read(new FileReader(testString + testSuffix));
-        Individual solution = io.readSolution(new FileReader(testString + tourSuffix));
+      try (FileReader fr1 = new FileReader(testString + testSuffix);
+          FileReader fr2 = new FileReader(testString + tourSuffix)) {
+        TSPProblem problem = io.read(fr1);
+        Individual solution = io.readSolution(fr2);
         solution.setCost(evaluator.evaluate(problem, solution));
         benchmarks.add(new Pair<>(problem, solution));
       } catch (IOException e) {

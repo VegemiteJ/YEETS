@@ -103,8 +103,7 @@ public class TSPIO {
           points.put(Integer.parseInt(split[0]),
               new DoublePair(Double.valueOf(split[1]), Double.valueOf(split[2])));
           cityCounter++;
-          if (cityCounter > dimension)
-          {
+          if (cityCounter > dimension) {
             break;
           }
         }
@@ -194,8 +193,11 @@ public class TSPIO {
 
   // TODO : Fill in after we have Instance
   // TODO : Figure out whether we even need this function
-  /** @param instance the instance object to write */
-  public void write() {
+  /**
+   * 
+   * @param instance
+   */
+  public void write(Individual instance) {
     System.out.println("Writing instance");
   }
 }

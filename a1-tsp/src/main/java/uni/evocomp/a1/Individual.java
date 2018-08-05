@@ -11,13 +11,14 @@ import java.util.stream.IntStream;
 /**
  * Used to store a single trial/solution of the TSP problem.
  *
- * <p>As such, it should contain a Set of numbers, where each number is a city, representing a
+ * <p>
+ * As such, it should contain a Set of numbers, where each number is a city, representing a
  * permutation of all the cities (from 1-n)
  *
  * @author Namdrib
  */
 public class Individual {
-  List<Integer> genotype; // the tour, elements should be 1-n
+  private List<Integer> genotype; // the tour, elements should be 1-n
   private Double cost;
 
   public Individual() {
@@ -71,7 +72,7 @@ public class Individual {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    for (Iterator<Integer> it = genotype.iterator(); it.hasNext(); ) {
+    for (Iterator<Integer> it = genotype.iterator(); it.hasNext();) {
       sb.append(String.valueOf(it.next()));
       sb.append("\n");
     }
@@ -96,9 +97,8 @@ public class Individual {
 
     // Assert only distinct elements
 
-    IllegalStateException exc =
-        new IllegalStateException(
-            "Illegal tour state. Printing tour...\n" + getTourAsDebugString(getGenotype()));
+    IllegalStateException exc = new IllegalStateException(
+        "Illegal tour state. Printing tour...\n" + getTourAsDebugString(getGenotype()));
 
     for (Integer i : getGenotype()) {
       if (tour.contains(i)) {

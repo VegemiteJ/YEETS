@@ -31,8 +31,8 @@ public class Swap implements Mutate {
 
   @Override
   public void run(Individual i, List<IntegerPair> pairs) {
-    for (Iterator<IntegerPair> it = pairs.iterator(); it.hasNext(); ) {
-      Pair p = it.next();
+    for (Iterator<IntegerPair> it = pairs.iterator(); it.hasNext();) {
+      Pair<?, ?> p = it.next();
       swap(i, (int) p.first, (int) p.second);
     }
   }

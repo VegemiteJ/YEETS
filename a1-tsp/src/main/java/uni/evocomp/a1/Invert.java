@@ -28,21 +28,17 @@ public class Invert implements Mutate {
       throws IndexOutOfBoundsException, NullPointerException {
     int first = Math.min(n, m);
     int second = Math.max(n, m);
-    try {
-      for (int j = first; j < second; j++) {
-        Collections.swap(individual.getGenotype(), first, second);
-        first++;
-        second--;
-      }
-    } catch (IndexOutOfBoundsException ex) {
-      return;
+    for (int j = first; j < second; j++) {
+      Collections.swap(individual.getGenotype(), first, second);
+      first++;
+      second--;
     }
   }
 
   @Override
   public void run(Individual i, List<IntegerPair> pairs) {
-    for (Iterator<IntegerPair> it = pairs.iterator(); it.hasNext(); ) {
-      Pair p = it.next();
+    for (Iterator<IntegerPair> it = pairs.iterator(); it.hasNext();) {
+      Pair<?, ?> p = it.next();
       invert(i, (int) p.first, (int) p.second);
     }
   }
