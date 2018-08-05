@@ -50,7 +50,6 @@ public class TournamentSelection implements SelectSurvivors {
       while (s.size() < tournamentSize) {
         s.add(rand.nextInt(population.getSize()));
       }
-      System.out.println("fuck");
       // Iterate over HashSet and add individuals to the tournament list
       List<Individual> individualList = new ArrayList<>(population.getPopulation());
       Iterator<Integer> itr = s.iterator();
