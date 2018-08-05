@@ -42,7 +42,6 @@ public class LocalSearchBenchmark {
     TSPIO io = new TSPIO();
     ArrayList<Pair<TSPProblem, Individual>> benchmarks = new ArrayList<>();
     for (String testString : testNames) {
-      System.out.println(testString);
       try {
         TSPProblem problem = io.read(new FileReader(testString+testSuffix));
         Individual solution = io.readSolution(new FileReader(testString+tourSuffix));
@@ -55,9 +54,10 @@ public class LocalSearchBenchmark {
 
     for (Pair<TSPProblem, Individual> benchmark : benchmarks) {
       TSPProblem problemDef = benchmark.first;
+      System.out.println(problemDef.getName() + " (Best: "+benchmark.second.getCost()+")");
 
       for (int mi = 0; mi < mutationFunctions.length; mi++) {
-        System.out.println(mutationNames[mi]);
+        System.out.println("  "+mutationNames[mi]);
         Mutate mutationFunction = mutationFunctions[mi];
 
         LocalSearch ls = new RandomizedLocalSearch(problemDef, evaluator, mutationFunction);
@@ -79,10 +79,9 @@ public class LocalSearchBenchmark {
         }
         averageCost /= repeats;
 
-        System.out.println("Known Best Solution: " + benchmark.second.getCost());
-        System.out.println("Min: " + minCost);
-        System.out.println("Max: " + maxCost);
-        System.out.println("Ave: " + averageCost);
+        System.out.println("    Min: " + minCost);
+        System.out.println("    Max: " + maxCost);
+        System.out.println("    Ave: " + averageCost);
       }
     }
   }
