@@ -8,12 +8,17 @@ import uni.evocomp.util.IntegerPair;
 
 public class LocalSearch {
 
+  public static void main(String[] args) {
+    new LocalSearch().solve();
+  }
+
   protected TSPProblem problem;
   Individual currentBestIndividual;
   double knownBestCost;
   Evaluate evaluate;
   Mutate N;
   private double currentBestCost;
+
   LocalSearch() {
     // Load Problem
     this.problem = new TSPProblem();
@@ -39,10 +44,6 @@ public class LocalSearch {
     this.N = new Jump();
   }
 
-  public static void main(String[] args) {
-    new RandomizedLocalSearch().solve();
-  }
-
   boolean updateCost(double cost, Individual s) {
     if (cost < currentBestCost) {
       currentBestCost = cost;
@@ -65,6 +66,7 @@ public class LocalSearch {
         for (int idxB = 0; idxB < problem.getSize() - 1; idxB++) {
           Individual s = new Individual(currentBestIndividual);
           N.run(s, new ArrayList<>(Collections.singletonList(new IntegerPair(idxA, idxB))));
+          s.assertIsValidTour();
           double cost = evaluate.evaluate(problem, s);
           if (updateCost(cost, s)) {
             madeChange = true;

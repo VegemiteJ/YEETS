@@ -92,7 +92,6 @@ public class Individual {
             "Illegal tour state. Printing tour...\n" + getTourAsDebugString(getGenotype()));
 
     for (Integer i : getGenotype()) {
-      System.out.println("Removing " + i);
       if (tour.contains(i)) {
         tour.remove(i);
       } else {

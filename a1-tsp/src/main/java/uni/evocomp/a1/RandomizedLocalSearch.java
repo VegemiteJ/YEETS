@@ -31,9 +31,9 @@ public class RandomizedLocalSearch extends LocalSearch {
       for (Integer anOuterIdx : outerIdx) {
         for (Integer anInnerIdx : innerIdx) {
           Individual s = new Individual(currentBestIndividual);
-
           IntegerPair indexPair = new IntegerPair(anOuterIdx, anInnerIdx);
           N.run(s, new ArrayList<>(Arrays.asList(indexPair)));
+          s.assertIsValidTour();
           double cost = evaluate.evaluate(problem, s);
           if (updateCost(cost, s)) {
             madeChange = true;
