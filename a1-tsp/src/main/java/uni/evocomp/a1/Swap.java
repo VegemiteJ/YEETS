@@ -16,7 +16,8 @@ import uni.evocomp.util.Pair;
 public class Swap implements Mutate {
 
   /**
-   * 
+   * Perform a swap on position n and m of i's genotype
+   *
    * @param individual Individual on which to perform a mutation operation
    * @param n first index to swap
    * @param m last index to swap
@@ -29,11 +30,10 @@ public class Swap implements Mutate {
   }
 
   @Override
-  public void run(Individual individual, List<IntegerPair> pairs)
-      throws IndexOutOfBoundsException, NullPointerException {
-    for (Iterator<IntegerPair> it = pairs.iterator(); it.hasNext();) {
+  public void run(Individual i, List<IntegerPair> pairs) {
+    for (Iterator<IntegerPair> it = pairs.iterator(); it.hasNext(); ) {
       Pair p = it.next();
-      swap(individual, (int) p.first, (int) p.second);
+      swap(i, (int) p.first, (int) p.second);
     }
   }
 }

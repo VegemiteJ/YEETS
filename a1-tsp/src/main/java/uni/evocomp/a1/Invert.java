@@ -16,6 +16,8 @@ import uni.evocomp.util.Pair;
 public class Invert implements Mutate {
 
   /**
+   * Pick two alleles at random and then invert the substring between them.
+   *
    * @param individual Individual on which to perform a mutation operation
    * @param n first index to insert
    * @param m last index to insert
@@ -26,20 +28,22 @@ public class Invert implements Mutate {
       throws IndexOutOfBoundsException, NullPointerException {
     int first = Math.min(n, m);
     int second = Math.max(n, m);
-
-    for (int i = first; i < second; i++) {
-      Collections.swap(individual.getGenotype(), first, second);
-      first++;
-      second--;
+    try {
+      for (int j = first; j < second; j++) {
+        Collections.swap(individual.getGenotype(), first, second);
+        first++;
+        second--;
+      }
+    } catch (IndexOutOfBoundsException ex) {
+      return;
     }
   }
 
   @Override
-  public void run(Individual individual, List<IntegerPair> pairs)
-      throws IndexOutOfBoundsException, NullPointerException {
-    for (Iterator<IntegerPair> it = pairs.iterator(); it.hasNext();) {
+  public void run(Individual i, List<IntegerPair> pairs) {
+    for (Iterator<IntegerPair> it = pairs.iterator(); it.hasNext(); ) {
       Pair p = it.next();
-      invert(individual, (int) p.first, (int) p.second);
+      invert(i, (int) p.first, (int) p.second);
     }
   }
 }

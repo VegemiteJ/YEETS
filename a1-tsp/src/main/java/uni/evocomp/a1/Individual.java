@@ -4,17 +4,21 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Used to store a single trial/solution of the TSP problem.
- * <p>
- * As such, it should contain a Set of numbers, where each number is a city, representing a
+ *
+ * <p>As such, it should contain a Set of numbers, where each number is a city, representing a
  * permutation of all the cities (from 1-n)
  *
  * @author Namdrib
  */
 public class Individual {
   List<Integer> genotype; // the tour, elements should be 1-n
+  private Double cost;
 
   public Individual() {
     genotype = new ArrayList<>();
@@ -56,13 +60,55 @@ public class Individual {
     return genotype;
   }
 
+  public void setCost(Double cost) {
+    this.cost = cost;
+  }
+
+  public Double getCost() {
+    return this.cost;
+  }
+
   @Override
   public String toString() {
-    String out = new String();
-    for (Iterator<Integer> it = genotype.iterator(); it.hasNext();) {
-      out += String.valueOf(it.next()) + "\n";
+    StringBuilder sb = new StringBuilder();
+    for (Iterator<Integer> it = genotype.iterator(); it.hasNext(); ) {
+      sb.append(String.valueOf(it.next()));
+      sb.append("\n");
     }
-    out += "-1"; // terminates the tour
-    return out;
+    sb.append("-1"); // Complete the tour
+    return sb.toString();
+  }
+
+  private String getTourAsDebugString(List<Integer> tour) {
+    StringBuilder sb = new StringBuilder();
+    sb.append("Tour: ");
+    for (int i : tour) {
+      sb.append(i);
+      sb.append(" ");
+    }
+    sb.append("\n");
+    return sb.toString();
+  }
+
+  public void assertIsValidTour() throws IllegalStateException {
+    Set<Integer> tour =
+        IntStream.rangeClosed(1, getGenotype().size()).boxed().collect(Collectors.toSet());
+
+    // Assert only distinct elements
+
+    IllegalStateException exc =
+        new IllegalStateException(
+            "Illegal tour state. Printing tour...\n" + getTourAsDebugString(getGenotype()));
+
+    for (Integer i : getGenotype()) {
+      if (tour.contains(i)) {
+        tour.remove(i);
+      } else {
+        throw exc;
+      }
+    }
+    if (tour.size() != 0) {
+      throw exc;
+    }
   }
 }
