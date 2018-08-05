@@ -2,6 +2,7 @@ package uni.evocomp.a1;
 
 import static junit.framework.Assert.assertEquals;
 
+import org.junit.Before;
 import org.junit.Test;
 import uni.evocomp.util.IntegerPair;
 
