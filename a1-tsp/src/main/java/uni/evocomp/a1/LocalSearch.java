@@ -1,8 +1,5 @@
 package uni.evocomp.a1;
 
-import java.io.FileReader;
-import java.io.IOException;
-
 public abstract class LocalSearch {
 
   final Evaluate evaluate;
