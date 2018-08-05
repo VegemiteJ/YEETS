@@ -48,17 +48,17 @@ public class RandomizedLocalSearch extends LocalSearch {
           Individual s = new Individual(currentBestIndividual);
           IntegerPair indexPair = new IntegerPair(anOuterIdx, anInnerIdx);
           mutator.run(s, new ArrayList<>(Arrays.asList(indexPair)));
-          s.assertIsValidTour();
           double cost = evaluate.evaluate(problem, s);
           if (cost < currentBestCost) {
             currentBestCost = cost;
             currentBestIndividual = s;
-             madeChange = true;
+            madeChange = true;
           }
           totalIterations++;
         }
       }
     }
+    currentBestIndividual.assertIsValidTour();
     return currentBestCost;
   }
 }

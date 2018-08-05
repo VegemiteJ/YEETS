@@ -11,17 +11,14 @@ public class LocalSearchBenchmark {
     new LocalSearchBenchmark();
   }
 
-  public static final String[] testNames = {
-    "tests/eil51",
-    "tests/eil76",
-    "tests/eil101"
-//    "tests/kroA100",
-//    "tests/kroC100",
-//    "tests/kroD100",
-//    "tests/lin105",
-//    "tests/pcb442",
-//    "tests/pr2392",
-//    "tests/usa13509"
+  public static final String[] testNames = {"tests/eil51", "tests/eil76", "tests/eil101"
+    //    "tests/kroA100",
+    //    "tests/kroC100",
+    //    "tests/kroD100",
+    //    "tests/lin105",
+    //    "tests/pcb442",
+    //    "tests/pr2392",
+    //    "tests/usa13509"
   };
 
   public static final Mutate[] mutationFunctions = {new Jump(), new Swap(), new Invert()};
@@ -43,8 +40,8 @@ public class LocalSearchBenchmark {
     ArrayList<Pair<TSPProblem, Individual>> benchmarks = new ArrayList<>();
     for (String testString : testNames) {
       try {
-        TSPProblem problem = io.read(new FileReader(testString+testSuffix));
-        Individual solution = io.readSolution(new FileReader(testString+tourSuffix));
+        TSPProblem problem = io.read(new FileReader(testString + testSuffix));
+        Individual solution = io.readSolution(new FileReader(testString + tourSuffix));
         solution.setCost(evaluator.evaluate(problem, solution));
         benchmarks.add(new Pair<>(problem, solution));
       } catch (IOException e) {
@@ -54,10 +51,10 @@ public class LocalSearchBenchmark {
 
     for (Pair<TSPProblem, Individual> benchmark : benchmarks) {
       TSPProblem problemDef = benchmark.first;
-      System.out.println(problemDef.getName() + " (Best: "+benchmark.second.getCost()+")");
+      System.out.println(problemDef.getName() + " (Best: " + benchmark.second.getCost() + ")");
 
       for (int mi = 0; mi < mutationFunctions.length; mi++) {
-        System.out.println("  "+mutationNames[mi]);
+        System.out.println("  " + mutationNames[mi]);
         Mutate mutationFunction = mutationFunctions[mi];
 
         LocalSearch ls = new RandomizedLocalSearch(problemDef, evaluator, mutationFunction);
