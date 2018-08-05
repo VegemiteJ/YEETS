@@ -38,6 +38,35 @@ public class Util {
     return Math.round(Math.sqrt(xd * xd + yd * yd) + 0.5);
   }
 
+  public static double euclideanDistance2D(DoublePair i, DoublePair j) {
+    double xd = i.first - j.first;
+    double yd = i.second - j.second;
+    return Math.round(Math.sqrt(xd * xd + yd * yd) + 0.5);
+  }
+
+  /**
+   * Create a mock test map in the form of a String. Puts "EOF" at the end
+   * 
+   * @param name
+   * @param comment
+   * @param type
+   * @param dimension
+   * @param edgeWeightType
+   * @param strings a list whose elements are of the format "n x y", where n is an int and x and y
+   *        are doubles.
+   * @return
+   */
+  public static String createMap(String name, String comment, String type, int dimension,
+      String edgeWeightType, List<String> coords) {
+    String out = "NAME : " + name + "\nCOMMENT : " + comment + "\nTYPE : " + type + "\nDIMENSION : "
+        + dimension + "\nEDGE_WEIGHT_TYPE : " + edgeWeightType + "\nNODE_COORD_SECTION\n";
+    for (String s : coords) {
+      out += s + "\n";
+    }
+    out += "EOF\n";
+    return out;
+  }
+
   /**
    * 
    * @param <T>
