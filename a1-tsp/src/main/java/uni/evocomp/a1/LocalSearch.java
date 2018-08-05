@@ -7,61 +7,70 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Random;
 
 public class LocalSearch {
 
   public static void main(String[] args) {
-    new LocalSearch();
+    new LocalSearch().solve();
   }
 
-  LocalSearch() {
-    // Load Problem
-    TSPProblem problem = new TSPProblem();
-    TSPIO io = new TSPIO();
-    try (Reader r = new FileReader("tests/eil76.tsp")) {
-      problem = io.read(r);
-    } catch (IOException e) {
-      e.printStackTrace();
+  protected TSPProblem problem;
+  protected Individual currentBestIndividual;
+  protected double currentBestCost;
+  protected Evaluate evaluate;
+  protected Mutate N;
+
+  protected boolean updateCost(double cost, Individual s) {
+    if (cost < currentBestCost) {
+      currentBestCost = cost;
+      currentBestIndividual = s;
+      System.out.println("");
+      System.out.println("New Best: " + cost);
+      return true;
+    } else {
+      System.out.print(".");
+      return false;
     }
+  }
 
-    // Evaluate function
-    Evaluate evaluate = new EvaluateEuclid();
-
-    // Initial solution
-    Individual currentBestIndividual = new Individual(problem.getSize());
-    double currentBestCost = evaluate.evaluate(problem, currentBestIndividual);
-
-    // Mutate function
-    Mutate N = new Jump();
-    Random rand = new Random();
-
-    //            Rand jump
-    //            int first = rand.nextInt(problem.getSize()-1);
-    //            int second = rand.nextInt(problem.getSize()-1);
-
+  public double solve() {
     int totalIterations = 0;
-
-    boolean madeChange = false;
-    while (!madeChange) {
+    boolean madeChange = true;
+    while (madeChange) {
+      madeChange = false;
       for (int idxA=0; idxA<problem.getSize()-1; idxA++) {
         for (int idxB=0; idxB<problem.getSize()-1; idxB++) {
           Individual s = new Individual(currentBestIndividual);
           N.run(s, new ArrayList<>(Arrays.asList(new IntegerPair(idxA, idxB))));
           double cost = evaluate.evaluate(problem, s);
-          if (cost < currentBestCost) {
-            currentBestCost = cost;
-            currentBestIndividual = s;
-            System.out.println("");
-            System.out.println("New Best: " + cost);
+          if (updateCost(cost, s)) {
             madeChange = true;
-          } else {
-            System.out.print(".");
           }
           totalIterations++;
         }
       }
     }
     System.out.println("\nTotal iterations was "+totalIterations );
+    return currentBestCost;
+  }
+
+  LocalSearch() {
+    // Load Problem
+    TSPIO io = new TSPIO();
+    try (Reader r = new FileReader("tests/eil76.tsp")) {
+      this.problem = io.read(r);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    // Evaluate function
+    this.evaluate = new EvaluateEuclid();
+
+    // Mutate function
+    this.N = new Jump();
+
+    // Initial solution
+    this.currentBestIndividual = new Individual(problem.getSize());
+    this.currentBestCost = evaluate.evaluate(problem, currentBestIndividual);
   }
 }
