@@ -2,9 +2,6 @@ package uni.evocomp.a1;
 
 import uni.evocomp.util.IntegerPair;
 
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -18,7 +15,7 @@ public class RandomizedLocalSearch extends LocalSearch {
     super();
   }
 
-  public double solve() {
+  public void solve() {
     // (Jack): Lol Java... so verbose
     List<Integer> outerIdx = IntStream.range(0,this.problem.getSize()-1).boxed().collect(Collectors.toList());
     List<Integer> innerIdx = IntStream.range(0,this.problem.getSize()-1).boxed().collect(Collectors.toList());
@@ -30,11 +27,11 @@ public class RandomizedLocalSearch extends LocalSearch {
       Collections.shuffle(outerIdx);
       Collections.shuffle(innerIdx);
       madeChange = false;
-      for (int idxA=0; idxA<outerIdx.size(); idxA++) {
-        for (int idxB=0; idxB<innerIdx.size(); idxB++) {
+      for (Integer anOuterIdx : outerIdx) {
+        for (Integer anInnerIdx : innerIdx) {
           Individual s = new Individual(currentBestIndividual);
 
-          IntegerPair indexPair = new IntegerPair(outerIdx.get(idxA), innerIdx.get(idxB));
+          IntegerPair indexPair = new IntegerPair(anOuterIdx, anInnerIdx);
           N.run(s, new ArrayList<>(Arrays.asList(indexPair)));
           double cost = evaluate.evaluate(problem, s);
           if (updateCost(cost, s)) {
@@ -45,6 +42,6 @@ public class RandomizedLocalSearch extends LocalSearch {
       }
     }
     System.out.println("\nTotal iterations was "+totalIterations );
-    return currentBestCost;
+    System.out.println("Known Best is: " + knownBestCost);
   }
 }
