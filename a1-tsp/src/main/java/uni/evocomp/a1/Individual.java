@@ -60,8 +60,13 @@ public class Individual {
     return genotype;
   }
 
-  public void setCost(Double cost) { this.cost = cost; }
-  public Double getCost() { return this.cost; }
+  public void setCost(Double cost) {
+    this.cost = cost;
+  }
+
+  public Double getCost() {
+    return this.cost;
+  }
 
   @Override
   public String toString() {
