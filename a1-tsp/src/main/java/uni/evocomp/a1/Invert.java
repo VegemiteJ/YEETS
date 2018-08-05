@@ -16,18 +16,22 @@ import uni.evocomp.util.Pair;
 public class Invert implements Mutate {
 
   private double calculateDifferentialCost(TSPProblem problem, Individual individual, int n, int m) {
+    int a = Math.min(n, m);
+    m = Math.max(n, m);
+    n = a;
     double differentialCost = 0.0;
-    int idxI = individual.getGenotype().get(n);
-    int idxJ = individual.getGenotype().get(m);
+    int idxI = individual.getGenotype().get(n) - 1;
+    int idxJ = individual.getGenotype().get(m) - 1;
     // (i-1,i)
-    if (idxI - 1 >= 0) {
-      differentialCost += problem.getWeights().get(idxI - 1).get(idxI);
+    if (n - 1 >= 0) {
+      int idxINegOne = individual.getGenotype().get(n-1) - 1;
+      differentialCost += problem.getWeights().get(idxINegOne).get(idxI);
     }
     // (j,j+1)
-    if (idxJ + 1 < problem.getWeights().get(idxJ).size()) {
-      differentialCost += problem.getWeights().get(idxJ).get(idxJ + 1);
+    if (m + 1 < problem.getWeights().get(idxJ).size()) {
+      int idxJPosOne = individual.getGenotype().get(m+1) - 1;
+      differentialCost += problem.getWeights().get(idxJ).get(idxJPosOne);
     }
-    System.out.println("Cost: " + differentialCost);
     return differentialCost;
   }
 
@@ -40,7 +44,6 @@ public class Invert implements Mutate {
    */
   private void invert(TSPProblem problem, Individual individual, int n, int m) {
     double cost = individual.getCost();
-    System.out.println("Subtracting Cost");
     cost -= calculateDifferentialCost(problem, individual, n, m);
     int first = Math.min(n, m);
     int second = Math.max(n, m);
@@ -49,7 +52,6 @@ public class Invert implements Mutate {
       first++;
       second--;
     }
-    System.out.println("Adding Cost");
     cost += calculateDifferentialCost(problem, individual, n, m);
     individual.setCost(cost);
   }

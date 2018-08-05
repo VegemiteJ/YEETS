@@ -26,16 +26,20 @@ public class InvertTest {
     m = new Invert();
 
     List<List<Double>> weights = new ArrayList<>();
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 5; i++) {
       weights.add(new ArrayList<>());
-      for (int j = 0; j < 10; j++) {
-        weights.get(i).add((double) 3*i + j);
+      for (int j = 0; j < 5; j++) {
+        weights.get(i).add((double) i + j);
+        System.out.print(weights.get(i).get(j) + " ");
       }
+      System.out.println();
     }
     //weights in matrix form
-    //0,1,2
-    //3,4,5
-    //6,7,8
+    //0,1,2,3,4
+    //1,2,3,4,5
+    //2,3,4,5,6
+    //3,4,5,6,7
+    //4,5,6,7,8
     p = new TSPProblem("", "", "", "", weights);
     original = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
     eval2D = new EvaluateEuclid();
