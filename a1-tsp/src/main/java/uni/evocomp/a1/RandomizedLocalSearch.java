@@ -10,8 +10,8 @@ import uni.evocomp.util.IntegerPair;
 
 public class RandomizedLocalSearch extends LocalSearch {
 
-  RandomizedLocalSearch(String testCaseFile, Mutate mutationFunction) {
-    super(testCaseFile, mutationFunction);
+  RandomizedLocalSearch(TSPProblem problem, Evaluate evaluate, Mutate mutationFunction) {
+    super(problem, evaluate, mutationFunction);
   }
 
   @Override
@@ -47,7 +47,6 @@ public class RandomizedLocalSearch extends LocalSearch {
         }
       }
     }
-    System.out.println("\nTotal iterations was " + totalIterations);
     return currentBestCost;
   }
 }

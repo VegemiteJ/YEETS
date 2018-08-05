@@ -1,5 +1,10 @@
 package uni.evocomp.a1;
 
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import uni.evocomp.util.Pair;
+
 public class LocalSearchBenchmark {
 
   public static void main(String[] args) {
@@ -7,16 +12,16 @@ public class LocalSearchBenchmark {
   }
 
   public static final String[] testNames = {
-    "eil51",
-    "eil76",
-    "eil101",
-    "kroA100",
-    "kroC100",
-    "kroD100",
-    "lin105",
-    "pcb442",
-    "pr2392",
-    "usa13509"
+    "tests/eil51",
+    "tests/eil76",
+    "tests/eil101"
+//    "tests/kroA100",
+//    "tests/kroC100",
+//    "tests/kroD100",
+//    "tests/lin105",
+//    "tests/pcb442",
+//    "tests/pr2392",
+//    "tests/usa13509"
   };
 
   public static final Mutate[] mutationFunctions = {new Jump(), new Swap(), new Invert()};
@@ -32,13 +37,30 @@ public class LocalSearchBenchmark {
 
     // and there is a search that returns it's best guess
 
+    Evaluate evaluator = new EvaluateEuclid();
+
+    TSPIO io = new TSPIO();
+    ArrayList<Pair<TSPProblem, Individual>> benchmarks = new ArrayList<>();
     for (String testString : testNames) {
       System.out.println(testString);
+      try {
+        TSPProblem problem = io.read(new FileReader(testString+testSuffix));
+        Individual solution = io.readSolution(new FileReader(testString+tourSuffix));
+        solution.setCost(evaluator.evaluate(problem, solution));
+        benchmarks.add(new Pair<>(problem, solution));
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+
+    for (Pair<TSPProblem, Individual> benchmark : benchmarks) {
+      TSPProblem problemDef = benchmark.first;
+
       for (int mi = 0; mi < mutationFunctions.length; mi++) {
         System.out.println(mutationNames[mi]);
         Mutate mutationFunction = mutationFunctions[mi];
 
-        LocalSearch ls = new RandomizedLocalSearch(testString, mutationFunction);
+        LocalSearch ls = new RandomizedLocalSearch(problemDef, evaluator, mutationFunction);
 
         double cost = 0;
         double minCost = Double.MAX_VALUE;
@@ -47,12 +69,17 @@ public class LocalSearchBenchmark {
 
         for (int i = 0; i < repeats; i++) {
           cost = ls.solve();
-          if (cost < minCost) minCost = cost;
-          if (cost > maxCost) maxCost = cost;
+          if (cost < minCost) {
+            minCost = cost;
+          }
+          if (cost > maxCost) {
+            maxCost = cost;
+          }
           averageCost += cost;
         }
         averageCost /= repeats;
 
+        System.out.println("Known Best Solution: " + benchmark.second.getCost());
         System.out.println("Min: " + minCost);
         System.out.println("Max: " + maxCost);
         System.out.println("Ave: " + averageCost);

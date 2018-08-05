@@ -18,6 +18,7 @@ import java.util.stream.IntStream;
  */
 public class Individual {
   List<Integer> genotype; // the tour, elements should be 1-n
+  private Double cost;
 
   public Individual() {
     genotype = new ArrayList<>();
@@ -58,6 +59,9 @@ public class Individual {
   public List<Integer> getGenotype() {
     return genotype;
   }
+
+  public void setCost(Double cost) { this.cost = cost; }
+  public Double getCost() { return this.cost; }
 
   @Override
   public String toString() {
