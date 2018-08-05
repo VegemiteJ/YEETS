@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,10 +47,10 @@ public class TSPIO {
       int dimension = 0;
       Map<Integer, DoublePair> points = new HashMap<>();
       List<List<Double>> weights = new ArrayList<>();
-      for (int i = 1; (line = br.readLine()) != null || line.trim().equals("EOF"); i++) {
+      for (int i = 1; (line = br.readLine()) != null && !line.trim().equals("EOF"); i++) {
         // Read header
         if (header) {
-          String[] split = line.trim().split(" : ");
+          String[] split = line.trim().split("(\\s*):(\\s*)");
           switch (split[0]) {
             case "NAME":
               if (split.length < 2) {
@@ -95,7 +96,7 @@ public class TSPIO {
             break;
           }
 
-          String[] split = line.trim().split(" "); // should be {n, x, y}
+          String[] split = line.trim().split("(\\s)+"); // should be {n, x, y}
           if (split.length < 3) {
             throw new IOException("Bad body format on line " + i + ": " + line);
           }
@@ -132,10 +133,10 @@ public class TSPIO {
       String type = new String();
       int dimension = 0;
       List<Integer> solution = new ArrayList<>();
-      for (int i = 1; (line = br.readLine()) != null || line.trim().equals("EOF"); i++) {
+      for (int i = 1; (line = br.readLine()) != null && !line.trim().equals("EOF"); i++) {
         // Read header
         if (header) {
-          String[] split = line.trim().split(" : ");
+          String[] split = line.trim().split("(\\s*):(\\s*)");
           switch (split[0]) {
             case "NAME":
               if (split.length < 2) {
@@ -175,7 +176,7 @@ public class TSPIO {
             break;
           }
 
-          String[] split = line.trim().split(" "); // should be a single entry
+          String[] split = line.trim().split("(\\s)+"); // should be a single entry
           if (split.length != 1) {
             throw new IOException("Bad body format on line " + i + ": " + line);
           }

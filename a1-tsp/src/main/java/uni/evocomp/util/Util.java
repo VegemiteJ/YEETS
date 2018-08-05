@@ -45,6 +45,15 @@ public class Util {
   }
 
   /**
+   * Wrapper of createMap(String, String, String, int, String, List<String>, boolean) where the
+   * boolean is true
+   */
+  public static String createMap(String name, String comment, String type, int dimension,
+      String edgeWeightType, List<String> coords) {
+    return createMap(name, comment, type, dimension, edgeWeightType, coords, true);
+  }
+
+  /**
    * Create a mock test map in the form of a String. Puts "EOF" at the end
    * 
    * @param name
@@ -52,9 +61,9 @@ public class Util {
    * @param type
    * @param dimension
    * @param edgeWeightType
-   * @param strings a list whose elements are of the format "n x y", where n is an int and x and y
+   * @param coords a list whose elements are of the format "n x y", where n is an int and x and y
    *        are doubles.
-   * @return
+   * @return a String representing a TSPLIB file contents
    */
   public static String createMap(String name, String comment, String type, int dimension,
       String edgeWeightType, List<String> coords, boolean eof) {
@@ -63,8 +72,7 @@ public class Util {
     for (String s : coords) {
       out += s + "\n";
     }
-    if (eof)
-    {
+    if (eof) {
       out += "EOF\n";
     }
     return out;
