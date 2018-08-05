@@ -19,9 +19,6 @@ public abstract class LocalSearch {
     // Evaluate function
     this.evaluate = evaluate;
 
-    // Initial solution
-    this.currentBestIndividual = new Individual(problem.getSize());
-
     // Mutate function
     this.mutator = mutationFunction;
   }
