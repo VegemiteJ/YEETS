@@ -35,42 +35,42 @@ public class SwapTest {
 
   @Test
   public void testSwapValid() {
-    Individual i = new Individual(new ArrayList<Integer>(original));
+    Individual i = new Individual(new ArrayList<>(original));
     m.run(i, new ArrayList<>(Arrays.asList(new IntegerPair(1, 4))));
     assertEquals(i.getGenotype(), Arrays.asList(1, 5, 3, 4, 2));
   }
 
   @Test
   public void testSwapSameIndex() {
-    Individual i = new Individual(new ArrayList<Integer>(original));
+    Individual i = new Individual(new ArrayList<>(original));
     m.run(i, new ArrayList<>(Arrays.asList(new IntegerPair(2, 2))));
     assertEquals(i.getGenotype(), original);
   }
 
   @Test
   public void testSwapBadOrder() {
-    Individual i = new Individual(new ArrayList<Integer>(original));
+    Individual i = new Individual(new ArrayList<>(original));
     m.run(i, new ArrayList<>(Arrays.asList(new IntegerPair(4, 1))));
     assertEquals(i.getGenotype(), Arrays.asList(1, 5, 3, 4, 2));
   }
 
   @Test(expected = IndexOutOfBoundsException.class)
   public void testSwapOutOfBoundsLow() {
-    Individual i = new Individual(new ArrayList<Integer>(original));
+    Individual i = new Individual(new ArrayList<>(original));
     m.run(i, new ArrayList<>(Arrays.asList(new IntegerPair(-1, 4))));
     assertEquals(i.getGenotype(), original);
   }
 
   @Test(expected = IndexOutOfBoundsException.class)
   public void testSwapOutOfBoundsHigh() {
-    Individual i = new Individual(new ArrayList<Integer>(original));
+    Individual i = new Individual(new ArrayList<>(original));
     m.run(i, new ArrayList<>(Arrays.asList(new IntegerPair(1, 10))));
     assertEquals(i.getGenotype(), original);
   }
 
   @Test
   public void testSwapMultipleValid() {
-    Individual i = new Individual(new ArrayList<Integer>(original));
+    Individual i = new Individual(new ArrayList<>(original));
     m.run(i, new ArrayList<>(Arrays.asList(new IntegerPair(1, 10))));
     assertEquals(i.getGenotype(), original);
   }
