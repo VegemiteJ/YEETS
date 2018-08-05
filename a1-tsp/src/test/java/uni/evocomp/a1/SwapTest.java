@@ -1,23 +1,35 @@
 package uni.evocomp.a1;
 
-import junit.framework.TestCase;
+import static junit.framework.Assert.assertEquals;
+
 import org.junit.Test;
 import uni.evocomp.util.IntegerPair;
-import uni.evocomp.util.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class SwapTest extends TestCase {
+/**
+ * 
+ * @author Namdrib
+ *
+ */
+public class SwapTest {
 
   private List<Integer> original;
   private Mutate m;
 
-  protected void setUp() throws Exception {
-    super.setUp();
-    original = new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4, 5));
+  @Before
+  public void setUp() throws Exception {
+    original = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
     m = new Swap();
+  }
+
+  @Test
+  public void testSwapEmptyList() {
+    Individual i = new Individual(new ArrayList<>(original));
+    m.run(i, new ArrayList<>());
+    assertEquals(original, i.getGenotype());
   }
 
   @Test
@@ -41,14 +53,14 @@ public class SwapTest extends TestCase {
     assertEquals(i.getGenotype(), Arrays.asList(1, 5, 3, 4, 2));
   }
 
-  @Test
+  @Test(expected = IndexOutOfBoundsException.class)
   public void testSwapOutOfBoundsLow() {
     Individual i = new Individual(new ArrayList<Integer>(original));
     m.run(i, new ArrayList<>(Arrays.asList(new IntegerPair(-1, 4))));
     assertEquals(i.getGenotype(), original);
   }
 
-  @Test
+  @Test(expected = IndexOutOfBoundsException.class)
   public void testSwapOutOfBoundsHigh() {
     Individual i = new Individual(new ArrayList<Integer>(original));
     m.run(i, new ArrayList<>(Arrays.asList(new IntegerPair(1, 10))));

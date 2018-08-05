@@ -6,21 +6,27 @@ import java.util.List;
 import uni.evocomp.util.IntegerPair;
 import uni.evocomp.util.Pair;
 
+/**
+ * 
+ * Perform a swap on position n and m of i's genotype
+ * 
+ * @author Namdrib
+ *
+ */
 public class Swap implements Mutate {
 
   /**
    * Perform a swap on position n and m of i's genotype
    *
-   * @param i Individual on which to perform a mutation operation
+   * @param individual Individual on which to perform a mutation operation
    * @param n first index to swap
    * @param m last index to swap
+   * @throws IndexOutOfBoundsException
+   * @throws NullPointerException
    */
-  private void swap(Individual i, int n, int m) {
-    try {
-      Collections.swap(i.getGenotype(), n, m);
-    } catch (IndexOutOfBoundsException ex) {
-      return;
-    }
+  private void swap(Individual individual, int n, int m)
+      throws IndexOutOfBoundsException, NullPointerException {
+    Collections.swap(individual.getGenotype(), n, m);
   }
 
   @Override
