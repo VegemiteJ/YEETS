@@ -1,13 +1,14 @@
 package uni.evocomp.a1;
 
-import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import uni.evocomp.util.DoublePair;
 import uni.evocomp.util.Util;
 
 public class TSPIO {
@@ -44,12 +45,13 @@ public class TSPIO {
       String type = new String();
       String edgeWeightType = new String();
       int dimension = 0;
-      Map<Integer, Point> points = new HashMap<>();
+      int cityCounter = 0; // used to break early of numCities > dimension
+      Map<Integer, DoublePair> points = new HashMap<>();
       List<List<Double>> weights = new ArrayList<>();
-      for (int i = 1; (line = br.readLine()) != null || line.trim().equals("EOF"); i++) {
+      for (int i = 1; (line = br.readLine()) != null && !line.trim().equals("EOF"); i++) {
         // Read header
         if (header) {
-          String[] split = line.trim().split(" : ");
+          String[] split = line.trim().split("(\\s*):(\\s*)");
           switch (split[0]) {
             case "NAME":
               if (split.length < 2) {
@@ -74,7 +76,6 @@ public class TSPIO {
                 throw new IOException("Bad " + split[0] + " format on line " + i + ": " + line);
               }
               dimension = Integer.parseInt(split[1]);
-              // points = new ArrayList<>(dimension);
               break;
             case "EDGE_WEIGHT_TYPE":
               if (split.length < 2) {
@@ -96,12 +97,17 @@ public class TSPIO {
             break;
           }
 
-          String[] split = line.trim().split(" "); // should be {n, x, y}
+          String[] split = line.trim().split("(\\s)+"); // should be {n, x, y}
           if (split.length < 3) {
             throw new IOException("Bad body format on line " + i + ": " + line);
           }
           points.put(Integer.parseInt(split[0]),
-              new Point(Integer.parseInt(split[1]), Integer.parseInt(split[2])));
+              new DoublePair(Double.valueOf(split[1]), Double.valueOf(split[2])));
+          cityCounter++;
+          if (cityCounter > dimension)
+          {
+            break;
+          }
         }
       }
 
@@ -131,13 +137,12 @@ public class TSPIO {
       String name = new String();
       String comment = new String();
       String type = new String();
-      String edgeWeightType = new String();
       int dimension = 0;
       List<Integer> solution = new ArrayList<>();
-      for (int i = 1; (line = br.readLine()) != null || line.trim().equals("EOF"); i++) {
+      for (int i = 1; (line = br.readLine()) != null && !line.trim().equals("EOF"); i++) {
         // Read header
         if (header) {
-          String[] split = line.trim().split(" : ");
+          String[] split = line.trim().split("(\\s*):(\\s*)");
           switch (split[0]) {
             case "NAME":
               if (split.length < 2) {
@@ -177,7 +182,7 @@ public class TSPIO {
             break;
           }
 
-          String[] split = line.trim().split(" "); // should be a single entry
+          String[] split = line.trim().split("(\\s)+"); // should be a single entry
           if (split.length != 1) {
             throw new IOException("Bad body format on line " + i + ": " + line);
           }
