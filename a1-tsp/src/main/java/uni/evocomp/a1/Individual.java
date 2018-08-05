@@ -10,10 +10,17 @@ import java.util.stream.IntStream;
 
 /**
  * Used to store a single trial/solution of the TSP problem.
+<<<<<<< HEAD
  *
  * <p>As such, it should contain a Set of numbers, where each number is a city, representing a
  * permutation of all the cities (from 1-n)
  *
+=======
+ * <p>
+ * As such, it should contain a Set of numbers, where each number is a city, representing a
+ * permutation of all the cities (from 1-n)
+ *
+>>>>>>> 50_TSPIO_read_scientific_notation
  * @author Namdrib
  */
 public class Individual {

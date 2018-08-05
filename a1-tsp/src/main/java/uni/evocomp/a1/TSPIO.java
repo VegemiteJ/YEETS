@@ -1,6 +1,5 @@
 package uni.evocomp.a1;
 
-import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -8,6 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import uni.evocomp.util.DoublePair;
+import uni.evocomp.util.Util;
 
 public class TSPIO {
   TSPIO() {
@@ -43,12 +44,12 @@ public class TSPIO {
       String type = new String();
       String edgeWeightType = new String();
       int dimension = 0;
-      Map<Integer, Point> points = new HashMap<>();
+      Map<Integer, DoublePair> points = new HashMap<>();
       List<List<Double>> weights = new ArrayList<>();
-      for (int i = 1; (line = br.readLine()) != null || line.trim().equals("EOF"); i++) {
+      for (int i = 1; (line = br.readLine()) != null && !line.trim().equals("EOF"); i++) {
         // Read header
         if (header) {
-          String[] split = line.trim().split(" : ");
+          String[] split = line.trim().split("(\\s*):(\\s*)");
           switch (split[0]) {
             case "NAME":
               if (split.length < 2) {
@@ -73,7 +74,6 @@ public class TSPIO {
                 throw new IOException("Bad " + split[0] + " format on line " + i + ": " + line);
               }
               dimension = Integer.parseInt(split[1]);
-              //						points = new ArrayList<>(dimension);
               break;
             case "EDGE_WEIGHT_TYPE":
               if (split.length < 2) {
@@ -95,13 +95,12 @@ public class TSPIO {
             break;
           }
 
-          String[] split = line.trim().split(" "); // should be {n, x, y}
+          String[] split = line.trim().split("(\\s)+"); // should be {n, x, y}
           if (split.length < 3) {
             throw new IOException("Bad body format on line " + i + ": " + line);
           }
-          points.put(
-              Integer.parseInt(split[0]),
-              new Point(Integer.parseInt(split[1]), Integer.parseInt(split[2])));
+          points.put(Integer.parseInt(split[0]),
+              new DoublePair(Double.valueOf(split[1]), Double.valueOf(split[2])));
         }
       }
 
@@ -109,33 +108,12 @@ public class TSPIO {
       for (int i = 1; i <= dimension; i++) {
         List<Double> temp = new ArrayList<>();
         for (int j = 1; j <= dimension; j++) {
-          temp.add(euclideanDistance2D(points.get(i), points.get(j)));
+          temp.add(Util.euclideanDistance2D(points.get(i), points.get(j)));
         }
         weights.add(temp);
       }
       return new TSPProblem(name, comment, type, edgeWeightType, weights);
     }
-  }
-
-  /**
-   * As described by the documentation (elib.zib.de/pub/mp-testdata/tsp/tsplib/doc.ps) section 2.1
-   *
-   * <pre>
-   * Let x[i], y[i] ... be the coordinates of node i.
-   * In the 2-dimensional case the distance between two points i and j is computed as follows:
-   * xd = x[i] - x[j];
-   * yd = y[i] - y[j];
-   * dij = nint( sqrt( xd*xd + yd*yd) + 0.5 );
-   * </pre>
-   *
-   * @param i
-   * @param j
-   * @return the 2D euclidean distance between a and b
-   */
-  private double euclideanDistance2D(Point i, Point j) {
-    double xd = i.getX() - j.getX();
-    double yd = i.getY() - j.getY();
-    return Math.round(Math.sqrt(xd * xd + yd * yd) + 0.5);
   }
 
   /**
@@ -152,13 +130,12 @@ public class TSPIO {
       String name = new String();
       String comment = new String();
       String type = new String();
-      String edgeWeightType = new String();
       int dimension = 0;
       List<Integer> solution = new ArrayList<>();
-      for (int i = 1; (line = br.readLine()) != null || line.trim().equals("EOF"); i++) {
+      for (int i = 1; (line = br.readLine()) != null && !line.trim().equals("EOF"); i++) {
         // Read header
         if (header) {
-          String[] split = line.trim().split(" : ");
+          String[] split = line.trim().split("(\\s*):(\\s*)");
           switch (split[0]) {
             case "NAME":
               if (split.length < 2) {
@@ -183,7 +160,6 @@ public class TSPIO {
                 throw new IOException("Bad " + split[0] + " format on line " + i + ": " + line);
               }
               dimension = Integer.parseInt(split[1]);
-              //						points = new ArrayList<>(dimension);
               break;
             case "TOUR_SECTION":
               header = false;
@@ -199,7 +175,7 @@ public class TSPIO {
             break;
           }
 
-          String[] split = line.trim().split(" "); // should be a single entry
+          String[] split = line.trim().split("(\\s)+"); // should be a single entry
           if (split.length != 1) {
             throw new IOException("Bad body format on line " + i + ": " + line);
           }
