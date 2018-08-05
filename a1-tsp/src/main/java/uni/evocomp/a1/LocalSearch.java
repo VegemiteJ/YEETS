@@ -1,6 +1,7 @@
 package uni.evocomp.a1;
 
 import uni.evocomp.util.IntegerPair;
+import uni.evocomp.util.Logger;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -18,9 +19,11 @@ public class LocalSearch {
     LocalSearch() {
         //Load Problem
         TSPProblem problem = new TSPProblem();
+        Individual knownBestIndividual = new Individual();
         TSPIO io = new TSPIO();
-        try (Reader r = new FileReader("tests/eil76.tsp")) {
-            problem = io.read(r);
+        try {
+            problem = io.read(new FileReader("tests/eil76.tsp"));
+            knownBestIndividual = io.readSolution(new FileReader("tests/eil76.opt.tour"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -32,11 +35,16 @@ public class LocalSearch {
         Individual currentBestIndividual = new Individual(problem.getSize());
         double currentBestCost = evaluate.evaluate(problem, currentBestIndividual);
 
+        double knownBestCost = evaluate.evaluate(problem, knownBestIndividual);
+
         //Mutate function
         Mutate N = new Jump();
         Random rand = new Random();
 
-        for (int i=0; i<10000; i++) {
+        //Logger
+        Logger log = new Logger<Float>();
+
+        for (int i=0; i<1000000; i++) {
             //Rand jump
             Individual s = new Individual(currentBestIndividual);
             int first = rand.nextInt(problem.getSize()-1);
@@ -48,10 +56,12 @@ public class LocalSearch {
                 currentBestCost = cost;
                 currentBestIndividual = s;
                 System.out.println("");
-                System.out.println("New Best: " + cost);
+                System.out.println("New Best: " + cost + " / " + knownBestCost);
             } else {
                 System.out.print(".");
             }
+            log.addPair(cost, currentBestCost);
         }
+        log.saveCSV("LocalSearchResult.csv");
     }
 }

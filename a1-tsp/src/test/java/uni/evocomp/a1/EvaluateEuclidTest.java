@@ -64,15 +64,15 @@ public class EvaluateEuclidTest {
     //TODO: Failure tests
 
     //This is more of an integration test
-    //@Test
+    @Test
     public void testFileAgainstBest() throws IOException {
         //Read a problem file and it's best tour
         TSPProblem problem;
         Individual bestTour;
 
         TSPIO io = new TSPIO();
-        problem = io.read(new FileReader("tests/eil51.tsp"));
-        bestTour = io.readSolution(new FileReader("tests/eil51.opt.tour"));
+        problem = io.read(new FileReader("tests/pcb442.tsp"));
+        bestTour = io.readSolution(new FileReader("tests/pcb442.opt.tour"));
 
         double cost = e.evaluate(problem, bestTour);
 
