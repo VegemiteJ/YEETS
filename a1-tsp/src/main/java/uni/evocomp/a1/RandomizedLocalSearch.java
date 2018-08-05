@@ -10,11 +10,14 @@ import uni.evocomp.util.IntegerPair;
 
 public class RandomizedLocalSearch extends LocalSearch {
 
-  RandomizedLocalSearch() {
-    super();
+  RandomizedLocalSearch(String testCaseFile, Mutate mutationFunction) {
+    super(testCaseFile, mutationFunction);
   }
 
-  public void solve() {
+  @Override
+  public Double solve() {
+    double currentBestCost = evaluate.evaluate(problem, currentBestIndividual);
+
     // (Jack): Lol Java... so verbose
     List<Integer> outerIdx =
         IntStream.range(0, this.problem.getSize() - 1).boxed().collect(Collectors.toList());
@@ -32,17 +35,19 @@ public class RandomizedLocalSearch extends LocalSearch {
         for (Integer anInnerIdx : innerIdx) {
           Individual s = new Individual(currentBestIndividual);
           IntegerPair indexPair = new IntegerPair(anOuterIdx, anInnerIdx);
-          N.run(s, new ArrayList<>(Arrays.asList(indexPair)));
+          mutator.run(s, new ArrayList<>(Arrays.asList(indexPair)));
           s.assertIsValidTour();
           double cost = evaluate.evaluate(problem, s);
-          if (updateCost(cost, s)) {
-            madeChange = true;
+          if (cost < currentBestCost) {
+            currentBestCost = cost;
+            currentBestIndividual = s;
+             madeChange = true;
           }
           totalIterations++;
         }
       }
     }
     System.out.println("\nTotal iterations was " + totalIterations);
-    System.out.println("Known Best is: " + knownBestCost);
+    return currentBestCost;
   }
 }

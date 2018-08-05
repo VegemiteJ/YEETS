@@ -26,7 +26,6 @@ public class LocalSearchBenchmark {
   public static final String testSuffix = ".tsp";
   public static final String tourSuffix = ".opt.tour";
 
-  //TODO: Change LocalSearch to have the expected interface
   LocalSearchBenchmark() {
     // Assume we create a local search function with parameters
     // new LocalSearch(problem, mutator)
@@ -39,7 +38,7 @@ public class LocalSearchBenchmark {
         System.out.println(mutationNames[mi]);
         Mutate mutationFunction = mutationFunctions[mi];
 
-        //LocalSearch ls = new LocalSearch(testString, mutationFunction);
+        LocalSearch ls = new RandomizedLocalSearch(testString, mutationFunction);
 
         double cost = 0;
         double minCost = Double.MAX_VALUE;
@@ -47,7 +46,7 @@ public class LocalSearchBenchmark {
         double averageCost = 0;
 
         for (int i = 0; i < repeats; i++) {
-          //cost = ls.solve();
+          cost = ls.solve();
           if (cost < minCost) minCost = cost;
           if (cost > maxCost) maxCost = cost;
           averageCost += cost;
