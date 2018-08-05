@@ -1,6 +1,5 @@
 package uni.evocomp.a1;
 
-<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -8,19 +7,6 @@ import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 import uni.evocomp.util.IntegerPair;
-=======
-import junit.framework.TestCase;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import uni.evocomp.util.IntegerPair;
-import uni.evocomp.util.Pair;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
->>>>>>> 50_TSPIO_read_scientific_notation
 
 public class JumpTest extends TestCase {
 
@@ -34,7 +20,6 @@ public class JumpTest extends TestCase {
   }
 
   @Test
-<<<<<<< HEAD
   public void testJumpValid1() {
     Individual i = new Individual(new ArrayList<>(original));
     m.run(i, new ArrayList<>(Arrays.asList(new IntegerPair(0, 4))));

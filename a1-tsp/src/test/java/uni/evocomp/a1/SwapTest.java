@@ -1,9 +1,9 @@
 package uni.evocomp.a1;
 
-import junit.framework.TestCase;
+import static junit.framework.Assert.assertEquals;
+
 import org.junit.Test;
 import uni.evocomp.util.IntegerPair;
-import uni.evocomp.util.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;

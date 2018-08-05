@@ -30,7 +30,7 @@ public class Invert implements Mutate {
     int second = Math.max(n, m);
     try {
       for (int j = first; j < second; j++) {
-        Collections.swap(i.getGenotype(), first, second);
+        Collections.swap(individual.getGenotype(), first, second);
         first++;
         second--;
       }
