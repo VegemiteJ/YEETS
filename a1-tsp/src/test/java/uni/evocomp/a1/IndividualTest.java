@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import java.util.Arrays;
 import org.junit.Test;
-import sun.plugin.dom.exception.InvalidStateException;
 
 public class IndividualTest {
 
@@ -28,20 +27,20 @@ public class IndividualTest {
 
   @Test
   public void testValidTourWhenNormal() {
-    Individual i = new Individual(Arrays.asList(1,5,2,3,4));
+    Individual i = new Individual(Arrays.asList(1,5,2,3,4), 0.0);
     assertFalse(didThrowException(i));
   }
 
   @Test
   public void testInvalidTourBadIndex() {
-    Individual i = new Individual(Arrays.asList(1,5,2,-1,4));
+    Individual i = new Individual(Arrays.asList(1,5,2,-1,4), 0.0);
     Boolean result = didThrowException(i);
     assertTrue(result);
   }
 
   @Test
   public void testInvalidTourMissingIndex() {
-    Individual i = new Individual(Arrays.asList(1,5,2,4));
+    Individual i = new Individual(Arrays.asList(1,5,2,4), 0.0);
     assertTrue(didThrowException(i));
   }
 

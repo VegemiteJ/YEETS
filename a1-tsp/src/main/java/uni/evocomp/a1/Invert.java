@@ -27,6 +27,7 @@ public class Invert implements Mutate {
     if (idxJ + 1 < problem.getWeights().get(idxJ).size()) {
       differentialCost += problem.getWeights().get(idxJ).get(idxJ + 1);
     }
+    System.out.println("Cost: " + differentialCost);
     return differentialCost;
   }
 
@@ -39,6 +40,7 @@ public class Invert implements Mutate {
    */
   private void invert(TSPProblem problem, Individual individual, int n, int m) {
     double cost = individual.getCost();
+    System.out.println("Subtracting Cost");
     cost -= calculateDifferentialCost(problem, individual, n, m);
     int first = Math.min(n, m);
     int second = Math.max(n, m);
@@ -47,6 +49,7 @@ public class Invert implements Mutate {
       first++;
       second--;
     }
+    System.out.println("Adding Cost");
     cost += calculateDifferentialCost(problem, individual, n, m);
     individual.setCost(cost);
   }

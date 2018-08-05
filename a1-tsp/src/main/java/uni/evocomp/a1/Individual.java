@@ -39,8 +39,9 @@ public class Individual {
     initialise(n);
   }
 
-  public Individual(List<Integer> genotype) {
+  public Individual(List<Integer> genotype, Double initialCost) {
     this.genotype = genotype;
+    this.setCost(initialCost);
   }
 
   /**

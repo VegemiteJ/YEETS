@@ -188,13 +188,12 @@ public class TSPIO {
           solution.add(Integer.parseInt(split[0]));
         }
       }
-      return new Individual(solution);
+      return new Individual(solution, 0.0);
     }
   }
 
   // TODO : Fill in after we have Instance
   // TODO : Figure out whether we even need this function
-  /** @param instance the instance object to write */
   public void write() {
     System.out.println("Writing instance");
   }

@@ -4,10 +4,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -38,7 +36,7 @@ public class EvaluateEuclidTest {
     public void testSimpleTour1() {
         //1,2,3 -> 1+5 = 6
         List<Integer> tour = new ArrayList<>(Arrays.asList(1, 2, 3));
-        Individual i = new Individual(tour);
+        Individual i = new Individual(tour, 0.0);
         double cost = e.evaluate(testProblem, i);
         Assert.assertEquals(cost, 6.0,0);
     }
@@ -47,7 +45,7 @@ public class EvaluateEuclidTest {
     public void testSimpleTour2() {
         //1,2,3,2,1 -> 1+5+7+3 = 16
         List<Integer> tour = new ArrayList<>(Arrays.asList(1, 2, 3, 2, 1));
-        Individual i = new Individual(tour);
+        Individual i = new Individual(tour, 0.0);
         double cost = e.evaluate(testProblem, i);
         Assert.assertEquals(cost, 16.0,0);
     }
@@ -56,7 +54,7 @@ public class EvaluateEuclidTest {
     public void testSimpleTour3() {
         //3,1,2,1,2,3 -> 6+1+3+1+5=16
         List<Integer> tour = new ArrayList<>(Arrays.asList(1, 2, 3, 2, 1));
-        Individual i = new Individual(tour);
+        Individual i = new Individual(tour, 0.0);
         double cost = e.evaluate(testProblem, i);
         Assert.assertEquals(cost, 16.0,0);
     }
