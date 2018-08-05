@@ -7,7 +7,8 @@ import uni.evocomp.util.IntegerPair;
  * An interface to handle representing mutation operations. The run method should be overriden in
  * implementations to call a private function.
  *
- * <p>All implementations should be stateless.
+ * <p>
+ * All implementations should be stateless.
  *
  * @author Namdrib
  */

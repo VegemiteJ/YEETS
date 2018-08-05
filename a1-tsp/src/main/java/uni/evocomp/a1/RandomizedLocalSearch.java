@@ -5,9 +5,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
-import java.util.Stack;
-import java.util.Vector;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import uni.evocomp.util.IntegerPair;
@@ -59,12 +56,8 @@ public class RandomizedLocalSearch extends LocalSearch {
             currentBestCost = cost;
             currentBestIndividual = s;
             if (totalIterations % 100 == 0) {
-              System.out.println(
-                  "New Best: "
-                      + currentBestCost
-                      + " - iterations since last best: "
-                      + (totalIterations
-                          - iterationsSinceLastBest.getLast()));
+              System.out.println("New Best: " + currentBestCost + " - iterations since last best: "
+                  + (totalIterations - iterationsSinceLastBest.getLast()));
             }
             madeChange = true;
             iterationsSinceLastBest.addLast(totalIterations);

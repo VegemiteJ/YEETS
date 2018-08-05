@@ -29,8 +29,8 @@ public class TSPProblem {
     this.weights = new ArrayList<>(src.getWeights());
   }
 
-  public TSPProblem(
-      String name, String comment, String type, String edgeWeightType, List<List<Double>> weights) {
+  public TSPProblem(String name, String comment, String type, String edgeWeightType,
+      List<List<Double>> weights) {
     this.name = name;
     this.comment = comment;
     this.type = type;
