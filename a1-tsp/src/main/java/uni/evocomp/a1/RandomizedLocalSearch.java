@@ -5,9 +5,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
-import java.util.Stack;
-import java.util.Vector;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import uni.evocomp.util.IntegerPair;
@@ -53,7 +50,7 @@ public class RandomizedLocalSearch extends LocalSearch {
         for (Integer anInnerIdx : innerIdx) {
           Individual s = new Individual(currentBestIndividual);
           IntegerPair indexPair = new IntegerPair(anOuterIdx, anInnerIdx);
-          mutator.run(s, new ArrayList<>(Arrays.asList(indexPair)));
+          mutator.run(problem, s, new ArrayList<>(Arrays.asList(indexPair)));
           double cost = evaluate.evaluate(problem, s);
           if (cost < currentBestCost) {
             currentBestCost = cost;

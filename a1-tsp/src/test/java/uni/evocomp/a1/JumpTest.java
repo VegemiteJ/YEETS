@@ -22,7 +22,7 @@ public class JumpTest extends TestCase {
   @Test
   public void testJumpValid1() {
     Individual i = new Individual(new ArrayList<>(original));
-    m.run(i, new ArrayList<>(Arrays.asList(new IntegerPair(0, 4))));
+    m.run(, i, new ArrayList<>(Arrays.asList(new IntegerPair(0, 4))));
     // Expect {2,3,4,1,5,6,7,8}
     assertEquals(Arrays.asList(2, 3, 4, 5, 1, 6, 7, 8), i.getGenotype());
   }
@@ -30,21 +30,21 @@ public class JumpTest extends TestCase {
   @Test
   public void testJumpValid2() {
     Individual i = new Individual(new ArrayList<>(original));
-    m.run(i, new ArrayList<>(Arrays.asList(new IntegerPair(1, 0))));
+    m.run(, i, new ArrayList<>(Arrays.asList(new IntegerPair(1, 0))));
     assertEquals(Arrays.asList(2, 1, 3, 4, 5, 6, 7, 8), i.getGenotype());
   }
 
   @Test
   public void testJumpValid3() {
     Individual i = new Individual(new ArrayList<>(original));
-    m.run(i, new ArrayList<>(Arrays.asList(new IntegerPair(4, 2))));
+    m.run(, i, new ArrayList<>(Arrays.asList(new IntegerPair(4, 2))));
     assertEquals(Arrays.asList(1, 2, 5, 3, 4, 6, 7, 8), i.getGenotype());
   }
 
   @Test
   public void testJumpSameIndex() {
     Individual i = new Individual(new ArrayList<>(original));
-    m.run(i, new ArrayList<>(Arrays.asList(new IntegerPair(3, 3))));
+    m.run(, i, new ArrayList<>(Arrays.asList(new IntegerPair(3, 3))));
     // Expect {1,2,3,4,5,6,7,8}
     assertEquals(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8), i.getGenotype());
   }
@@ -52,9 +52,8 @@ public class JumpTest extends TestCase {
   @Test
   public void testManyJumps() {
     Individual i = new Individual(new ArrayList<>(original));
-    m.run(
-        i,
-        new ArrayList<>(
+    m.run(,
+        i, new ArrayList<>(
             Arrays.asList(
                 new IntegerPair(7, 0),
                 new IntegerPair(7, 1),
@@ -71,7 +70,7 @@ public class JumpTest extends TestCase {
   public void testJumpOutOfBoundsLow() {
     Individual i = new Individual(new ArrayList<>(original));
     try {
-      m.run(i, new ArrayList<>(Arrays.asList(new IntegerPair(-1, 4))));
+      m.run(, i, new ArrayList<>(Arrays.asList(new IntegerPair(-1, 4))));
     } catch (IndexOutOfBoundsException exc) {
       return;
     }
@@ -82,7 +81,7 @@ public class JumpTest extends TestCase {
   public void testJumpOutOfBoundsHigh() {
     Individual i = new Individual(new ArrayList<>(original));
     try {
-      m.run(i, new ArrayList<>(Arrays.asList(new IntegerPair(1, 10))));
+      m.run(, i, new ArrayList<>(Arrays.asList(new IntegerPair(1, 10))));
     } catch (IndexOutOfBoundsException exc) {
       return;
     }

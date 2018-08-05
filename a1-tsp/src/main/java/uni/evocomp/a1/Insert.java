@@ -38,10 +38,10 @@ public class Insert implements Mutate {
   }
 
   @Override
-  public void run(Individual i, List<IntegerPair> pairs) {
+  public void run(TSPProblem problem, Individual individual, List<IntegerPair> pairs) {
     for (Iterator<IntegerPair> it = pairs.iterator(); it.hasNext(); ) {
       Pair p = it.next();
-      insert(i, (int) p.first, (int) p.second);
+      insert(individual, (int) p.first, (int) p.second);
     }
   }
 }

@@ -10,13 +10,14 @@ public class Jump implements Mutate {
   /**
    * Perform a list of mutation operations on an Individual
    *
-   * @param i Individual on which to perform a mutation operation
+   * @param problem
+   * @param individual Individual on which to perform a mutation operation
    * @param pairs List of Points whose x and y dictate which indices to use when mutating
    */
   @Override
-  public void run(Individual i, List<IntegerPair> pairs) {
+  public void run(TSPProblem problem, Individual individual, List<IntegerPair> pairs) {
     for (Pair p : pairs) {
-      jumpSingle(i, p);
+      jumpSingle(individual, p);
     }
   }
 
