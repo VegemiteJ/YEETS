@@ -1,6 +1,6 @@
 package uni.evocomp.a1;
 
-import java.awt.*;
+import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;

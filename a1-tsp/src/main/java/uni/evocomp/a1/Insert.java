@@ -1,10 +1,9 @@
 package uni.evocomp.a1;
 
-import uni.evocomp.util.IntegerPair;
-import uni.evocomp.util.Pair;
-
 import java.util.Iterator;
 import java.util.List;
+import uni.evocomp.util.IntegerPair;
+import uni.evocomp.util.Pair;
 
 public class Insert implements Mutate {
 

@@ -1,13 +1,12 @@
 package uni.evocomp.a1;
 
-import uni.evocomp.util.IntegerPair;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import uni.evocomp.util.IntegerPair;
 
 public class RandomizedLocalSearch extends LocalSearch {
 
@@ -17,8 +16,10 @@ public class RandomizedLocalSearch extends LocalSearch {
 
   public void solve() {
     // (Jack): Lol Java... so verbose
-    List<Integer> outerIdx = IntStream.range(0,this.problem.getSize()-1).boxed().collect(Collectors.toList());
-    List<Integer> innerIdx = IntStream.range(0,this.problem.getSize()-1).boxed().collect(Collectors.toList());
+    List<Integer> outerIdx =
+        IntStream.range(0, this.problem.getSize() - 1).boxed().collect(Collectors.toList());
+    List<Integer> innerIdx =
+        IntStream.range(0, this.problem.getSize() - 1).boxed().collect(Collectors.toList());
 
     int totalIterations = 0;
     boolean madeChange = true;
@@ -41,7 +42,7 @@ public class RandomizedLocalSearch extends LocalSearch {
         }
       }
     }
-    System.out.println("\nTotal iterations was "+totalIterations );
+    System.out.println("\nTotal iterations was " + totalIterations);
     System.out.println("Known Best is: " + knownBestCost);
   }
 }

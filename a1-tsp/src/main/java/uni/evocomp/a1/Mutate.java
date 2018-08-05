@@ -1,8 +1,7 @@
 package uni.evocomp.a1;
 
-import uni.evocomp.util.IntegerPair;
-
 import java.util.List;
+import uni.evocomp.util.IntegerPair;
 
 /**
  * An interface to handle representing mutation operations. The run method should be overriden in

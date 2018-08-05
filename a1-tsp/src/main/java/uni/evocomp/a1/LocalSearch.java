@@ -1,24 +1,19 @@
 package uni.evocomp.a1;
 
-import uni.evocomp.util.IntegerPair;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import uni.evocomp.util.IntegerPair;
 
 public class LocalSearch {
 
-  public static void main(String[] args) {
-    new RandomizedLocalSearch().solve();
-  }
-
   protected TSPProblem problem;
   Individual currentBestIndividual;
-  private double currentBestCost;
   double knownBestCost;
   Evaluate evaluate;
   Mutate N;
-
+  private double currentBestCost;
   LocalSearch() {
     // Load Problem
     this.problem = new TSPProblem();
@@ -26,8 +21,8 @@ public class LocalSearch {
 
     TSPIO io = new TSPIO();
     try {
-        this.problem = io.read(new FileReader("tests/eil76.tsp"));
-        knownBestIndividual = io.readSolution(new FileReader("tests/eil76.opt.tour"));
+      this.problem = io.read(new FileReader("tests/eil76.tsp"));
+      knownBestIndividual = io.readSolution(new FileReader("tests/eil76.opt.tour"));
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -42,6 +37,10 @@ public class LocalSearch {
 
     // Mutate function
     this.N = new Jump();
+  }
+
+  public static void main(String[] args) {
+    new RandomizedLocalSearch().solve();
   }
 
   boolean updateCost(double cost, Individual s) {

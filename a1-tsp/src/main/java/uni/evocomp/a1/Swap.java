@@ -1,11 +1,10 @@
 package uni.evocomp.a1;
 
-import uni.evocomp.util.IntegerPair;
-import uni.evocomp.util.Pair;
-
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import uni.evocomp.util.IntegerPair;
+import uni.evocomp.util.Pair;
 
 public class Swap implements Mutate {
 
