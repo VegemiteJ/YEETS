@@ -7,7 +7,8 @@ import uni.evocomp.util.IntegerPair;
  * An interface to handle representing mutation operations. The run method should be overriden in
  * implementations to call a private function.
  *
- * <p>All implementations should be stateless.
+ * <p>All implementations should be stateless w.r.t the mutator.
+ * <p> Mutators recalculate differential costs relevant to their operation and update accordingly on Individual.
  *
  * @author Namdrib
  */
@@ -18,5 +19,5 @@ public interface Mutate {
    * @param i Individual on which to perform a mutation operation
    * @param pairs List of Points whose x and y dictate which indices to use when mutating
    */
-  public void run(Individual i, List<IntegerPair> pairs);
+  public void run(TSPProblem problem, Individual i, List<IntegerPair> pairs);
 }
