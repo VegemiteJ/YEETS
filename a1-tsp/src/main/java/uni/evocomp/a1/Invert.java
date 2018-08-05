@@ -43,7 +43,7 @@ public class Invert implements Mutate {
   public void run(Individual i, List<IntegerPair> pairs) {
     for (Iterator<IntegerPair> it = pairs.iterator(); it.hasNext(); ) {
       Pair p = it.next();
-      invert(i, (int) p.second, (int) p.second);
+      invert(i, (int) p.first, (int) p.second);
     }
   }
 }
