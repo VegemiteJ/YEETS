@@ -7,15 +7,14 @@ import uni.evocomp.util.IntegerPair;
 import uni.evocomp.util.Pair;
 
 /**
- * 
  * Pick two alleles at random and then invert the substring between them.
- * 
- * @author Namdrib
  *
+ * @author Namdrib
  */
 public class Invert implements Mutate {
 
-  private double calculateDifferentialCost(TSPProblem problem, Individual individual, int n, int m) {
+  private double calculateDifferentialCost(TSPProblem problem, Individual individual, int n,
+      int m) {
     int a = Math.min(n, m);
     m = Math.max(n, m);
     n = a;
@@ -24,12 +23,12 @@ public class Invert implements Mutate {
     int idxJ = individual.getGenotype().get(m) - 1;
     // (i-1,i)
     if (n - 1 >= 0) {
-      int idxINegOne = individual.getGenotype().get(n-1) - 1;
+      int idxINegOne = individual.getGenotype().get(n - 1) - 1;
       differentialCost += problem.getWeights().get(idxINegOne).get(idxI);
     }
     // (j,j+1)
     if (m + 1 < problem.getWeights().get(idxJ).size()) {
-      int idxJPosOne = individual.getGenotype().get(m+1) - 1;
+      int idxJPosOne = individual.getGenotype().get(m + 1) - 1;
       differentialCost += problem.getWeights().get(idxJ).get(idxJPosOne);
     }
     return differentialCost;

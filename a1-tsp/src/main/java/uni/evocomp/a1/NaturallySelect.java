@@ -1,4 +1,5 @@
 package uni.evocomp.a1;
+
 /**
  * Natural selection is the differential survival and reproduction of individuals due to differences
  * in phenotype. It is a key mechanism of evolution, the change in the heritable traits
@@ -39,4 +40,6 @@ package uni.evocomp.a1;
  *
  * @author joshuafloh
  */
-interface NaturallySelect {}
+interface NaturallySelect {
+
+}

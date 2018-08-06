@@ -19,8 +19,6 @@ public class Swap implements Mutate {
    * @param individual Individual on which to perform a mutation operation
    * @param n first index to swap
    * @param m last index to swap
-   * @throws IndexOutOfBoundsException
-   * @throws NullPointerException
    */
   private void swap(TSPProblem problem, Individual individual, int n, int m)
       throws IndexOutOfBoundsException, NullPointerException {
