@@ -1,14 +1,12 @@
 package uni.evocomp.a1;
 
 import static junit.framework.Assert.assertEquals;
-
 import org.junit.Before;
 import org.junit.Test;
-import uni.evocomp.util.IntegerPair;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import uni.evocomp.util.IntegerPair;
 
 /**
  * 

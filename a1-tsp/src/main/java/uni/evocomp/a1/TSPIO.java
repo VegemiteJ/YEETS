@@ -189,7 +189,11 @@ public class TSPIO {
 
   // TODO : Fill in after we have Instance
   // TODO : Figure out whether we even need this function
-  public void write() {
+  /**
+   *
+   * @param instance
+   */
+  public void write(Individual instance) {
     System.out.println("Writing instance");
   }
 }

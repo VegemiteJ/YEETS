@@ -1,10 +1,11 @@
-package uni.evocomp.a1;
+package uni.evocomp.util;
 
 import static org.junit.Assert.*;
 import java.lang.reflect.InvocationTargetException;
 import org.junit.Before;
 import org.junit.Test;
-import uni.evocomp.util.Util;
+import uni.evocomp.a1.Mutate;
+import uni.evocomp.a1.SelectParents;
 
 public class ClassFromNameTest {
 
@@ -21,6 +22,7 @@ public class ClassFromNameTest {
   @Test(expected = ClassCastException.class)
   public void testWrongClass() throws ClassNotFoundException, InstantiationException,
       IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    @SuppressWarnings("unused")
     SelectParents sp = Util.classFromName("uni.evocomp.a1.Swap");
   }
 

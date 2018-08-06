@@ -1,4 +1,4 @@
-package uni.evocomp.a1;
+package uni.evocomp.util;
 
 import static org.junit.Assert.*;
 import java.util.ArrayList;
@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
-import uni.evocomp.util.Util;
 
 /**
  * Tests the Util class of static helper functions

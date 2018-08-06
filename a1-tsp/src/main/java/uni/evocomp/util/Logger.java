@@ -24,10 +24,9 @@ public class Logger<T> {
       BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
 
       for (ArrayList<T> line : data) {
-        /*for (T thing : line) {
-            writer.write(thing.toString());
-            writer.write(",");
-        }*/
+        /*
+         * for (T thing : line) { writer.write(thing.toString()); writer.write(","); }
+         */
         writer.write(line.get(0) + "," + line.get(1));
         writer.newLine();
       }

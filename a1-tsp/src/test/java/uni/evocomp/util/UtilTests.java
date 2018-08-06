@@ -1,4 +1,4 @@
-package uni.evocomp.a1;
+package uni.evocomp.util;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
