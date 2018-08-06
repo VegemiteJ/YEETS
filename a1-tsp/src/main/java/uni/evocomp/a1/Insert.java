@@ -3,7 +3,6 @@ package uni.evocomp.a1;
 import java.util.Iterator;
 import java.util.List;
 import uni.evocomp.util.IntegerPair;
-import uni.evocomp.util.Pair;
 
 /**
  * Move the second to follow the first, shifting the rest along to accommodate. As the indices n and
@@ -38,8 +37,8 @@ public class Insert implements Mutate {
   @Override
   public void run(TSPProblem problem, Individual individual, List<IntegerPair> pairs) {
     for (Iterator<IntegerPair> it = pairs.iterator(); it.hasNext(); ) {
-      Pair p = it.next();
-      insert(individual, (int) p.first, (int) p.second);
+      IntegerPair p = it.next();
+      insert(individual, p.first, p.second);
     }
   }
 }

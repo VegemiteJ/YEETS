@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import uni.evocomp.util.IntegerPair;
-import uni.evocomp.util.Pair;
 
 /**
  * Perform a swap on position n and m of i's genotype
@@ -34,8 +33,8 @@ public class Swap implements Mutate {
   @Override
   public void run(TSPProblem problem, Individual individual, List<IntegerPair> pairs) {
     for (Iterator<IntegerPair> it = pairs.iterator(); it.hasNext(); ) {
-      Pair p = it.next();
-      swap(problem, individual, (int) p.first, (int) p.second);
+      IntegerPair p = it.next();
+      swap(problem, individual, p.first, p.second);
     }
   }
 

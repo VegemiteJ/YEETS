@@ -3,8 +3,6 @@ package uni.evocomp.a1;
 import java.util.List;
 import uni.evocomp.util.Bounds;
 import uni.evocomp.util.IntegerPair;
-import uni.evocomp.util.Pair;
-
 
 public class Jump implements Mutate {
 
