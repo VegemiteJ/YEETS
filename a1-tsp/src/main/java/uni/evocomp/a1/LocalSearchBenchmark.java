@@ -19,11 +19,13 @@ public class LocalSearchBenchmark {
     "tests/pr2392",
     "tests/usa13509"
   };
+
   public static final Mutate[] mutationFunctions = {new Jump(), new Swap(), new Invert()};
   public static final String[] mutationNames = {"Jump", "Exchange", "2-Opt"};
   public static final int repeats = 30;
   public static final String testSuffix = ".tsp";
   public static final String tourSuffix = ".opt.tour";
+
   LocalSearchBenchmark() {
     // Assume we create a local search function with parameters
     // new LocalSearch(problem, mutator)
@@ -35,9 +37,10 @@ public class LocalSearchBenchmark {
     TSPIO io = new TSPIO();
     ArrayList<Pair<TSPProblem, Individual>> benchmarks = new ArrayList<>();
     for (String testString : testNames) {
-      try {
-        TSPProblem problem = io.read(new FileReader(testString + testSuffix));
-        Individual solution = io.readSolution(new FileReader(testString + tourSuffix));
+      try (FileReader fr1 = new FileReader(testString + testSuffix);
+          FileReader fr2 = new FileReader(testString + tourSuffix)) {
+        TSPProblem problem = io.read(fr1);
+        Individual solution = io.readSolution(fr2);
         solution.setCost(evaluator.evaluate(problem, solution));
         benchmarks.add(new Pair<>(problem, solution));
       } catch (IOException e) {
