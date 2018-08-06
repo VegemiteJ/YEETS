@@ -1,6 +1,7 @@
 package uni.evocomp.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+
 import java.awt.Point;
 import org.junit.Before;
 import org.junit.Test;
