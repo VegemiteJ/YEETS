@@ -21,16 +21,12 @@ public class JumpTest extends TestCase {
     m = new Jump();
 
     List<List<Double>> weights = new ArrayList<>();
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 8; i++) {
       weights.add(new ArrayList<>());
-      for (int j = 0; j < 10; j++) {
-        weights.get(i).add((double) 3*i + j);
+      for (int j = 0; j < 8; j++) {
+        weights.get(i).add((double) 3 * i + j);
       }
     }
-    //weights in matrix form
-    //0,1,2
-    //3,4,5
-    //6,7,8
     p = new TSPProblem("", "", "", "", weights);
     original = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8));
     eval2D = new EvaluateEuclid();
@@ -43,6 +39,7 @@ public class JumpTest extends TestCase {
     m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(0, 4))));
     // Expect {2,3,4,1,5,6,7,8}
     assertEquals(Arrays.asList(2, 3, 4, 5, 1, 6, 7, 8), i.getGenotype());
+    assertEquals(eval2D.evaluate(p, i), i.getCost());
   }
 
   @Test
@@ -50,6 +47,7 @@ public class JumpTest extends TestCase {
     Individual i = new Individual(new ArrayList<>(original), initialCost);
     m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(1, 0))));
     assertEquals(Arrays.asList(2, 1, 3, 4, 5, 6, 7, 8), i.getGenotype());
+    assertEquals(eval2D.evaluate(p, i), i.getCost());
   }
 
   @Test
@@ -57,6 +55,15 @@ public class JumpTest extends TestCase {
     Individual i = new Individual(new ArrayList<>(original), initialCost);
     m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(4, 2))));
     assertEquals(Arrays.asList(1, 2, 5, 3, 4, 6, 7, 8), i.getGenotype());
+    assertEquals(eval2D.evaluate(p, i), i.getCost());
+  }
+
+  @Test
+  public void testJumpValid4() {
+    Individual i = new Individual(new ArrayList<>(original), initialCost);
+    m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(7, 6))));
+    assertEquals(Arrays.asList(1, 2, 3, 4, 5, 6, 8, 7), i.getGenotype());
+    assertEquals(eval2D.evaluate(p, i), i.getCost());
   }
 
   @Test
@@ -65,6 +72,7 @@ public class JumpTest extends TestCase {
     m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(3, 3))));
     // Expect {1,2,3,4,5,6,7,8}
     assertEquals(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8), i.getGenotype());
+    assertEquals(eval2D.evaluate(p, i), i.getCost());
   }
 
   @Test
@@ -82,6 +90,7 @@ public class JumpTest extends TestCase {
                 new IntegerPair(7, 6))));
     // Expect {1,2,3,4,5,6,7,8}
     assertEquals(Arrays.asList(8, 7, 6, 5, 4, 3, 2, 1), i.getGenotype());
+    assertEquals(eval2D.evaluate(p, i), i.getCost());
   }
 
   @Test
