@@ -23,7 +23,9 @@ public class Insert implements Mutate {
   private void insert(Individual individual, int n, int m)
       throws IndexOutOfBoundsException, NullPointerException {
     // Out of bounds
-    if (n < 0 || m < 0 || n >= individual.getGenotype().size()
+    if (n < 0
+        || m < 0
+        || n >= individual.getGenotype().size()
         || m >= individual.getGenotype().size()) {
       throw new IndexOutOfBoundsException();
     }

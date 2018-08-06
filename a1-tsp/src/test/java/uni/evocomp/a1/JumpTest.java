@@ -86,8 +86,10 @@ public class JumpTest extends TestCase {
   @Test
   public void testManyJumps() {
     Individual i = new Individual(new ArrayList<>(original), initialCost);
-    m.run(p,
-        i, new ArrayList<>(
+    m.run(
+        p,
+        i,
+        new ArrayList<>(
             Arrays.asList(
                 new IntegerPair(7, 0),
                 new IntegerPair(7, 1),

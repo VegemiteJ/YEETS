@@ -1,17 +1,17 @@
-//package uni.evocomp.a1;
+// package uni.evocomp.a1;
 //
-//import java.io.FileInputStream;
-//import java.io.FileReader;
-//import java.io.IOException;
-//import java.io.InputStream;
-//import java.io.Reader;
-//import java.lang.reflect.Constructor;
-//import java.lang.reflect.InvocationTargetException;
-//import java.util.Iterator;
-//import java.util.Properties;
-//import uni.evocomp.util.Util;
+// import java.io.FileInputStream;
+// import java.io.FileReader;
+// import java.io.IOException;
+// import java.io.InputStream;
+// import java.io.Reader;
+// import java.lang.reflect.Constructor;
+// import java.lang.reflect.InvocationTargetException;
+// import java.util.Iterator;
+// import java.util.Properties;
+// import uni.evocomp.util.Util;
 //
-//public class Main {
+// public class Main {
 //
 //  public static TSPProblem problem; // this changes
 //  public static final TSPIO io = new TSPIO();
@@ -22,7 +22,8 @@
 //
 //  /**
 //   *
-//   * A typical evolutionary algorithm. Pass in different implementations of each argument to result
+//   * A typical evolutionary algorithm. Pass in different implementations of each argument to
+// result
 //   * in a new algorithm.
 //   *
 //   * <pre>
@@ -42,7 +43,8 @@
 //   * @param selectParents a class to define how to pair parents together
 //   * @param recombine a class to define how to recombine parents to produce offspring
 //   * @param mutate a class to define how to mutate the resulting offspring
-//   * @param selectSurvivors a class to define how to select <code>Individuals</code> for next round
+//   * @param selectSurvivors a class to define how to select <code>Individuals</code> for next
+// round
 //   * @return the <code>Individual</code> with the best fitness
 //   */
 //  public static Individual evolutionaryAlgorithm(TSPProblem problem, Evaluate evaluate,
@@ -118,4 +120,4 @@
 //
 //    benchmark("config.properties", 50, 50); // this fails because some implementations DNE
 //  }
-//}
+// }

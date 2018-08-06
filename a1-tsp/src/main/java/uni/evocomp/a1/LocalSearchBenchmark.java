@@ -7,30 +7,23 @@ import uni.evocomp.util.Pair;
 
 public class LocalSearchBenchmark {
 
-  public static void main(String[] args) {
-    new LocalSearchBenchmark();
-  }
-
   public static final String[] testNames = {
-      "tests/eil51",
-      "tests/pcb442",
-      "tests/eil76",
-      "tests/eil101",
-      "tests/kroA100",
-      "tests/kroC100",
-      "tests/kroD100",
-      "tests/lin105",
-      "tests/pr2392",
-      "tests/usa13509"
+    "tests/eil51",
+    "tests/pcb442",
+    "tests/eil76",
+    "tests/eil101",
+    "tests/kroA100",
+    "tests/kroC100",
+    "tests/kroD100",
+    "tests/lin105",
+    "tests/pr2392",
+    "tests/usa13509"
   };
-
   public static final Mutate[] mutationFunctions = {new Jump(), new Swap(), new Invert()};
   public static final String[] mutationNames = {"Jump", "Exchange", "2-Opt"};
   public static final int repeats = 30;
-
   public static final String testSuffix = ".tsp";
   public static final String tourSuffix = ".opt.tour";
-
   LocalSearchBenchmark() {
     // Assume we create a local search function with parameters
     // new LocalSearch(problem, mutator)
@@ -68,8 +61,8 @@ public class LocalSearchBenchmark {
         double averageCost = 0;
 
         for (int i = 0; i < repeats; i++) {
-//          System.out.println("Running a new test");
-//          System.out.println("===================================");
+          //          System.out.println("Running a new test");
+          //          System.out.println("===================================");
           Individual result = ls.solve();
           if (result.getCost() < minCost) {
             minCost = result.getCost();
@@ -78,7 +71,7 @@ public class LocalSearchBenchmark {
             maxCost = result.getCost();
           }
           averageCost += result.getCost();
-//          System.out.println("===================================");
+          //          System.out.println("===================================");
         }
         averageCost /= repeats;
 
@@ -87,5 +80,9 @@ public class LocalSearchBenchmark {
         System.out.println("    Ave: " + averageCost);
       }
     }
+  }
+
+  public static void main(String[] args) {
+    new LocalSearchBenchmark();
   }
 }

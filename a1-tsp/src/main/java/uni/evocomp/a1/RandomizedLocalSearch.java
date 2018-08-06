@@ -29,8 +29,8 @@ public class RandomizedLocalSearch extends LocalSearch {
     this.currentBestIndividual = new Individual(problem.getSize(), problem);
 
     // Initial cost
-//    double currentBestCost = evaluate.evaluate(problem, currentBestIndividual);
-//    currentBestIndividual.setCost(currentBestCost);
+    //    double currentBestCost = evaluate.evaluate(problem, currentBestIndividual);
+    //    currentBestIndividual.setCost(currentBestCost);
 
     // (Jack): Lol Java... so verbose
     List<Integer> outerIdx =
@@ -56,14 +56,14 @@ public class RandomizedLocalSearch extends LocalSearch {
           double cost = s.getCost();
           if (cost < currentBestIndividual.getCost()) {
             currentBestIndividual = s;
-//            if (totalIterations % 100 == 0) {
-//              System.out.println(
-//                  "New Best: "
-//                      + currentBestIndividual.getCost()
-//                      + " - iterations since last best: "
-//                      + (totalIterations
-//                      - iterationsSinceLastBest.getLast()));
-//            }
+            //            if (totalIterations % 100 == 0) {
+            //              System.out.println(
+            //                  "New Best: "
+            //                      + currentBestIndividual.getCost()
+            //                      + " - iterations since last best: "
+            //                      + (totalIterations
+            //                      - iterationsSinceLastBest.getLast()));
+            //            }
             madeChange = true;
             iterationsSinceLastBest.addLast(totalIterations);
           }

@@ -1,6 +1,8 @@
 package uni.evocomp.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -9,9 +11,8 @@ import org.junit.Test;
 
 /**
  * Tests the Util class of static helper functions
- * 
- * @author Namdrib
  *
+ * @author Namdrib
  */
 public class InBoundsTest {
 
