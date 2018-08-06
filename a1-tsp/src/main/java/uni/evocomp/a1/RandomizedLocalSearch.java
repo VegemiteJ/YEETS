@@ -63,7 +63,7 @@ public class RandomizedLocalSearch extends LocalSearch {
                       + currentBestCost
                       + " - iterations since last best: "
                       + (totalIterations
-                          - iterationsSinceLastBest.getLast()));
+                      - iterationsSinceLastBest.getLast()));
             }
             madeChange = true;
             iterationsSinceLastBest.addLast(totalIterations);
