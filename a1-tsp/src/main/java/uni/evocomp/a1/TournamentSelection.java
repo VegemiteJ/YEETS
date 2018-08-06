@@ -42,7 +42,7 @@ public class TournamentSelection implements SelectSurvivors {
    * 
    * @param tournamentSize the number of individuals per run of a tournament
    * @param survivalProportion the proportion of survivors per tournament
-   * @param p (p*(1-p)^i) = the proability that the ith fittest survives
+   * @param p (p*(1-p)^i) = the probability that the ith fittest survives
    */
   TournamentSelection(Integer tournamentSize, Double survivalProportion, Double p) {
     this();
