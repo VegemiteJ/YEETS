@@ -1,6 +1,5 @@
 package uni.evocomp.util;
 
-import com.sun.javaws.exceptions.InvalidArgumentException;
 import java.text.DecimalFormat;
 import java.util.List;
 
@@ -31,9 +30,9 @@ public class Matrix {
    * Provides methods to read from file, generate at random, and read values
    * from coordinates within the matrix.
    */
-  public Matrix(int rDim, int cDim, List<List<Double>> weights) throws InvalidArgumentException {
+  public Matrix(int rDim, int cDim, List<List<Double>> weights) throws IllegalArgumentException {
     if (rDim < 0 || cDim < 0) {
-      throw new InvalidArgumentException(new String[] {"Dimensions less than 0"});
+      throw new IllegalArgumentException("Dimensions less than 0");
     }
     this.rDim = rDim;
     this.cDim = cDim;

@@ -3,7 +3,6 @@ package uni.evocomp.util;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-import com.sun.javaws.exceptions.InvalidArgumentException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,7 +15,7 @@ public class MatrixTest {
   public void setUp() throws Exception {}
 
   @Test
-  public void testZeroInit() throws InvalidArgumentException {
+  public void testZeroInit() throws IllegalArgumentException {
     Matrix m = new Matrix(3, 3, null);
     for (int i = 0; i < 3; i++) {
       for (int j = 0; j < 3; j++) {
@@ -26,7 +25,7 @@ public class MatrixTest {
   }
 
   @Test
-  public void testValidCase() throws InvalidArgumentException {
+  public void testValidCase() throws IllegalArgumentException {
     ArrayList<ArrayList<Double>> a = new ArrayList<>();
     for (int i = 0; i < 3; i++) {
       ArrayList<Double> b = new ArrayList<>(Arrays.asList(1., 2., 3.));
@@ -48,7 +47,7 @@ public class MatrixTest {
   public void testInvalidSize() {
     try {
       Matrix m = new Matrix(-1, -1, null);
-    } catch (InvalidArgumentException e) {
+    } catch (IllegalArgumentException e) {
       return;
     }
     fail();
