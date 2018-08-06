@@ -28,9 +28,9 @@ public class SwapTest {
     m = new Swap();
 
     List<List<Double>> weights = new ArrayList<>();
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 5; i++) {
       weights.add(new ArrayList<>());
-      for (int j = 0; j < 10; j++) {
+      for (int j = 0; j < 5; j++) {
         weights.get(i).add((double) 3*i + j);
       }
     }
@@ -89,7 +89,7 @@ public class SwapTest {
   @Test
   public void testSwapMultipleValid() {
     Individual i = new Individual(new ArrayList<>(original), initialCost);
-    m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(1, 10))));
+    m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(1, 4), new IntegerPair(4, 1))));
     assertEquals(i.getGenotype(), original);
   }
 }

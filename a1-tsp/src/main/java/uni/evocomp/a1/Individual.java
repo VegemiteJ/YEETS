@@ -139,6 +139,15 @@ public class Individual {
     }
   }
 
+  public void assertIsValidCost(TSPProblem problem) throws IllegalStateException {
+    IllegalStateException exc =
+        new IllegalStateException(
+            "Differential Cost not equal to actual cost...\n" + getTourAsDebugString(getGenotype()));
+    if(cost != evaluateCost(problem)){
+      throw exc;
+    }
+  }
+
   /**
    * Finds the cost of the tour the individual is holding. Note: does not update Individual.cost
    *

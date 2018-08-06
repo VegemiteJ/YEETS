@@ -72,6 +72,7 @@ public class RandomizedLocalSearch extends LocalSearch {
       }
     }
     currentBestIndividual.assertIsValidTour();
+    currentBestIndividual.assertIsValidCost(problem);
     return currentBestIndividual;
   }
 }

@@ -7,11 +7,9 @@ import uni.evocomp.util.IntegerPair;
 import uni.evocomp.util.Pair;
 
 /**
- * 
  * Perform a swap on position n and m of i's genotype
- * 
- * @author Namdrib
  *
+ * @author Namdrib
  */
 public class Swap implements Mutate {
 
@@ -41,29 +39,34 @@ public class Swap implements Mutate {
       Pair p = it.next();
       swap(problem, individual, (int) p.first, (int) p.second);
     }
-    individual.setCost(individual.evaluateCost(problem));
   }
 
-  private double calculateDifferentialCost(TSPProblem problem, Individual individual, int n, int m) {
+  private double calculateDifferentialCost(TSPProblem problem, Individual individual, int i,
+      int j) {
+    List<Integer> g = individual.getGenotype();
+    List<List<Double>> weights = problem.getWeights();
+
+    if (i == j) {
+      return 0;
+    }
+
     double differentialCost = 0.0;
-    int idxI = individual.getGenotype().get(n);
-    int idxJ = individual.getGenotype().get(m);
 
     // (i-1,i)
-    if (idxI - 1 >= 0) {
-      differentialCost += problem.getWeights().get(idxI - 1).get(idxI);
+    if (i - 1 >= 0) {
+      differentialCost += weights.get(g.get(i - 1) - 1).get(g.get(i) - 1);
     }
     // (i,i+1)
-    if (idxI < problem.getSize()) {
-      differentialCost += problem.getWeights().get(idxI).get(idxI + 1);
-    }
-    // (j,j+1)
-    if (idxJ + 1 < problem.getSize()) {
-      differentialCost += problem.getWeights().get(idxJ).get(idxJ + 1);
+    if (i + 1 < problem.getSize()) {
+      differentialCost += weights.get(g.get(i) - 1).get(g.get(i + 1) - 1);
     }
     // (j-1,j)
-    if (idxJ - 1 >= 0) {
-      differentialCost += problem.getWeights().get(idxJ - 1).get(idxJ);
+    if (j - 1 >= 0) {
+      differentialCost += weights.get(g.get(j - 1) - 1).get(g.get(j) - 1);
+    }
+    // (j,j+1)
+    if (j + 1 < problem.getSize()) {
+      differentialCost += weights.get(g.get(j) - 1).get(g.get(j + 1) - 1);
     }
     return differentialCost;
   }
