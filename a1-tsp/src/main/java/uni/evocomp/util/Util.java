@@ -1,6 +1,5 @@
 package uni.evocomp.util;
 
-import java.awt.Point;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -26,12 +25,6 @@ public class Util {
    * @param j
    * @return the 2D Euclidean distance between a and b
    */
-  public static double euclideanDistance2D(Point i, Point j) {
-    double xd = i.getX() - j.getX();
-    double yd = i.getY() - j.getY();
-    return Math.round(Math.sqrt(xd * xd + yd * yd) + 0.5);
-  }
-
   public static double euclideanDistance2D(IntegerPair i, IntegerPair j) {
     double xd = i.first - j.first;
     double yd = i.second - j.second;

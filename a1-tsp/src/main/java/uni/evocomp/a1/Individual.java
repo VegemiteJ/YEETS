@@ -11,10 +11,10 @@ import uni.evocomp.util.Matrix;
 
 /**
  * Used to store a single trial/solution of the TSP problem.
- *
- * <p>As such, it should contain a Set of numbers, where each number is a city, representing a
+ * <p>
+ * As such, it should contain a Set of numbers, where each number is a city, representing a
  * permutation of all the cities (from 1-n)
- *
+ * 
  * @author Namdrib
  */
 public class Individual {
@@ -29,7 +29,7 @@ public class Individual {
 
   /**
    * Copy constructor for Individual
-   *
+   * 
    * @param src source Individual object to copy construct
    */
   public Individual(Individual src) {
@@ -37,7 +37,12 @@ public class Individual {
     this.setCost(src.cost);
   }
 
-  /** @param n initialise to have a tour of n cities */
+  /**
+   * 
+   * @param n initialise to have a tour of n cities
+   *
+   *        /** @param n initialise to have a tour of n cities
+   */
   public Individual(int n) {
     initialise(n);
   }
@@ -62,6 +67,13 @@ public class Individual {
 
   /**
    * @param genotype initial tour for the Individual
+   */
+  public Individual(List<Integer> genotype) {
+    this.genotype = genotype;
+  }
+
+  /**
+   * @param genotype initial tour for the Individual
    * @param problem problem to evaluate initial cost against
    */
   public Individual(List<Integer> genotype, TSPProblem problem) {
@@ -71,7 +83,7 @@ public class Individual {
 
   /**
    * Initialise as per Exercise 3, "constructs .. a solution [uniformly at random] in linear time"
-   *
+   * 
    * @param n the size of the genotype
    */
   public void initialise(int n) {
@@ -97,7 +109,7 @@ public class Individual {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    for (Iterator<Integer> it = genotype.iterator(); it.hasNext(); ) {
+    for (Iterator<Integer> it = genotype.iterator(); it.hasNext();) {
       sb.append(String.valueOf(it.next()));
       sb.append("\n");
     }
@@ -121,9 +133,8 @@ public class Individual {
         IntStream.rangeClosed(1, getGenotype().size()).boxed().collect(Collectors.toSet());
 
     // Assert only distinct elements
-    IllegalStateException exc =
-        new IllegalStateException(
-            "Illegal tour state. Printing tour...\n" + getTourAsDebugString(getGenotype()));
+    IllegalStateException exc = new IllegalStateException(
+        "Illegal tour state. Printing tour...\n" + getTourAsDebugString(getGenotype()));
 
     for (Integer i : getGenotype()) {
       if (tour.contains(i)) {
@@ -138,10 +149,8 @@ public class Individual {
   }
 
   public void assertIsValidCost(TSPProblem problem) throws IllegalStateException {
-    IllegalStateException exc =
-        new IllegalStateException(
-            "Differential Cost not equal to actual cost...\n"
-                + getTourAsDebugString(getGenotype()));
+    IllegalStateException exc = new IllegalStateException(
+        "Differential Cost not equal to actual cost...\n" + getTourAsDebugString(getGenotype()));
     if (cost != evaluateCost(problem)) {
       throw exc;
     }
