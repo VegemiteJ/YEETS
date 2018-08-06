@@ -14,7 +14,7 @@ import uni.evocomp.util.Pair;
 public class Insert implements Mutate {
 
   /**
-   * Move the second to follow the first, shifting the rest along to accomodate. As the indices n
+   * Move the second to follow the first, shifting the rest along to accommodate. As the indices n
    * and m are not necessarily ordered, must extract the highest and lowest
    *
    * @param individual Individual on which to perform a mutation operation

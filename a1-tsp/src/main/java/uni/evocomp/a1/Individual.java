@@ -18,7 +18,7 @@ import java.util.stream.IntStream;
  */
 public class Individual {
 
-  List<Integer> genotype; // the tour, elements should be 1-n
+  private List<Integer> genotype; // the tour, elements should be 1-n
   private double cost;
 
   public Individual() {
