@@ -8,17 +8,42 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Set;
 
+/**
+ * TournamentSelection class, one of the implementations of the SelectSurvivors interface Contains
+ * configurable fields:
+ * 
+ * tournamentSize: the number of individuals per tournament
+ * <p>
+ * survivalProportion: a double representing the proportion of the tournament that should survive
+ * <p>
+ * p the probability that the fittest individual survives in a given tournament run
+ * <p>
+ * (p * (1-P) ^ i = the probability that the ith fittest individual survives)
+ * <p>
+ * 
+ * @author joshuafloh
+ *
+ */
 public class TournamentSelection implements SelectSurvivors {
-  // TODO: Decide whether to store these here or pass them directly to the function
   private Evaluate evaluate;
   private Integer tournamentSize; // TODO: This could be a proportion instead of a fixed size
   private Double survivalProportion;
   private Double p;
 
+  /**
+   * Default constructor, this generally shouldn't be called ever
+   */
   TournamentSelection() {
     this.evaluate = new EvaluateEuclid();
   }
 
+  /**
+   * Initialise the TournamentSelection object by assigning its configurable fields
+   * 
+   * @param tournamentSize the number of individuals per run of a tournament
+   * @param survivalProportion the proportion of survivors per tournament
+   * @param p (p*(1-p)^i) = the proability that the ith fittest survives
+   */
   TournamentSelection(Integer tournamentSize, Double survivalProportion, Double p) {
     this();
     this.tournamentSize = tournamentSize;
@@ -29,18 +54,23 @@ public class TournamentSelection implements SelectSurvivors {
   @Override
   public Population selectSurvivors(Population population, TSPProblem problem, Random rand) {
     Set<Individual> survivorSet = new HashSet<>();
-
     // Keep running tournaments until the limit has been reached
-
     while (survivorSet.size() < (int) (survivalProportion * population.getSize())) {
       runTournament(population, problem, rand, survivorSet);
     }
-
     // Construct the surviving population from the individual set
     Population survivorPopulation = new Population(survivorSet);
     return survivorPopulation;
   }
 
+  /**
+   * Runs a single run of a tournament, adds survivors to the survivors set
+   * 
+   * @param population the whole population
+   * @param problem the TSP map
+   * @param rand a random number generator
+   * @param survivors set containing all the current survivors
+   */
   private void runTournament(Population population, TSPProblem problem, Random rand,
       Set<Individual> survivors) {
     Set<Integer> s = new LinkedHashSet<>();
@@ -51,22 +81,18 @@ public class TournamentSelection implements SelectSurvivors {
       while (s.size() < tournamentSize) {
         int index = rand.nextInt(population.getSize());
         s.add(index);
-        // System.out.println("added to tournament: " + index);
       }
       // Iterate over HashSet and add individuals to the tournament list
       List<Individual> individualList = new ArrayList<>(population.getPopulation());
       Iterator<Integer> itr = s.iterator();
       while (itr.hasNext()) {
         int index = itr.next();
-        // System.out.println("Index added to set (after extraction from set)" + index);
-        Individual next = individualList.get(index);// TODO: this is fucked
+        Individual next = individualList.get(index);
         tournamentList.add(next);
-        // System.out.println("added to tournament: " + next.hashCode());
       }
     }
     // if k < pop.size, use the whole population
     else {
-      // System.out.println("k > pop size");
       tournamentList = new ArrayList<>(population.getPopulation());
     }
 
@@ -77,11 +103,9 @@ public class TournamentSelection implements SelectSurvivors {
 
     // Choose the best individual with probability p, 2nd with p(1-p), 3rd with p(1-p)^2 etc.
     int i = 0;
-    // System.out.println("tournament size: " + tournamentList.size());
     for (Individual individual : tournamentList) {
       if (rand.nextDouble() < (p * Math.pow((1 - p), i))) {
         survivors.add(individual);
-        // System.out.println("added to survivors: " + individual.hashCode());
         if (survivors.size() >= (int) (survivalProportion * population.getSize())) {
           break;
         }

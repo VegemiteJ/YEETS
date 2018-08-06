@@ -62,7 +62,9 @@ public class TournamentSelectionTest extends TestCase {
    * test1 map: cities: 0 0 0 10 0 20 10 20 10 10
    */
 
-
+  /**
+   * Initial tests, where tournament size = pop size and simply choose the fittest to survive
+   */
   @Test
   public void test1() {
     tournament = new TournamentSelection(6, 0.5, 0.99);
@@ -130,6 +132,9 @@ public class TournamentSelectionTest extends TestCase {
     assertTrue(result.getPopulation().contains(i5));
   }
   
+  /**
+   * Check to see that tournament insertion is working properly, and that multiple tournament runs work as expected
+   */
   @Test
   public void test5() {
     tournament = new TournamentSelection(2, 0.5, 0.99);
@@ -140,7 +145,7 @@ public class TournamentSelectionTest extends TestCase {
     // population should be halved
     assertEquals(3, result.getSize());
     // check the survivor to see they're who we expect
-    // we expect individuals 3, 5 and 1 to survive as they are the lowest in each of their "buckets"
+    // we expect individuals 2, 4 and 0 to survive as they are the lowest in each of their "buckets"
     assertTrue(result.getPopulation().contains(i2));
     assertTrue(result.getPopulation().contains(i4));
     assertTrue(result.getPopulation().contains(i0));
@@ -156,7 +161,7 @@ public class TournamentSelectionTest extends TestCase {
     // population should be halved
     assertEquals(3, result.getSize());
     // check the survivor to see they're who we expect
-    // we expect individuals 3, 5 and 1 to survive as they are the lowest in each of their "buckets"
+    // we expect individuals 1, 2 and 0 to survive as they are the lowest in each of their "buckets"
     assertTrue(result.getPopulation().contains(i1));
     assertTrue(result.getPopulation().contains(i2));
     assertTrue(result.getPopulation().contains(i0));
@@ -172,7 +177,7 @@ public class TournamentSelectionTest extends TestCase {
     // population should be halved
     assertEquals(3, result.getSize());
     // check the survivor to see they're who we expect
-    // we expect individuals 3, 5 and 1 to survive as they are the lowest in each of their "buckets"
+    // we expect individuals 5, 0 and 4 to survive as they are the lowest in each of their "buckets"
     assertTrue(result.getPopulation().contains(i5));
     assertTrue(result.getPopulation().contains(i0));
     assertTrue(result.getPopulation().contains(i4));
