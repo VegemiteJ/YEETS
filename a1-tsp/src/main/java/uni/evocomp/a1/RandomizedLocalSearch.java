@@ -43,12 +43,15 @@ public class RandomizedLocalSearch extends LocalSearch {
 
     int totalIterations = 0;
     boolean madeChange = true;
+    long start = System.nanoTime();
+    loops:
     while (madeChange) {
       // Shuffle indexes
       modifyAccessOrdering(outerIdx);
       modifyAccessOrdering(innerIdx);
       madeChange = false;
       for (Integer anOuterIdx : outerIdx) {
+        if (System.nanoTime() - start > 300000000000L) break loops;
         for (Integer anInnerIdx : innerIdx) {
           Individual s = new Individual(currentBestIndividual);
           IntegerPair indexPair = new IntegerPair(anOuterIdx, anInnerIdx);
@@ -71,6 +74,7 @@ public class RandomizedLocalSearch extends LocalSearch {
         }
       }
     }
+
     currentBestIndividual.assertIsValidTour();
     currentBestIndividual.assertIsValidCost(problem);
     return currentBestIndividual;

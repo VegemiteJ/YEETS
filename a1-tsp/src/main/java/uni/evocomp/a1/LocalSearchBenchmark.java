@@ -9,13 +9,13 @@ public class LocalSearchBenchmark {
 
   public static final String[] testNames = {
     "tests/eil51",
-    "tests/pcb442",
     "tests/eil76",
     "tests/eil101",
     "tests/kroA100",
     "tests/kroC100",
     "tests/kroD100",
     "tests/lin105",
+    "tests/pcb442",
     "tests/pr2392",
     "tests/usa13509"
   };
