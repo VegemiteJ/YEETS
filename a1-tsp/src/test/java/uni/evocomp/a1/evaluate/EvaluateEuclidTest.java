@@ -73,10 +73,13 @@ public class EvaluateEuclidTest {
     Individual bestTour;
 
     TSPIO io = new TSPIO();
-    problem = io.read(new FileReader("tests/pcb442.tsp"));
-    bestTour = io.readSolution(new FileReader("tests/pcb442.opt.tour"));
-
-    double cost = e.evaluate(problem, bestTour);
+    double cost = -1;
+    try (FileReader fr1 = new FileReader("tests/pcb442.tsp");
+        FileReader fr2 = new FileReader("tests/pcb442.opt.tour")) {
+      problem = io.read(fr1);
+      bestTour = io.readSolution(fr2);
+      cost = e.evaluate(problem, bestTour);
+    }
 
     System.out.println(cost);
   }
