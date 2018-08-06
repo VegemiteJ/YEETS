@@ -1,4 +1,4 @@
-package uni.evocomp.a1;
+package uni.evocomp.a1.mutate;
 
 import static org.junit.Assert.assertEquals;
 
@@ -7,6 +7,11 @@ import java.util.Arrays;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
+import uni.evocomp.a1.Individual;
+import uni.evocomp.a1.TSPProblem;
+import uni.evocomp.a1.evaluate.EvaluateEuclid;
+import uni.evocomp.a1.mutate.Invert;
+import uni.evocomp.a1.mutate.Mutate;
 import uni.evocomp.util.IntegerPair;
 
 /** @author Namdrib */

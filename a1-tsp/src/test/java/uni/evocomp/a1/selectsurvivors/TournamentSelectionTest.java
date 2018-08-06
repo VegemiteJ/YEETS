@@ -1,4 +1,4 @@
-package uni.evocomp.a1;
+package uni.evocomp.a1.selectsurvivors;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -6,6 +6,12 @@ import java.io.Reader;
 import java.util.Arrays;
 import org.junit.Test;
 import junit.framework.TestCase;
+import uni.evocomp.a1.Individual;
+import uni.evocomp.a1.Population;
+import uni.evocomp.a1.TSPIO;
+import uni.evocomp.a1.TSPProblem;
+import uni.evocomp.a1.selectsurvivors.TournamentSelection;
+import uni.evocomp.util.RandomStub;
 
 public class TournamentSelectionTest extends TestCase {
 

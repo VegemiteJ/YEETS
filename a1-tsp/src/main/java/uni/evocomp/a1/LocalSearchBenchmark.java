@@ -3,6 +3,12 @@ package uni.evocomp.a1;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import uni.evocomp.a1.evaluate.Evaluate;
+import uni.evocomp.a1.evaluate.EvaluateEuclid;
+import uni.evocomp.a1.mutate.Invert;
+import uni.evocomp.a1.mutate.Jump;
+import uni.evocomp.a1.mutate.Mutate;
+import uni.evocomp.a1.mutate.Swap;
 import uni.evocomp.util.Pair;
 
 public class LocalSearchBenchmark {

@@ -1,4 +1,4 @@
-package uni.evocomp.a1;
+package uni.evocomp.a1.evaluate;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -8,6 +8,11 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import uni.evocomp.a1.Individual;
+import uni.evocomp.a1.TSPIO;
+import uni.evocomp.a1.TSPProblem;
+import uni.evocomp.a1.evaluate.Evaluate;
+import uni.evocomp.a1.evaluate.EvaluateEuclid;
 
 public class EvaluateEuclidTest {
   Evaluate e;
