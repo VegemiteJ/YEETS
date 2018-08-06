@@ -122,7 +122,6 @@ public class Individual {
         IntStream.rangeClosed(1, getGenotype().size()).boxed().collect(Collectors.toSet());
 
     // Assert only distinct elements
-
     IllegalStateException exc =
         new IllegalStateException(
             "Illegal tour state. Printing tour...\n" + getTourAsDebugString(getGenotype()));
