@@ -16,7 +16,7 @@ public class Jump implements Mutate {
    */
   @Override
   public void run(TSPProblem problem, Individual individual, List<IntegerPair> pairs) {
-    for (Pair p : pairs) {
+    for (IntegerPair p : pairs) {
       jumpSingle(problem, individual, p);
     }
   }
@@ -28,7 +28,7 @@ public class Jump implements Mutate {
     System.out.println();
   }
 
-  private void jumpSingle(TSPProblem problem, Individual i, Pair<Integer, Integer> pair) {
+  private void jumpSingle(TSPProblem problem, Individual i, IntegerPair pair) {
     double cost = i.getCost();
 
     List<Integer> data = i.getGenotype();
