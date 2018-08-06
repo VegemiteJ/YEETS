@@ -8,7 +8,8 @@ import uni.evocomp.util.IntegerPair;
  * implementations to call a private function.
  *
  * <p>All implementations should be stateless w.r.t the mutator.
- * <p> Mutators recalculate differential costs relevant to their operation and update accordingly on
+ *
+ * <p>Mutators recalculate differential costs relevant to their operation and update accordingly on
  * Individual.
  *
  * @author Namdrib

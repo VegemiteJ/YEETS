@@ -39,8 +39,8 @@ public class Swap implements Mutate {
     }
   }
 
-  private double calculateDifferentialCost(TSPProblem problem, Individual individual, int i,
-      int j) {
+  private double calculateDifferentialCost(
+      TSPProblem problem, Individual individual, int i, int j) {
     List<Integer> g = individual.getGenotype();
     Matrix weights = problem.getWeights();
 

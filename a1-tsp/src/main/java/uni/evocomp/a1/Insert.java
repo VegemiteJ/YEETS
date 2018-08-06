@@ -1,9 +1,8 @@
 package uni.evocomp.a1;
 
-import uni.evocomp.util.IntegerPair;
-
 import java.util.Iterator;
 import java.util.List;
+import uni.evocomp.util.IntegerPair;
 
 /**
  * Move the second to follow the first, shifting the rest along to accommodate. As the indices n and
@@ -24,7 +23,9 @@ public class Insert implements Mutate {
   private void insert(Individual individual, int n, int m)
       throws IndexOutOfBoundsException, NullPointerException {
     // Out of bounds
-    if (n < 0 || m < 0 || n >= individual.getGenotype().size()
+    if (n < 0
+        || m < 0
+        || n >= individual.getGenotype().size()
         || m >= individual.getGenotype().size()) {
       throw new IndexOutOfBoundsException();
     }

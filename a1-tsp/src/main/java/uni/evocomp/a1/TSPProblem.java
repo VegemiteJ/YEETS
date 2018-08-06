@@ -1,6 +1,5 @@
 package uni.evocomp.a1;
 
-import java.util.ArrayList;
 import java.util.List;
 import uni.evocomp.util.Matrix;
 
@@ -14,7 +13,7 @@ public class TSPProblem {
   private String edgeWeightType; // For this assignment, will always be EUC_2D, but it can be EUC_3D
   private Matrix weights;
 
-  public TSPProblem() { }
+  public TSPProblem() {}
 
   /**
    * Copy constructor for TSPProblem
@@ -29,8 +28,8 @@ public class TSPProblem {
     this.weights = new Matrix(src.getWeights());
   }
 
-  public TSPProblem(String name, String comment, String type, String edgeWeightType,
-      Matrix weights) {
+  public TSPProblem(
+      String name, String comment, String type, String edgeWeightType, Matrix weights) {
     this.name = name;
     this.comment = comment;
     this.type = type;
@@ -38,8 +37,8 @@ public class TSPProblem {
     this.weights = weights;
   }
 
-  public TSPProblem(String name, String comment, String type, String edgeWeightType,
-      List<List<Double>> weights) {
+  public TSPProblem(
+      String name, String comment, String type, String edgeWeightType, List<List<Double>> weights) {
     this.name = name;
     this.comment = comment;
     this.type = type;
@@ -67,9 +66,7 @@ public class TSPProblem {
     return weights;
   }
 
-  /**
-   * @return the number of cities/towns/nodes in the problem
-   */
+  /** @return the number of cities/towns/nodes in the problem */
   public int getSize() {
     return weights.size();
   }

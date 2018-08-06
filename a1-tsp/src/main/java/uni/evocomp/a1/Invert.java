@@ -12,8 +12,8 @@ import uni.evocomp.util.IntegerPair;
  */
 public class Invert implements Mutate {
 
-  private double calculateDifferentialCost(TSPProblem problem, Individual individual, int n,
-      int m) {
+  private double calculateDifferentialCost(
+      TSPProblem problem, Individual individual, int n, int m) {
     int a = Math.min(n, m);
     m = Math.max(n, m);
     n = a;

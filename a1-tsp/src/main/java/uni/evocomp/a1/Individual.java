@@ -11,8 +11,8 @@ import uni.evocomp.util.Matrix;
 
 /**
  * Used to store a single trial/solution of the TSP problem.
- * <p>
- * As such, it should contain a Set of numbers, where each number is a city, representing a
+ *
+ * <p>As such, it should contain a Set of numbers, where each number is a city, representing a
  * permutation of all the cities (from 1-n)
  *
  * @author Namdrib
@@ -37,9 +37,7 @@ public class Individual {
     this.setCost(src.cost);
   }
 
-  /**
-   * @param n initialise to have a tour of n cities
-   */
+  /** @param n initialise to have a tour of n cities */
   public Individual(int n) {
     initialise(n);
   }
@@ -88,12 +86,12 @@ public class Individual {
     return genotype;
   }
 
-  public void setCost(Double cost) {
-    this.cost = cost;
-  }
-
   public Double getCost() {
     return this.cost;
+  }
+
+  public void setCost(Double cost) {
+    this.cost = cost;
   }
 
   @Override
@@ -142,8 +140,8 @@ public class Individual {
   public void assertIsValidCost(TSPProblem problem) throws IllegalStateException {
     IllegalStateException exc =
         new IllegalStateException(
-            "Differential Cost not equal to actual cost...\n" + getTourAsDebugString(
-                getGenotype()));
+            "Differential Cost not equal to actual cost...\n"
+                + getTourAsDebugString(getGenotype()));
     if (cost != evaluateCost(problem)) {
       throw exc;
     }

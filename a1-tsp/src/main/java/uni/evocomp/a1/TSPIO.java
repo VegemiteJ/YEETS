@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import uni.evocomp.util.DoublePair;
-import uni.evocomp.util.Matrix;
 import uni.evocomp.util.Util;
 
 public class TSPIO {
@@ -18,6 +17,8 @@ public class TSPIO {
   }
 
   /**
+   *
+   *
    * <pre>
    * NAME : eil51
    * COMMENT : 51-city problem (Christofides/Eilon)
@@ -99,7 +100,8 @@ public class TSPIO {
           if (split.length < 3) {
             throw new IOException("Bad body format on line " + i + ": " + line);
           }
-          points.put(Integer.parseInt(split[0]),
+          points.put(
+              Integer.parseInt(split[0]),
               new DoublePair(Double.valueOf(split[1]), Double.valueOf(split[2])));
           cityCounter++;
           if (cityCounter > dimension) {
@@ -190,10 +192,7 @@ public class TSPIO {
 
   // TODO : Fill in after we have Instance
   // TODO : Figure out whether we even need this function
-  /**
-   *
-   * @param instance
-   */
+  /** @param instance */
   public void write(Individual instance) {
     System.out.println("Writing instance");
   }

@@ -67,8 +67,8 @@ public class Jump implements Mutate {
   Only middle column is different, could refactor even further
   */
 
-  private double calculateDifferentialCostForwards(TSPProblem problem, Individual individual, int i,
-      int j, boolean beforeJump) {
+  private double calculateDifferentialCostForwards(
+      TSPProblem problem, Individual individual, int i, int j, boolean beforeJump) {
     List<Integer> g = individual.getGenotype();
     Matrix weights = problem.getWeights();
 
@@ -76,7 +76,7 @@ public class Jump implements Mutate {
       return 0;
     }
 
-    //Always make i<j
+    // Always make i<j
     if (i > j) {
       int t = i;
       i = j;
@@ -91,22 +91,21 @@ public class Jump implements Mutate {
     }
     // (i,i+1)
     if (beforeJump && (i + 1 < problem.getSize())) {
-      differentialCost += weights.get(g.get(i) -1, g.get(i + 1) - 1);
+      differentialCost += weights.get(g.get(i) - 1, g.get(i + 1) - 1);
     }
     // (j-1,j)
     if (!beforeJump && (j - 1 >= 0)) {
-      differentialCost += weights.get(g.get(j - 1) -1, g.get(j) - 1);
+      differentialCost += weights.get(g.get(j - 1) - 1, g.get(j) - 1);
     }
     // (j,j+1)
     if (j + 1 < problem.getSize()) {
-      differentialCost += weights.get(g.get(j) -1, g.get(j + 1) - 1);
+      differentialCost += weights.get(g.get(j) - 1, g.get(j + 1) - 1);
     }
     return differentialCost;
   }
 
-  private double calculateDifferentialCostBackwards(TSPProblem problem, Individual individual,
-      int i,
-      int j, boolean beforeJump) {
+  private double calculateDifferentialCostBackwards(
+      TSPProblem problem, Individual individual, int i, int j, boolean beforeJump) {
     List<Integer> g = individual.getGenotype();
     Matrix weights = problem.getWeights();
 
@@ -114,7 +113,7 @@ public class Jump implements Mutate {
       return 0;
     }
 
-    //Always make i<j
+    // Always make i<j
     if (i > j) {
       int t = i;
       i = j;
@@ -125,21 +124,20 @@ public class Jump implements Mutate {
 
     // (i-1,i)
     if (i - 1 >= 0) {
-      differentialCost += weights.get(g.get(i - 1) -1, g.get(i) - 1);
+      differentialCost += weights.get(g.get(i - 1) - 1, g.get(i) - 1);
     }
     // (i,i+1)
     if (!beforeJump && (i + 1 < problem.getSize())) {
-      differentialCost += weights.get(g.get(i) -1, g.get(i + 1) - 1);
+      differentialCost += weights.get(g.get(i) - 1, g.get(i + 1) - 1);
     }
     // (j-1,j)
     if (beforeJump && (j - 1 >= 0)) {
-      differentialCost += weights.get(g.get(j - 1) -1, g.get(j) - 1);
+      differentialCost += weights.get(g.get(j - 1) - 1, g.get(j) - 1);
     }
     // (j,j+1)
     if (j + 1 < problem.getSize()) {
-      differentialCost += weights.get(g.get(j) -1, g.get(j + 1) - 1);
+      differentialCost += weights.get(g.get(j) - 1, g.get(j + 1) - 1);
     }
     return differentialCost;
   }
-
 }

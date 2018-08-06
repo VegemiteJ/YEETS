@@ -1,7 +1,6 @@
 package uni.evocomp.util;
 
 import com.sun.javaws.exceptions.InvalidArgumentException;
-
 import java.text.DecimalFormat;
 import java.util.List;
 
@@ -17,10 +16,10 @@ public class Matrix {
   public Matrix(Matrix src) {
     this.rDim = src.rDim;
     this.cDim = src.cDim;
-    this.array = new Double[rDim*cDim];
-    for (int i=0; i<rDim; i++) {
-      for (int j=0; j<cDim; j++) {
-        array[rDim*i+j] = src.get(i,j);
+    this.array = new Double[rDim * cDim];
+    for (int i = 0; i < rDim; i++) {
+      for (int j = 0; j < cDim; j++) {
+        array[rDim * i + j] = src.get(i, j);
       }
     }
   }
@@ -33,29 +32,29 @@ public class Matrix {
    * from coordinates within the matrix.
    */
   public Matrix(int rDim, int cDim, List<List<Double>> weights) throws InvalidArgumentException {
-  if (rDim < 0 || cDim < 0) {
-    throw new InvalidArgumentException(new String[]{"Dimensions less than 0"});
-  }
-  this.rDim = rDim;
-  this.cDim = cDim;
-  this.array = new Double[rDim*cDim];
-  furnishArray(array, weights, rDim, cDim);
+    if (rDim < 0 || cDim < 0) {
+      throw new InvalidArgumentException(new String[] {"Dimensions less than 0"});
+    }
+    this.rDim = rDim;
+    this.cDim = cDim;
+    this.array = new Double[rDim * cDim];
+    furnishArray(array, weights, rDim, cDim);
   }
 
   public Matrix(List<List<Double>> weights) {
     this.rDim = weights.size();
     this.cDim = weights.get(0).size();
-    this.array = new Double[rDim*cDim];
+    this.array = new Double[rDim * cDim];
     furnishArray(array, weights, rDim, cDim);
   }
 
   private void furnishArray(Double[] array, List<List<Double>> weights, int rDim, int cDim) {
-    for (int i=0; i<rDim; i++) {
-      for (int j=0; j<cDim; j++) {
+    for (int i = 0; i < rDim; i++) {
+      for (int j = 0; j < cDim; j++) {
         if (weights != null) {
-          array[rDim*i+j] = weights.get(i).get(j);
+          array[rDim * i + j] = weights.get(i).get(j);
         } else {
-          array[rDim*i+j] = 0.0;
+          array[rDim * i + j] = 0.0;
         }
       }
     }
