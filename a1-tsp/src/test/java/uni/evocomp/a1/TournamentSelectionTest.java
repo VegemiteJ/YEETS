@@ -1,13 +1,9 @@
 package uni.evocomp.a1;
 
-import static org.junit.Assert.*;
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.Arrays;
-import java.util.Random;
 import org.junit.Test;
 import junit.framework.TestCase;
 
@@ -69,7 +65,7 @@ public class TournamentSelectionTest extends TestCase {
   public void test1() {
     tournament = new TournamentSelection(6, 0.5, 0.99);
     // seed the randomstub
-    rand.setInt(Arrays.asList(0,1,2,3,4,5));
+    rand.setInt(Arrays.asList(0, 1, 2, 3, 4, 5));
     rand.setDoubles(Arrays.asList(0.0));
     Population result = tournament.selectSurvivors(population, problem, rand);
     // population should be halved
@@ -80,12 +76,12 @@ public class TournamentSelectionTest extends TestCase {
     assertTrue(result.getPopulation().contains(i2));
     assertTrue(result.getPopulation().contains(i5));
   }
-  
+
   @Test
   public void test2() {
     tournament = new TournamentSelection(6, 0.5, 0.99);
     // seed the randomstub
-    rand.setInt(Arrays.asList(0,1,2,3,4,5));
+    rand.setInt(Arrays.asList(0, 1, 2, 3, 4, 5));
     rand.setDoubles(Arrays.asList(0.0, 1.0));
     Population result = tournament.selectSurvivors(population, problem, rand);
     // population should be halved
@@ -96,12 +92,12 @@ public class TournamentSelectionTest extends TestCase {
     assertTrue(result.getPopulation().contains(i5));
     assertTrue(result.getPopulation().contains(i4));
   }
-  
+
   @Test
   public void test3() {
     tournament = new TournamentSelection(6, 0.5, 0.99);
     // seed the randomstub
-    rand.setInt(Arrays.asList(0,1,2,3,4,5));
+    rand.setInt(Arrays.asList(0, 1, 2, 3, 4, 5));
     rand.setDoubles(Arrays.asList(0.0, 0.0, 1.0));
     Population result = tournament.selectSurvivors(population, problem, rand);
     // population should be halved
@@ -120,7 +116,7 @@ public class TournamentSelectionTest extends TestCase {
   public void test4() {
     tournament = new TournamentSelection(10, 0.5, 0.99);
     // seed the randomstub
-    rand.setInt(Arrays.asList(0,1,2,3,4,5));
+    rand.setInt(Arrays.asList(0, 1, 2, 3, 4, 5));
     rand.setDoubles(Arrays.asList(0.0));
     Population result = tournament.selectSurvivors(population, problem, rand);
     // population should be halved
@@ -131,16 +127,17 @@ public class TournamentSelectionTest extends TestCase {
     assertTrue(result.getPopulation().contains(i2));
     assertTrue(result.getPopulation().contains(i5));
   }
-  
+
   /**
-   * Check to see that tournament insertion is working properly, and that multiple tournament runs work as expected
+   * Check to see that tournament insertion is working properly, and that multiple tournament runs
+   * work as expected
    */
   @Test
   public void test5() {
     tournament = new TournamentSelection(2, 0.5, 0.99);
     // seed the randomstub
-    rand.setInt(Arrays.asList(2,1,4,3,5,0));
-    rand.setDoubles(Arrays.asList(0.0,1.0));
+    rand.setInt(Arrays.asList(2, 1, 4, 3, 5, 0));
+    rand.setDoubles(Arrays.asList(0.0, 1.0));
     Population result = tournament.selectSurvivors(population, problem, rand);
     // population should be halved
     assertEquals(3, result.getSize());
@@ -150,13 +147,13 @@ public class TournamentSelectionTest extends TestCase {
     assertTrue(result.getPopulation().contains(i4));
     assertTrue(result.getPopulation().contains(i0));
   }
-  
+
   @Test
   public void test6() {
     tournament = new TournamentSelection(2, 0.5, 0.99);
     // seed the randomstub
-    rand.setInt(Arrays.asList(3,1,4,2,5,0));
-    rand.setDoubles(Arrays.asList(0.0,1.0));
+    rand.setInt(Arrays.asList(3, 1, 4, 2, 5, 0));
+    rand.setDoubles(Arrays.asList(0.0, 1.0));
     Population result = tournament.selectSurvivors(population, problem, rand);
     // population should be halved
     assertEquals(3, result.getSize());
@@ -166,13 +163,13 @@ public class TournamentSelectionTest extends TestCase {
     assertTrue(result.getPopulation().contains(i2));
     assertTrue(result.getPopulation().contains(i0));
   }
-  
+
   @Test
   public void test7() {
     tournament = new TournamentSelection(2, 0.5, 0.99);
     // seed the randomstub
-    rand.setInt(Arrays.asList(5,1,2,0,3,4));
-    rand.setDoubles(Arrays.asList(0.0,1.0));
+    rand.setInt(Arrays.asList(5, 1, 2, 0, 3, 4));
+    rand.setDoubles(Arrays.asList(0.0, 1.0));
     Population result = tournament.selectSurvivors(population, problem, rand);
     // population should be halved
     assertEquals(3, result.getSize());
