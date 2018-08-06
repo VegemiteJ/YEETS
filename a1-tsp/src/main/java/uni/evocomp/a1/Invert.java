@@ -12,8 +12,8 @@ import uni.evocomp.util.IntegerPair;
  */
 public class Invert implements Mutate {
 
-  private double calculateDifferentialCost(TSPProblem problem, Individual individual, int n,
-      int m) {
+  private double calculateDifferentialCost(
+      TSPProblem problem, Individual individual, int n, int m) {
     int a = Math.min(n, m);
     m = Math.max(n, m);
     n = a;
@@ -23,12 +23,12 @@ public class Invert implements Mutate {
     // (i-1,i)
     if (n - 1 >= 0) {
       int idxINegOne = individual.getGenotype().get(n - 1) - 1;
-      differentialCost += problem.getWeights().get(idxINegOne).get(idxI);
+      differentialCost += problem.getWeights().get(idxINegOne, idxI);
     }
     // (j,j+1)
-    if (m + 1 < problem.getWeights().get(idxJ).size()) {
+    if (m + 1 < problem.getWeights().size()) {
       int idxJPosOne = individual.getGenotype().get(m + 1) - 1;
-      differentialCost += problem.getWeights().get(idxJ).get(idxJPosOne);
+      differentialCost += problem.getWeights().get(idxJ, idxJPosOne);
     }
     return differentialCost;
   }
