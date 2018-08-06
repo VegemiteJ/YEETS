@@ -41,6 +41,7 @@ public class Swap implements Mutate {
       Pair p = it.next();
       swap(problem, individual, (int) p.first, (int) p.second);
     }
+    individual.setCost(individual.evaluateCost(problem));
   }
 
   private double calculateDifferentialCost(TSPProblem problem, Individual individual, int n, int m) {

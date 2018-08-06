@@ -91,7 +91,7 @@ public class Jump implements Mutate {
       differentialCost += weights.get(g.get(i - 1) - 1).get(g.get(i) - 1);
     }
     // (i,i+1)
-    if (beforeJump && (i + 1 < problem.getSize() - 1)) {
+    if (beforeJump && (i + 1 < problem.getSize())) {
       differentialCost += weights.get(g.get(i) - 1).get(g.get(i + 1) - 1);
     }
     // (j-1,j)
@@ -99,7 +99,7 @@ public class Jump implements Mutate {
       differentialCost += weights.get(g.get(j - 1) - 1).get(g.get(j) - 1);
     }
     // (j,j+1)
-    if (j + 1 < problem.getSize() - 1) {
+    if (j + 1 < problem.getSize()) {
       differentialCost += weights.get(g.get(j) - 1).get(g.get(j + 1) - 1);
     }
     return differentialCost;

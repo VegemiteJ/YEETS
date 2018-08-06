@@ -19,7 +19,7 @@ import java.util.stream.IntStream;
 public class Individual {
 
   List<Integer> genotype; // the tour, elements should be 1-n
-  private Double cost;
+  private double cost;
 
   public Individual() {
     genotype = new ArrayList<>();
@@ -146,15 +146,15 @@ public class Individual {
    * @return Cost of the tour
    */
   public double evaluateCost(TSPProblem problem) {
-    double cost = 0;
+    double newCost = 0;
     List<List<Double>> weights = problem.getWeights();
     for (int i = 0; i < genotype.size() - 1; i++) {
       // TODO: Loading tour file has the last element as -1, should change in TSPIO
       if (genotype.get(i + 1) == -1) {
         break;
       }
-      cost += weights.get(genotype.get(i) - 1).get(genotype.get(i + 1) - 1);
+      newCost += weights.get(genotype.get(i) - 1).get(genotype.get(i + 1) - 1);
     }
-    return cost;
+    return newCost;
   }
 }

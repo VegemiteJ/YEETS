@@ -7,7 +7,7 @@ public abstract class LocalSearch {
   protected TSPProblem problem;
   protected Mutate mutator;
 
-  abstract Double solve();
+  abstract Individual solve();
 
   LocalSearch(TSPProblem problem, Evaluate evaluate, Mutate mutationFunction) {
     // Load Problem

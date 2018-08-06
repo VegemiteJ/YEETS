@@ -24,13 +24,13 @@ public class RandomizedLocalSearch extends LocalSearch {
   }
 
   @Override
-  public Double solve() {
+  public Individual solve() {
     // Initial solution
-    this.currentBestIndividual = new Individual(problem.getSize());
+    this.currentBestIndividual = new Individual(problem.getSize(), problem);
 
     // Initial cost
-    double currentBestCost = evaluate.evaluate(problem, currentBestIndividual);
-    currentBestIndividual.setCost(currentBestCost);
+//    double currentBestCost = evaluate.evaluate(problem, currentBestIndividual);
+//    currentBestIndividual.setCost(currentBestCost);
 
     // (Jack): Lol Java... so verbose
     List<Integer> outerIdx =
@@ -54,17 +54,16 @@ public class RandomizedLocalSearch extends LocalSearch {
           IntegerPair indexPair = new IntegerPair(anOuterIdx, anInnerIdx);
           mutator.run(problem, s, new ArrayList<>(Arrays.asList(indexPair)));
           double cost = s.getCost();
-          if (cost < currentBestCost) {
-            currentBestCost = cost;
+          if (cost < currentBestIndividual.getCost()) {
             currentBestIndividual = s;
-            if (totalIterations % 100 == 0) {
-              System.out.println(
-                  "New Best: "
-                      + currentBestCost
-                      + " - iterations since last best: "
-                      + (totalIterations
-                      - iterationsSinceLastBest.getLast()));
-            }
+//            if (totalIterations % 100 == 0) {
+//              System.out.println(
+//                  "New Best: "
+//                      + currentBestIndividual.getCost()
+//                      + " - iterations since last best: "
+//                      + (totalIterations
+//                      - iterationsSinceLastBest.getLast()));
+//            }
             madeChange = true;
             iterationsSinceLastBest.addLast(totalIterations);
           }
@@ -73,6 +72,6 @@ public class RandomizedLocalSearch extends LocalSearch {
       }
     }
     currentBestIndividual.assertIsValidTour();
-    return currentBestCost;
+    return currentBestIndividual;
   }
 }
