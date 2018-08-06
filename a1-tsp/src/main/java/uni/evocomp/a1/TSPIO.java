@@ -11,13 +11,12 @@ import uni.evocomp.util.DoublePair;
 import uni.evocomp.util.Util;
 
 public class TSPIO {
+
   TSPIO() {
     ;
   }
 
   /**
-   *
-   *
    * <pre>
    * NAME : eil51
    * COMMENT : 51-city problem (Christofides/Eilon)
@@ -32,7 +31,6 @@ public class TSPIO {
    *
    * @param r the TSP problem file to read
    * @return a TSPProblem object with the weights initialised
-   * @throws IOException
    */
   public TSPProblem read(Reader r) throws IOException, NullPointerException {
     // Read each line of the reader into a string
@@ -124,8 +122,6 @@ public class TSPIO {
   /**
    * @param r a Reader to a ".opt.tour" file
    * @return an Individual whose genotype is the optimal solution
-   * @throws IOException
-   * @throws NullPointerException
    */
   public Individual readSolution(Reader r) throws IOException, NullPointerException {
     // Read each line of the reader into a string
@@ -187,14 +183,14 @@ public class TSPIO {
           solution.add(Integer.parseInt(split[0]));
         }
       }
-      return new Individual(solution);
+      return new Individual(solution, 0.0);
     }
   }
 
   // TODO : Fill in after we have Instance
   // TODO : Figure out whether we even need this function
   /**
-   * 
+   *
    * @param instance
    */
   public void write(Individual instance) {

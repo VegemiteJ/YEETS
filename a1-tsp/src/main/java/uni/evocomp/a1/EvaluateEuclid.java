@@ -3,6 +3,7 @@ package uni.evocomp.a1;
 import java.util.List;
 
 public class EvaluateEuclid implements Evaluate {
+
   @Override
   public double evaluate(TSPProblem problem, Individual individual) {
     double cost = 0;

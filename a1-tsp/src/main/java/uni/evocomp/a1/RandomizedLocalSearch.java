@@ -24,11 +24,13 @@ public class RandomizedLocalSearch extends LocalSearch {
   }
 
   @Override
-  public Double solve() {
+  public Individual solve() {
     // Initial solution
-    this.currentBestIndividual = new Individual(problem.getSize());
+    this.currentBestIndividual = new Individual(problem.getSize(), problem);
 
-    double currentBestCost = evaluate.evaluate(problem, currentBestIndividual);
+    // Initial cost
+//    double currentBestCost = evaluate.evaluate(problem, currentBestIndividual);
+//    currentBestIndividual.setCost(currentBestCost);
 
     // (Jack): Lol Java... so verbose
     List<Integer> outerIdx =
@@ -50,15 +52,18 @@ public class RandomizedLocalSearch extends LocalSearch {
         for (Integer anInnerIdx : innerIdx) {
           Individual s = new Individual(currentBestIndividual);
           IntegerPair indexPair = new IntegerPair(anOuterIdx, anInnerIdx);
-          mutator.run(s, new ArrayList<>(Arrays.asList(indexPair)));
-          double cost = evaluate.evaluate(problem, s);
-          if (cost < currentBestCost) {
-            currentBestCost = cost;
+          mutator.run(problem, s, new ArrayList<>(Arrays.asList(indexPair)));
+          double cost = s.getCost();
+          if (cost < currentBestIndividual.getCost()) {
             currentBestIndividual = s;
-            if (totalIterations % 100 == 0) {
-              System.out.println("New Best: " + currentBestCost + " - iterations since last best: "
-                  + (totalIterations - iterationsSinceLastBest.getLast()));
-            }
+//            if (totalIterations % 100 == 0) {
+//              System.out.println(
+//                  "New Best: "
+//                      + currentBestIndividual.getCost()
+//                      + " - iterations since last best: "
+//                      + (totalIterations
+//                      - iterationsSinceLastBest.getLast()));
+//            }
             madeChange = true;
             iterationsSinceLastBest.addLast(totalIterations);
           }
@@ -67,6 +72,7 @@ public class RandomizedLocalSearch extends LocalSearch {
       }
     }
     currentBestIndividual.assertIsValidTour();
-    return currentBestCost;
+    currentBestIndividual.assertIsValidCost(problem);
+    return currentBestIndividual;
   }
 }

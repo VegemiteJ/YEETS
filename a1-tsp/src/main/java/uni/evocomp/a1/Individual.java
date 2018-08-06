@@ -11,15 +11,15 @@ import java.util.stream.IntStream;
 /**
  * Used to store a single trial/solution of the TSP problem.
  *
- * <p>
- * As such, it should contain a Set of numbers, where each number is a city, representing a
+ * <p>As such, it should contain a Set of numbers, where each number is a city, representing a
  * permutation of all the cities (from 1-n)
  *
  * @author Namdrib
  */
 public class Individual {
+
   private List<Integer> genotype; // the tour, elements should be 1-n
-  private Double cost;
+  private double cost;
 
   public Individual() {
     genotype = new ArrayList<>();
@@ -33,15 +33,41 @@ public class Individual {
    */
   public Individual(Individual src) {
     this.genotype = new ArrayList<>(src.getGenotype());
+    this.setCost(src.cost);
   }
 
-  /** @param n initialise to have a tour of n cities */
+  /**
+   * @param n initialise to have a tour of n cities
+   */
   public Individual(int n) {
     initialise(n);
   }
 
-  public Individual(List<Integer> genotype) {
+  /**
+   * @param n initialise to have a tour of n cities
+   * @param problem problem to evaluate initial cost against
+   */
+  public Individual(int n, TSPProblem problem) {
+    initialise(n);
+    setCost(evaluateCost(problem));
+  }
+
+  /**
+   * @param genotype initial tour for the Individual
+   * @param initialCost Initial cost of tour
+   */
+  public Individual(List<Integer> genotype, Double initialCost) {
     this.genotype = genotype;
+    setCost(initialCost);
+  }
+
+  /**
+   * @param genotype initial tour for the Individual
+   * @param problem problem to evaluate initial cost against
+   */
+  public Individual(List<Integer> genotype, TSPProblem problem) {
+    this.genotype = genotype;
+    setCost(evaluateCost(problem));
   }
 
   /**
@@ -72,7 +98,7 @@ public class Individual {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    for (Iterator<Integer> it = genotype.iterator(); it.hasNext();) {
+    for (Iterator<Integer> it = genotype.iterator(); it.hasNext(); ) {
       sb.append(String.valueOf(it.next()));
       sb.append("\n");
     }
@@ -96,9 +122,9 @@ public class Individual {
         IntStream.rangeClosed(1, getGenotype().size()).boxed().collect(Collectors.toSet());
 
     // Assert only distinct elements
-
-    IllegalStateException exc = new IllegalStateException(
-        "Illegal tour state. Printing tour...\n" + getTourAsDebugString(getGenotype()));
+    IllegalStateException exc =
+        new IllegalStateException(
+            "Illegal tour state. Printing tour...\n" + getTourAsDebugString(getGenotype()));
 
     for (Integer i : getGenotype()) {
       if (tour.contains(i)) {
@@ -110,5 +136,34 @@ public class Individual {
     if (tour.size() != 0) {
       throw exc;
     }
+  }
+
+  public void assertIsValidCost(TSPProblem problem) throws IllegalStateException {
+    IllegalStateException exc =
+        new IllegalStateException(
+            "Differential Cost not equal to actual cost...\n" + getTourAsDebugString(
+                getGenotype()));
+    if (cost != evaluateCost(problem)) {
+      throw exc;
+    }
+  }
+
+  /**
+   * Finds the cost of the tour the individual is holding. Note: does not update Individual.cost
+   *
+   * @param problem Problem to evaluate cost against
+   * @return Cost of the tour
+   */
+  public double evaluateCost(TSPProblem problem) {
+    double newCost = 0;
+    List<List<Double>> weights = problem.getWeights();
+    for (int i = 0; i < genotype.size() - 1; i++) {
+      // TODO: Loading tour file has the last element as -1, should change in TSPIO
+      if (genotype.get(i + 1) == -1) {
+        break;
+      }
+      newCost += weights.get(genotype.get(i) - 1).get(genotype.get(i + 1) - 1);
+    }
+    return newCost;
   }
 }

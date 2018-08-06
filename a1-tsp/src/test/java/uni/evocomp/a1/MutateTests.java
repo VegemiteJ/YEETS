@@ -11,6 +11,6 @@ import org.junit.runners.Suite.SuiteClasses;
  *
  */
 @RunWith(Suite.class)
-@SuiteClasses({InsertTest.class, InvertTest.class, JumpTest.class, SwapTest.class})
+@SuiteClasses({InsertTest.class, InvertTest.class, SwapTest.class, JumpTest.class})
 public class MutateTests {
 }
