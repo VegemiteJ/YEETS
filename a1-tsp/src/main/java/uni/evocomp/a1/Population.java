@@ -1,6 +1,7 @@
 package uni.evocomp.a1;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
@@ -14,7 +15,7 @@ public class Population {
   private Set<Individual> population;
 
   public Population() {
-    population = new HashSet<>();
+    population = new LinkedHashSet<>();
   }
 
   /**
@@ -23,7 +24,7 @@ public class Population {
    * @param src source Population object to copy construct
    */
   public Population(Population src) {
-    this.population = new HashSet<>(src.getPopulation());
+    this.population = new LinkedHashSet<>(src.getPopulation());
   }
 
   /**

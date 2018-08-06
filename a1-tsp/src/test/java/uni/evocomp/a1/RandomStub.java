@@ -24,7 +24,7 @@ public class RandomStub extends Random {
   
   // Methods
   @Override
-  public int nextInt() {
+  public int nextInt(int bound) {
     int i = ints.get(intCounter%ints.size());
     intCounter++;
     return i;

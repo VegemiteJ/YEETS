@@ -2,6 +2,7 @@ package uni.evocomp.a1;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
@@ -42,23 +43,30 @@ public class TournamentSelection implements SelectSurvivors {
 
   private void runTournament(Population population, TSPProblem problem, Random rand,
       Set<Individual> survivors) {
-    Set<Integer> s = new HashSet<>();
+    Set<Integer> s = new LinkedHashSet<>();
     List<Individual> tournamentList = new ArrayList<>();
 
     // choose k random individuals from population
-    if (tournamentSize > population.getSize()) {
+    if (tournamentSize < population.getSize()) {
       while (s.size() < tournamentSize) {
-        s.add(rand.nextInt(population.getSize()));
+        int index = rand.nextInt(population.getSize());
+        s.add(index);
+        // System.out.println("added to tournament: " + index);
       }
       // Iterate over HashSet and add individuals to the tournament list
       List<Individual> individualList = new ArrayList<>(population.getPopulation());
       Iterator<Integer> itr = s.iterator();
       while (itr.hasNext()) {
-        tournamentList.add(individualList.get(itr.next()));
+        int index = itr.next();
+        // System.out.println("Index added to set (after extraction from set)" + index);
+        Individual next = individualList.get(index);// TODO: this is fucked
+        tournamentList.add(next);
+        // System.out.println("added to tournament: " + next.hashCode());
       }
     }
     // if k < pop.size, use the whole population
     else {
+      // System.out.println("k > pop size");
       tournamentList = new ArrayList<>(population.getPopulation());
     }
 
@@ -69,9 +77,11 @@ public class TournamentSelection implements SelectSurvivors {
 
     // Choose the best individual with probability p, 2nd with p(1-p), 3rd with p(1-p)^2 etc.
     int i = 0;
+    // System.out.println("tournament size: " + tournamentList.size());
     for (Individual individual : tournamentList) {
       if (rand.nextDouble() < (p * Math.pow((1 - p), i))) {
         survivors.add(individual);
+        // System.out.println("added to survivors: " + individual.hashCode());
         if (survivors.size() >= (int) (survivalProportion * population.getSize())) {
           break;
         }
