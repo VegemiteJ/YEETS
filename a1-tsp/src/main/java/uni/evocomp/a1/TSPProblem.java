@@ -6,6 +6,7 @@ import java.util.List;
 // TODO : See whether we need to have this actually handle the IO, or whether IO
 // is separate and gets passed to this.
 public class TSPProblem {
+
   private String name;
   private String comment;
   private String type; // tour or TSP
@@ -29,8 +30,8 @@ public class TSPProblem {
     this.weights = new ArrayList<>(src.getWeights());
   }
 
-  public TSPProblem(
-      String name, String comment, String type, String edgeWeightType, List<List<Double>> weights) {
+  public TSPProblem(String name, String comment, String type, String edgeWeightType,
+      List<List<Double>> weights) {
     this.name = name;
     this.comment = comment;
     this.type = type;
@@ -58,7 +59,9 @@ public class TSPProblem {
     return weights;
   }
 
-  /** @return the number of cities/towns/nodes in the problem */
+  /**
+   * @return the number of cities/towns/nodes in the problem
+   */
   public int getSize() {
     return weights.size();
   }
