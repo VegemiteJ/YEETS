@@ -14,6 +14,17 @@ public class Matrix {
   // (i and j are zero-indexed).
   private Double[] array;
 
+  public Matrix(Matrix src) {
+    this.rDim = src.rDim;
+    this.cDim = src.cDim;
+    this.array = new Double[rDim*cDim];
+    for (int i=0; i<rDim; i++) {
+      for (int j=0; j<cDim; j++) {
+        array[rDim*i+j] = src.get(i,j);
+      }
+    }
+  }
+
   /* Matrix.java
    * James Kortman    | a1648090
    *
@@ -28,8 +39,19 @@ public class Matrix {
   this.rDim = rDim;
   this.cDim = cDim;
   this.array = new Double[rDim*cDim];
-  for (int i=0; i<rDim; i++) {
-    for (int j=0; j<cDim; j++) {
+  furnishArray(array, weights, rDim, cDim);
+  }
+
+  public Matrix(List<List<Double>> weights) {
+    this.rDim = weights.size();
+    this.cDim = weights.get(0).size();
+    this.array = new Double[rDim*cDim];
+    furnishArray(array, weights, rDim, cDim);
+  }
+
+  private void furnishArray(Double[] array, List<List<Double>> weights, int rDim, int cDim) {
+    for (int i=0; i<rDim; i++) {
+      for (int j=0; j<cDim; j++) {
         if (weights != null) {
           array[rDim*i+j] = weights.get(i).get(j);
         } else {
@@ -37,6 +59,10 @@ public class Matrix {
         }
       }
     }
+  }
+
+  public int size() {
+    return this.rDim;
   }
 
   // Getter to read a value at a coordinate in the matrix.
