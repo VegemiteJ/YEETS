@@ -1,4 +1,4 @@
-package uni.evocomp.a1;
+package uni.evocomp.a1.selectsurvivors;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -7,6 +7,11 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Set;
+import uni.evocomp.a1.Individual;
+import uni.evocomp.a1.Population;
+import uni.evocomp.a1.TSPProblem;
+import uni.evocomp.a1.evaluate.Evaluate;
+import uni.evocomp.a1.evaluate.EvaluateEuclid;
 
 /**
  * TournamentSelection class, one of the implementations of the SelectSurvivors interface Contains

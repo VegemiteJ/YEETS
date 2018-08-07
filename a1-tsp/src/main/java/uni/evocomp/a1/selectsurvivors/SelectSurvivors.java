@@ -1,6 +1,8 @@
-package uni.evocomp.a1;
+package uni.evocomp.a1.selectsurvivors;
 
 import java.util.Random;
+import uni.evocomp.a1.Population;
+import uni.evocomp.a1.TSPProblem;
 
 /**
  * SelectSurvivors interface

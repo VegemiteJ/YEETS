@@ -1,4 +1,4 @@
-package uni.evocomp.a1;
+package uni.evocomp.a1.mutate;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -6,6 +6,11 @@ import java.util.List;
 import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
+import uni.evocomp.a1.Individual;
+import uni.evocomp.a1.TSPProblem;
+import uni.evocomp.a1.evaluate.EvaluateEuclid;
+import uni.evocomp.a1.mutate.Jump;
+import uni.evocomp.a1.mutate.Mutate;
 import uni.evocomp.util.IntegerPair;
 
 public class JumpTest extends TestCase {
