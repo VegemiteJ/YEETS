@@ -1,0 +1,16 @@
+LocalSearch:
+
+    Given an initial Individual initial (Random tour)
+    Find Local Minimum Tour by making random mutations
+    
+    BestCostSoFar = CostOfTour(Individual initial)
+    while NoChangesMade:
+        Set NoChangesMade = True
+        for Every Pair of cities:
+            Make copy of Best Individual so far
+            Mutate(Mutation operator, Individual copy)
+            If CostOfTour(copy) < BestCostSoFar
+                Accept Change
+                Mark NoChangesMade = False
+
+    Return BestCostSoFar
