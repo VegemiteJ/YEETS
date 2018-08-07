@@ -50,11 +50,12 @@ public class OrderCrossoverTest {
     assertEquals(Arrays.asList(1, 2), child.getGenotype());
   }
 
-  @Test(expected = IllegalArgumentException.class)
-  public void testSliceTooSmall() {
+  @Test
+  public void testSliceSmall() {
     Individual a = new Individual(Arrays.asList(1, 2));
     Individual b = new Individual(Arrays.asList(2, 1));
-    crossover.recombine(a, b, new IntegerPair(0, 1));
+    Individual child = crossover.recombine(a, b, new IntegerPair(0, 1));
+    assertEquals(Arrays.asList(1, 2), child.getGenotype());
   }
 
   @Test

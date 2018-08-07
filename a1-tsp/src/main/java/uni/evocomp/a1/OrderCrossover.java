@@ -33,9 +33,8 @@ public class OrderCrossover implements Recombine {
     // Validate inputs.
     if (slice.first < 0 || slice.second < 0 || slice.first > n || slice.second > n
         || slice.first == slice.second
-        || slice.first == (slice.second + 1) % n
         || secondParent.getGenotype().size() != n) {
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException("");
     }
 
     Individual child = new Individual(n);
@@ -82,12 +81,12 @@ public class OrderCrossover implements Recombine {
     return false;
   }
 
-  private IntegerPair getRandomSlice(Integer n) {
+  public IntegerPair getRandomSlice(Integer n) {
     Random r = new Random();
     int start = r.nextInt(n);
-    int end = r.nextInt(n - 1);
+    int end = r.nextInt(n - 2);
     if (end >= start) {
-      end += 1;
+      end += 2;
     }
     return new IntegerPair(start, end);
   }
