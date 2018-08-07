@@ -14,6 +14,7 @@ import uni.evocomp.util.IntegerPair;
 public class RandomizedLocalSearch extends LocalSearch {
 
   private final boolean USE_RANDOM = true;
+  private final long maxTime = 300000000000L; // 5 minutes
 
   RandomizedLocalSearch(TSPProblem problem, Evaluate evaluate, Mutate mutationFunction) {
     super(problem, evaluate, mutationFunction);
@@ -45,12 +46,15 @@ public class RandomizedLocalSearch extends LocalSearch {
 
     int totalIterations = 0;
     boolean madeChange = true;
+    long start = System.nanoTime();
+    loops:
     while (madeChange) {
       // Shuffle indexes
       modifyAccessOrdering(outerIdx);
       modifyAccessOrdering(innerIdx);
       madeChange = false;
       for (Integer anOuterIdx : outerIdx) {
+        if (System.nanoTime() - start > maxTime) break loops;
         for (Integer anInnerIdx : innerIdx) {
           Individual s = new Individual(currentBestIndividual);
           IntegerPair indexPair = new IntegerPair(anOuterIdx, anInnerIdx);
@@ -73,6 +77,7 @@ public class RandomizedLocalSearch extends LocalSearch {
         }
       }
     }
+
     currentBestIndividual.assertIsValidTour();
     currentBestIndividual.assertIsValidCost(problem);
     return currentBestIndividual;
