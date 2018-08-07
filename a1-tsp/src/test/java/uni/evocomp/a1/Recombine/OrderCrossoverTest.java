@@ -1,4 +1,4 @@
-package uni.evocomp.a1;
+package uni.evocomp.a1.recombine;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -7,6 +7,7 @@ import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
 import uni.evocomp.util.IntegerPair;
+import uni.evocomp.a1.Individual;
 
 public class OrderCrossoverTest {
   OrderCrossover crossover;

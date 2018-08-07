@@ -1,8 +1,9 @@
-package uni.evocomp.a1;
+package uni.evocomp.a1.recombine;
 
 import java.util.Random;
 import uni.evocomp.util.Pair;
 import uni.evocomp.util.IntegerPair;
+import uni.evocomp.a1.Individual;
 
 /**
  * Perform the order crossover recombination: take an ordered part of the first parent,
