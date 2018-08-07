@@ -35,19 +35,26 @@ public class LocalSearchBenchmark {
     TSPIO io = new TSPIO();
     ArrayList<Pair<TSPProblem, Individual>> benchmarks = new ArrayList<>();
     for (String testString : testNames) {
+      TSPProblem problem = null;
       try {
-        TSPProblem problem = io.read(new FileReader(testString + testSuffix));
+        problem = io.read(new FileReader(testString + testSuffix));
         Individual solution = io.readSolution(new FileReader(testString + tourSuffix));
         solution.setCost(evaluator.evaluate(problem, solution));
         benchmarks.add(new Pair<>(problem, solution));
       } catch (IOException e) {
-        e.printStackTrace();
+//        e.printStackTrace();
+        benchmarks.add(new Pair<>(problem, null));
       }
     }
 
     for (Pair<TSPProblem, Individual> benchmark : benchmarks) {
       TSPProblem problemDef = benchmark.first;
-      System.out.println(problemDef.getName() + " (Best: " + benchmark.second.getCost() + ")");
+      if (problemDef == null){
+        continue;
+      }
+      if (benchmark.second != null) {
+        System.out.println(problemDef.getName() + " (Best: " + benchmark.second.getCost() + ")");
+      }
 
       for (int mi = 0; mi < mutationFunctions.length; mi++) {
         System.out.println("  " + mutationNames[mi]);
