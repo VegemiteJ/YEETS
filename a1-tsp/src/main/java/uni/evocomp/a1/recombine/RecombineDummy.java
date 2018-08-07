@@ -1,5 +1,5 @@
 package uni.evocomp.a1.recombine;
 
-public class DummyRecombine {
+public class RecombineDummy {
 
 }
