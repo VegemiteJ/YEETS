@@ -1,5 +1,8 @@
 package uni.evocomp.a1;
 
+import uni.evocomp.a1.evaluate.Evaluate;
+import uni.evocomp.a1.mutate.Mutate;
+
 public abstract class LocalSearch {
 
   final Evaluate evaluate;

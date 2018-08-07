@@ -1,4 +1,4 @@
-package uni.evocomp.a1;
+package uni.evocomp.a1.evaluate;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -8,6 +8,11 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import uni.evocomp.a1.Individual;
+import uni.evocomp.a1.TSPIO;
+import uni.evocomp.a1.TSPProblem;
+import uni.evocomp.a1.evaluate.Evaluate;
+import uni.evocomp.a1.evaluate.EvaluateEuclid;
 
 public class EvaluateEuclidTest {
   Evaluate e;
@@ -68,10 +73,13 @@ public class EvaluateEuclidTest {
     Individual bestTour;
 
     TSPIO io = new TSPIO();
-    problem = io.read(new FileReader("tests/pcb442.tsp"));
-    bestTour = io.readSolution(new FileReader("tests/pcb442.opt.tour"));
-
-    double cost = e.evaluate(problem, bestTour);
+    double cost = -1;
+    try (FileReader fr1 = new FileReader("tests/pcb442.tsp");
+        FileReader fr2 = new FileReader("tests/pcb442.opt.tour")) {
+      problem = io.read(fr1);
+      bestTour = io.readSolution(fr2);
+      cost = e.evaluate(problem, bestTour);
+    }
 
     System.out.println(cost);
   }

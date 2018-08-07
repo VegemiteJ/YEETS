@@ -7,6 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import uni.evocomp.a1.evaluate.Evaluate;
+import uni.evocomp.a1.mutate.Mutate;
 import uni.evocomp.util.IntegerPair;
 
 public class RandomizedLocalSearch extends LocalSearch {

@@ -3,6 +3,12 @@ package uni.evocomp.a1;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import uni.evocomp.a1.evaluate.Evaluate;
+import uni.evocomp.a1.evaluate.EvaluateEuclid;
+import uni.evocomp.a1.mutate.Invert;
+import uni.evocomp.a1.mutate.Jump;
+import uni.evocomp.a1.mutate.Mutate;
+import uni.evocomp.a1.mutate.Swap;
 import uni.evocomp.util.Pair;
 
 public class LocalSearchBenchmark {
@@ -19,11 +25,13 @@ public class LocalSearchBenchmark {
     "tests/pr2392",
     "tests/usa13509"
   };
+
   public static final Mutate[] mutationFunctions = {new Jump(), new Swap(), new Invert()};
   public static final String[] mutationNames = {"Jump", "Exchange", "2-Opt"};
   public static final int repeats = 30;
   public static final String testSuffix = ".tsp";
   public static final String tourSuffix = ".opt.tour";
+
   LocalSearchBenchmark() {
     // Assume we create a local search function with parameters
     // new LocalSearch(problem, mutator)
@@ -36,9 +44,10 @@ public class LocalSearchBenchmark {
     ArrayList<Pair<TSPProblem, Individual>> benchmarks = new ArrayList<>();
     for (String testString : testNames) {
       TSPProblem problem = null;
-      try {
-        problem = io.read(new FileReader(testString + testSuffix));
-        Individual solution = io.readSolution(new FileReader(testString + tourSuffix));
+      try (FileReader fr1 = new FileReader(testString + testSuffix);
+        FileReader fr2 = new FileReader(testString + tourSuffix)) {
+        problem = io.read(fr1);
+        Individual solution = io.readSolution(fr2);
         solution.setCost(evaluator.evaluate(problem, solution));
         benchmarks.add(new Pair<>(problem, solution));
       } catch (IOException e) {
