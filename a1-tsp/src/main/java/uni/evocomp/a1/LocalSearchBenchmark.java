@@ -3,22 +3,32 @@ package uni.evocomp.a1;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import uni.evocomp.a1.evaluate.Evaluate;
+import uni.evocomp.a1.evaluate.EvaluateEuclid;
+import uni.evocomp.a1.mutate.Invert;
+import uni.evocomp.a1.mutate.Jump;
+import uni.evocomp.a1.mutate.Mutate;
+import uni.evocomp.a1.mutate.Swap;
 import uni.evocomp.util.Pair;
 
 public class LocalSearchBenchmark {
 
-  public static void main(String[] args) {
-    new LocalSearchBenchmark();
-  }
-
-  public static final String[] testNames =
-      {"tests/eil51", "tests/pcb442", "tests/eil76", "tests/eil101", "tests/kroA100",
-          "tests/kroC100", "tests/kroD100", "tests/lin105", "tests/pr2392", "tests/usa13509"};
+  public static final String[] testNames = {
+    "tests/eil51",
+    "tests/eil76",
+    "tests/eil101",
+    "tests/kroA100",
+    "tests/kroC100",
+    "tests/kroD100",
+    "tests/lin105",
+    "tests/pcb442",
+    "tests/pr2392",
+    "tests/usa13509"
+  };
 
   public static final Mutate[] mutationFunctions = {new Jump(), new Swap(), new Invert()};
   public static final String[] mutationNames = {"Jump", "Exchange", "2-Opt"};
   public static final int repeats = 30;
-
   public static final String testSuffix = ".tsp";
   public static final String tourSuffix = ".opt.tour";
 
@@ -33,20 +43,27 @@ public class LocalSearchBenchmark {
     TSPIO io = new TSPIO();
     ArrayList<Pair<TSPProblem, Individual>> benchmarks = new ArrayList<>();
     for (String testString : testNames) {
+      TSPProblem problem = null;
       try (FileReader fr1 = new FileReader(testString + testSuffix);
-          FileReader fr2 = new FileReader(testString + tourSuffix)) {
-        TSPProblem problem = io.read(fr1);
+        FileReader fr2 = new FileReader(testString + tourSuffix)) {
+        problem = io.read(fr1);
         Individual solution = io.readSolution(fr2);
         solution.setCost(evaluator.evaluate(problem, solution));
         benchmarks.add(new Pair<>(problem, solution));
       } catch (IOException e) {
-        e.printStackTrace();
+//        e.printStackTrace();
+        benchmarks.add(new Pair<>(problem, null));
       }
     }
 
     for (Pair<TSPProblem, Individual> benchmark : benchmarks) {
       TSPProblem problemDef = benchmark.first;
-      System.out.println(problemDef.getName() + " (Best: " + benchmark.second.getCost() + ")");
+      if (problemDef == null){
+        continue;
+      }
+      if (benchmark.second != null) {
+        System.out.println(problemDef.getName() + " (Best: " + benchmark.second.getCost() + ")");
+      }
 
       for (int mi = 0; mi < mutationFunctions.length; mi++) {
         System.out.println("  " + mutationNames[mi]);
@@ -60,17 +77,17 @@ public class LocalSearchBenchmark {
         double averageCost = 0;
 
         for (int i = 0; i < repeats; i++) {
-          System.out.println("Running a new test");
-          System.out.println("===================================");
-          cost = ls.solve();
-          if (cost < minCost) {
-            minCost = cost;
+          //          System.out.println("Running a new test");
+          //          System.out.println("===================================");
+          Individual result = ls.solve();
+          if (result.getCost() < minCost) {
+            minCost = result.getCost();
           }
-          if (cost > maxCost) {
-            maxCost = cost;
+          if (result.getCost() > maxCost) {
+            maxCost = result.getCost();
           }
-          averageCost += cost;
-          System.out.println("===================================");
+          averageCost += result.getCost();
+          //          System.out.println("===================================");
         }
         averageCost /= repeats;
 
@@ -79,5 +96,9 @@ public class LocalSearchBenchmark {
         System.out.println("    Ave: " + averageCost);
       }
     }
+  }
+
+  public static void main(String[] args) {
+    new LocalSearchBenchmark();
   }
 }

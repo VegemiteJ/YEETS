@@ -3,6 +3,7 @@ package uni.evocomp.a1;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +12,8 @@ import uni.evocomp.util.DoublePair;
 import uni.evocomp.util.Util;
 
 public class TSPIO {
-  TSPIO() {
+
+  public TSPIO() {
     ;
   }
 
@@ -32,7 +34,6 @@ public class TSPIO {
    *
    * @param r the TSP problem file to read
    * @return a TSPProblem object with the weights initialised
-   * @throws IOException
    */
   public TSPProblem read(Reader r) throws IOException, NullPointerException {
     // Read each line of the reader into a string
@@ -100,7 +101,8 @@ public class TSPIO {
           if (split.length < 3) {
             throw new IOException("Bad body format on line " + i + ": " + line);
           }
-          points.put(Integer.parseInt(split[0]),
+          points.put(
+              Integer.parseInt(split[0]),
               new DoublePair(Double.valueOf(split[1]), Double.valueOf(split[2])));
           cityCounter++;
           if (cityCounter > dimension) {
@@ -124,8 +126,6 @@ public class TSPIO {
   /**
    * @param r a Reader to a ".opt.tour" file
    * @return an Individual whose genotype is the optimal solution
-   * @throws IOException
-   * @throws NullPointerException
    */
   public Individual readSolution(Reader r) throws IOException, NullPointerException {
     // Read each line of the reader into a string
@@ -187,17 +187,22 @@ public class TSPIO {
           solution.add(Integer.parseInt(split[0]));
         }
       }
-      return new Individual(solution);
+      return new Individual(solution, 0.0);
     }
   }
 
   // TODO : Fill in after we have Instance
   // TODO : Figure out whether we even need this function
   /**
+   * Writes an <code>Instance</code> into a writer.
    * 
-   * @param instance
+   * Passing a writer (as opposed to just directly writing to a file) makes it easier to test, as a
+   * StringWriter can be passed in.
+   * 
+   * @param instance instance to write
+   * @param w writer into which the instance is written
    */
-  public void write(Individual instance) {
+  public void write(Individual instance, Writer w) {
     System.out.println("Writing instance");
   }
 }

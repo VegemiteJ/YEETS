@@ -1,20 +1,19 @@
 package uni.evocomp.a1;
 
-import java.util.ArrayList;
 import java.util.List;
+import uni.evocomp.util.Matrix;
 
 // TODO : See whether we need to have this actually handle the IO, or whether IO
 // is separate and gets passed to this.
 public class TSPProblem {
+
   private String name;
   private String comment;
   private String type; // tour or TSP
   private String edgeWeightType; // For this assignment, will always be EUC_2D, but it can be EUC_3D
-  private List<List<Double>> weights;
+  private Matrix weights;
 
-  public TSPProblem() {
-    ;
-  }
+  public TSPProblem() {}
 
   /**
    * Copy constructor for TSPProblem
@@ -26,16 +25,25 @@ public class TSPProblem {
     this.comment = new String(src.getComment());
     this.type = new String(src.getType());
     this.edgeWeightType = new String(src.getEdgeWeightType());
-    this.weights = new ArrayList<>(src.getWeights());
+    this.weights = new Matrix(src.getWeights());
   }
 
-  public TSPProblem(String name, String comment, String type, String edgeWeightType,
-      List<List<Double>> weights) {
+  public TSPProblem(
+      String name, String comment, String type, String edgeWeightType, Matrix weights) {
     this.name = name;
     this.comment = comment;
     this.type = type;
     this.edgeWeightType = edgeWeightType;
     this.weights = weights;
+  }
+
+  public TSPProblem(
+      String name, String comment, String type, String edgeWeightType, List<List<Double>> weights) {
+    this.name = name;
+    this.comment = comment;
+    this.type = type;
+    this.edgeWeightType = edgeWeightType;
+    this.weights = new Matrix(weights);
   }
 
   public String getName() {
@@ -54,7 +62,7 @@ public class TSPProblem {
     return edgeWeightType;
   }
 
-  public List<List<Double>> getWeights() {
+  public Matrix getWeights() {
     return weights;
   }
 

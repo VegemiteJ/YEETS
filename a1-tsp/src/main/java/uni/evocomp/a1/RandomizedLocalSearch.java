@@ -7,11 +7,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import uni.evocomp.a1.evaluate.Evaluate;
+import uni.evocomp.a1.mutate.Mutate;
 import uni.evocomp.util.IntegerPair;
 
 public class RandomizedLocalSearch extends LocalSearch {
 
   private final boolean USE_RANDOM = true;
+  private final long maxTime = 300000000000L; // 5 minutes
 
   RandomizedLocalSearch(TSPProblem problem, Evaluate evaluate, Mutate mutationFunction) {
     super(problem, evaluate, mutationFunction);
@@ -24,11 +27,13 @@ public class RandomizedLocalSearch extends LocalSearch {
   }
 
   @Override
-  public Double solve() {
+  public Individual solve() {
     // Initial solution
-    this.currentBestIndividual = new Individual(problem.getSize());
+    this.currentBestIndividual = new Individual(problem.getSize(), problem);
 
-    double currentBestCost = evaluate.evaluate(problem, currentBestIndividual);
+    // Initial cost
+    //    double currentBestCost = evaluate.evaluate(problem, currentBestIndividual);
+    //    currentBestIndividual.setCost(currentBestCost);
 
     // (Jack): Lol Java... so verbose
     List<Integer> outerIdx =
@@ -41,24 +46,30 @@ public class RandomizedLocalSearch extends LocalSearch {
 
     int totalIterations = 0;
     boolean madeChange = true;
+    long start = System.nanoTime();
+    loops:
     while (madeChange) {
       // Shuffle indexes
       modifyAccessOrdering(outerIdx);
       modifyAccessOrdering(innerIdx);
       madeChange = false;
       for (Integer anOuterIdx : outerIdx) {
+        if (System.nanoTime() - start > maxTime) break loops;
         for (Integer anInnerIdx : innerIdx) {
           Individual s = new Individual(currentBestIndividual);
           IntegerPair indexPair = new IntegerPair(anOuterIdx, anInnerIdx);
-          mutator.run(s, new ArrayList<>(Arrays.asList(indexPair)));
-          double cost = evaluate.evaluate(problem, s);
-          if (cost < currentBestCost) {
-            currentBestCost = cost;
+          mutator.run(problem, s, new ArrayList<>(Arrays.asList(indexPair)));
+          double cost = s.getCost();
+          if (cost < currentBestIndividual.getCost()) {
             currentBestIndividual = s;
-            if (totalIterations % 100 == 0) {
-              System.out.println("New Best: " + currentBestCost + " - iterations since last best: "
-                  + (totalIterations - iterationsSinceLastBest.getLast()));
-            }
+            //            if (totalIterations % 100 == 0) {
+            //              System.out.println(
+            //                  "New Best: "
+            //                      + currentBestIndividual.getCost()
+            //                      + " - iterations since last best: "
+            //                      + (totalIterations
+            //                      - iterationsSinceLastBest.getLast()));
+            //            }
             madeChange = true;
             iterationsSinceLastBest.addLast(totalIterations);
           }
@@ -66,7 +77,9 @@ public class RandomizedLocalSearch extends LocalSearch {
         }
       }
     }
+
     currentBestIndividual.assertIsValidTour();
-    return currentBestCost;
+    currentBestIndividual.assertIsValidCost(problem);
+    return currentBestIndividual;
   }
 }

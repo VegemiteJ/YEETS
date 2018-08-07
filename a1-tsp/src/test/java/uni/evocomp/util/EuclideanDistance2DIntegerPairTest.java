@@ -1,6 +1,7 @@
 package uni.evocomp.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -38,25 +39,25 @@ public class EuclideanDistance2DIntegerPairTest {
 
   @Test
   public void testDifferentIntegerPairs() {
-    assertEquals(6.0, Util.euclideanDistance2D(new IntegerPair(1, 1), new IntegerPair(5, 5)),
-        delta);
+    assertEquals(
+        6.0, Util.euclideanDistance2D(new IntegerPair(1, 1), new IntegerPair(5, 5)), delta);
   }
 
   @Test
   public void testDifferentIntegerPairsReverse() {
-    assertEquals(6.0, Util.euclideanDistance2D(new IntegerPair(5, 5), new IntegerPair(1, 1)),
-        delta);
+    assertEquals(
+        6.0, Util.euclideanDistance2D(new IntegerPair(5, 5), new IntegerPair(1, 1)), delta);
   }
 
   @Test
   public void testBothNegative() {
-    assertEquals(6.0, Util.euclideanDistance2D(new IntegerPair(-1, -1), new IntegerPair(-5, -5)),
-        delta);
+    assertEquals(
+        6.0, Util.euclideanDistance2D(new IntegerPair(-1, -1), new IntegerPair(-5, -5)), delta);
   }
 
   @Test
   public void testOneNegative() {
-    assertEquals(6.0, Util.euclideanDistance2D(new IntegerPair(-1, -1), new IntegerPair(3, 3)),
-        delta);
+    assertEquals(
+        6.0, Util.euclideanDistance2D(new IntegerPair(-1, -1), new IntegerPair(3, 3)), delta);
   }
 }

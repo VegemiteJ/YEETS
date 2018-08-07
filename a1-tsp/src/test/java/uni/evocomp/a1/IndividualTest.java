@@ -1,6 +1,8 @@
 package uni.evocomp.a1;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.util.Arrays;
 import org.junit.Test;
 
@@ -10,34 +12,36 @@ public class IndividualTest {
     try {
       i.assertIsValidTour();
     } catch (Exception exc) {
-      System.out.println("Caught exception as expected. Message Exception: " + exc.getMessage());
+      System.out.println("Caught exception as expected. Message Exception: ");
+      System.out.println(exc.getMessage());
       return true;
     }
     System.out.println("No throw.");
     return false;
   }
 
-  @Test(expected = Test.None.class)
+  @Test
   public void testValidTourWhenEmpty() {
-    new Individual();
+    Individual i = new Individual();
+    assertFalse(didThrowException(i));
   }
 
-  @Test(expected = Test.None.class)
+  @Test
   public void testValidTourWhenNormal() {
-    new Individual(Arrays.asList(1, 5, 2, 3, 4));
+    Individual i = new Individual(Arrays.asList(1, 5, 2, 3, 4), 0.0);
+    assertFalse(didThrowException(i));
   }
 
   @Test
   public void testInvalidTourBadIndex() {
-    Individual i = new Individual(Arrays.asList(1, 5, 2, -1, 4));
+    Individual i = new Individual(Arrays.asList(1, 5, 2, -1, 4), 0.0);
     Boolean result = didThrowException(i);
     assertTrue(result);
   }
 
   @Test
   public void testInvalidTourMissingIndex() {
-    Individual i = new Individual(Arrays.asList(1, 5, 2, 4));
+    Individual i = new Individual(Arrays.asList(1, 5, 2, 4), 0.0);
     assertTrue(didThrowException(i));
   }
-
 }
