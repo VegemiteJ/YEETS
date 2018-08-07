@@ -1,16 +1,21 @@
-package uni.evocomp.a1;
+package uni.evocomp.a1.mutate;
 
-import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
+import uni.evocomp.a1.Individual;
+import uni.evocomp.a1.TSPProblem;
+import uni.evocomp.a1.evaluate.EvaluateEuclid;
+import uni.evocomp.a1.mutate.Insert;
+import uni.evocomp.a1.mutate.Mutate;
 import uni.evocomp.util.IntegerPair;
 
 /** @author Namdrib */
-public class SwapTest {
+public class InsertTest {
 
   private TSPProblem p;
   private EvaluateEuclid eval2D;
@@ -20,12 +25,12 @@ public class SwapTest {
 
   @Before
   public void setUp() throws Exception {
-    m = new Swap();
+    m = new Insert();
 
     List<List<Double>> weights = new ArrayList<>();
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 10; i++) {
       weights.add(new ArrayList<>());
-      for (int j = 0; j < 5; j++) {
+      for (int j = 0; j < 10; j++) {
         weights.get(i).add((double) 3 * i + j);
       }
     }
@@ -40,51 +45,68 @@ public class SwapTest {
   }
 
   @Test
-  public void testSwapEmptyList() {
+  public void testInsertEmptyList() {
     Individual i = new Individual(new ArrayList<>(original), initialCost);
     m.run(p, i, new ArrayList<>());
     assertEquals(original, i.getGenotype());
   }
 
   @Test
-  public void testSwapValid() {
+  public void testInsertValid() {
     Individual i = new Individual(new ArrayList<>(original), initialCost);
     m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(1, 4))));
-    assertEquals(i.getGenotype(), Arrays.asList(1, 5, 3, 4, 2));
+    assertEquals(Arrays.asList(1, 2, 5, 3, 4), i.getGenotype());
   }
 
   @Test
-  public void testSwapSameIndex() {
+  public void testInsertSameIndex() {
     Individual i = new Individual(new ArrayList<>(original), initialCost);
     m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(2, 2))));
-    assertEquals(i.getGenotype(), original);
+    assertEquals(original, i.getGenotype());
   }
 
   @Test
-  public void testSwapBadOrder() {
+  public void testInsertBadOrder() {
     Individual i = new Individual(new ArrayList<>(original), initialCost);
     m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(4, 1))));
-    assertEquals(i.getGenotype(), Arrays.asList(1, 5, 3, 4, 2));
+    assertEquals(Arrays.asList(1, 2, 5, 3, 4), i.getGenotype());
   }
 
   @Test(expected = IndexOutOfBoundsException.class)
-  public void testSwapOutOfBoundsLow() {
+  public void testInsertOutOfBoundsLow() {
     Individual i = new Individual(new ArrayList<>(original), initialCost);
     m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(-1, 4))));
-    assertEquals(i.getGenotype(), original);
   }
 
   @Test(expected = IndexOutOfBoundsException.class)
-  public void testSwapOutOfBoundsHigh() {
+  public void testInsertOutOfBoundsHigh() {
     Individual i = new Individual(new ArrayList<>(original), initialCost);
     m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(1, 10))));
-    assertEquals(i.getGenotype(), original);
   }
 
   @Test
-  public void testSwapMultipleValid() {
+  public void testInsertMultipleValid() {
     Individual i = new Individual(new ArrayList<>(original), initialCost);
-    m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(1, 4), new IntegerPair(4, 1))));
-    assertEquals(i.getGenotype(), original);
+    m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(0, 3), new IntegerPair(3, 4))));
+    assertEquals(Arrays.asList(1, 4, 2, 3, 5), i.getGenotype());
+  }
+
+  @Test
+  public void testInsertMultipleInverse() {
+    Individual i = new Individual(new ArrayList<>(original), initialCost);
+    m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(0, 3), new IntegerPair(3, 0))));
+    assertEquals(Arrays.asList(1, 3, 4, 2, 5), i.getGenotype());
+  }
+
+  @Test(expected = NullPointerException.class)
+  public void testInsertNullIndividual() {
+    Individual i = null;
+    m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(0, 4))));
+  }
+
+  @Test(expected = NullPointerException.class)
+  public void testInsertNullPairs() {
+    Individual i = new Individual(new ArrayList<>(original), initialCost);
+    m.run(p, i, null);
   }
 }

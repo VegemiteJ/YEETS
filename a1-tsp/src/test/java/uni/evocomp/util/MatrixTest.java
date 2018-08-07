@@ -1,8 +1,6 @@
 package uni.evocomp.util;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -43,13 +41,8 @@ public class MatrixTest {
     }
   }
 
-  @Test
+  @Test(expected = IllegalArgumentException.class)
   public void testInvalidSize() {
-    try {
-      Matrix m = new Matrix(-1, -1, null);
-    } catch (IllegalArgumentException e) {
-      return;
-    }
-    fail();
+    new Matrix(-1, -1, null);
   }
 }

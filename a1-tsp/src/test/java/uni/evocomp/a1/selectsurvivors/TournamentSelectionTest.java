@@ -1,4 +1,4 @@
-package uni.evocomp.a1;
+package uni.evocomp.a1.selectsurvivors;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -6,6 +6,12 @@ import java.io.Reader;
 import java.util.Arrays;
 import org.junit.Test;
 import junit.framework.TestCase;
+import uni.evocomp.a1.Individual;
+import uni.evocomp.a1.Population;
+import uni.evocomp.a1.TSPIO;
+import uni.evocomp.a1.TSPProblem;
+import uni.evocomp.a1.selectsurvivors.TournamentSelection;
+import uni.evocomp.util.RandomStub;
 
 public class TournamentSelectionTest extends TestCase {
 
@@ -72,9 +78,7 @@ public class TournamentSelectionTest extends TestCase {
     assertEquals(3, result.getSize());
     // check the survivor to see they're who we expect
     // we expect individuals 1, 4 and 6 to survive because they have the lowest cost
-    assertTrue(result.getPopulation().contains(i0));
-    assertTrue(result.getPopulation().contains(i2));
-    assertTrue(result.getPopulation().contains(i5));
+    assertTrue(result.getPopulation().containsAll(Arrays.asList(i0, i2, i5)));
   }
 
   @Test
@@ -88,9 +92,7 @@ public class TournamentSelectionTest extends TestCase {
     assertEquals(3, result.getSize());
     // check the survivor to see they're who we expect
     // we expect individuals 1, 6 and 5 as we skip every second individual due to RNG
-    assertTrue(result.getPopulation().contains(i0));
-    assertTrue(result.getPopulation().contains(i5));
-    assertTrue(result.getPopulation().contains(i4));
+    assertTrue(result.getPopulation().containsAll(Arrays.asList(i0, i5, i4)));
   }
 
   @Test
@@ -104,9 +106,7 @@ public class TournamentSelectionTest extends TestCase {
     assertEquals(3, result.getSize());
     // check the survivor to see they're who we expect
     // we expect individuals 1, 3 and 2 due to RNG
-    assertTrue(result.getPopulation().contains(i0));
-    assertTrue(result.getPopulation().contains(i2));
-    assertTrue(result.getPopulation().contains(i1));
+    assertTrue(result.getPopulation().containsAll(Arrays.asList(i0, i2, i1)));
   }
 
   /**
@@ -123,9 +123,7 @@ public class TournamentSelectionTest extends TestCase {
     assertEquals(3, result.getSize());
     // check the survivor to see they're who we expect
     // we expect individuals 1, 4 and 6 to survive because they have the lowest cost
-    assertTrue(result.getPopulation().contains(i0));
-    assertTrue(result.getPopulation().contains(i2));
-    assertTrue(result.getPopulation().contains(i5));
+    assertTrue(result.getPopulation().containsAll(Arrays.asList(i0, i2, i5)));
   }
 
   /**
@@ -143,9 +141,7 @@ public class TournamentSelectionTest extends TestCase {
     assertEquals(3, result.getSize());
     // check the survivor to see they're who we expect
     // we expect individuals 2, 4 and 0 to survive as they are the lowest in each of their "buckets"
-    assertTrue(result.getPopulation().contains(i2));
-    assertTrue(result.getPopulation().contains(i4));
-    assertTrue(result.getPopulation().contains(i0));
+    assertTrue(result.getPopulation().containsAll(Arrays.asList(i2, i4, i0)));
   }
 
   @Test
@@ -159,9 +155,7 @@ public class TournamentSelectionTest extends TestCase {
     assertEquals(3, result.getSize());
     // check the survivor to see they're who we expect
     // we expect individuals 1, 2 and 0 to survive as they are the lowest in each of their "buckets"
-    assertTrue(result.getPopulation().contains(i1));
-    assertTrue(result.getPopulation().contains(i2));
-    assertTrue(result.getPopulation().contains(i0));
+    assertTrue(result.getPopulation().containsAll(Arrays.asList(i1, i2, i0)));
   }
 
   @Test
@@ -175,8 +169,6 @@ public class TournamentSelectionTest extends TestCase {
     assertEquals(3, result.getSize());
     // check the survivor to see they're who we expect
     // we expect individuals 5, 0 and 4 to survive as they are the lowest in each of their "buckets"
-    assertTrue(result.getPopulation().contains(i5));
-    assertTrue(result.getPopulation().contains(i0));
-    assertTrue(result.getPopulation().contains(i4));
+    assertTrue(result.getPopulation().containsAll(Arrays.asList(i5, i0, i4)));
   }
 }

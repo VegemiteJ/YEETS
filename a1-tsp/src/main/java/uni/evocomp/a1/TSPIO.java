@@ -3,6 +3,7 @@ package uni.evocomp.a1;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,7 +13,7 @@ import uni.evocomp.util.Util;
 
 public class TSPIO {
 
-  TSPIO() {
+  public TSPIO() {
     ;
   }
 
@@ -192,8 +193,16 @@ public class TSPIO {
 
   // TODO : Fill in after we have Instance
   // TODO : Figure out whether we even need this function
-  /** @param instance */
-  public void write(Individual instance) {
+  /**
+   * Writes an <code>Instance</code> into a writer.
+   * 
+   * Passing a writer (as opposed to just directly writing to a file) makes it easier to test, as a
+   * StringWriter can be passed in.
+   * 
+   * @param instance instance to write
+   * @param w writer into which the instance is written
+   */
+  public void write(Individual instance, Writer w) {
     System.out.println("Writing instance");
   }
 }

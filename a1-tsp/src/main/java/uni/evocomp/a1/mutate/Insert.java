@@ -1,7 +1,9 @@
-package uni.evocomp.a1;
+package uni.evocomp.a1.mutate;
 
 import java.util.Iterator;
 import java.util.List;
+import uni.evocomp.a1.Individual;
+import uni.evocomp.a1.TSPProblem;
 import uni.evocomp.util.IntegerPair;
 
 /**
