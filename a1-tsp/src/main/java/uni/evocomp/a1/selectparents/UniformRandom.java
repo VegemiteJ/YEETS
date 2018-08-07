@@ -7,8 +7,17 @@ import uni.evocomp.a1.Individual;
 import uni.evocomp.a1.Population;
 import uni.evocomp.util.Pair;
 
+/**
+ * Matches parents by using the entire population and randomly pairing up individuals
+ * 
+ * @author joshuafloh
+ *
+ */
 public class UniformRandom implements SelectParents {
-
+  /**
+   * Take a population, scramble the individuals within the population and match parents in new
+   * order
+   */
   @Override
   public List<Pair<Individual, Individual>> selectParents(Population population) {
     List<Pair<Individual, Individual>> parentPairs = new ArrayList<>();
