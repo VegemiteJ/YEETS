@@ -33,9 +33,10 @@ public class OrderCrossover implements Recombine {
     }
 
     Individual child = new Individual(n);
+    java.util.Collections.fill(child.getGenotype(), new Integer(0));
 
     // Copy slice from first into child.
-    for (int i = slice.first; i < slice.second; i += 1) {
+    for (int i = slice.first; i != slice.second; i = Math.floorMod(i + 1, n)) {
       child.getGenotype().set(i, firstParent.getGenotype().get(i));
     }
 
@@ -44,8 +45,8 @@ public class OrderCrossover implements Recombine {
     // and copying in the order of the second parent.
 
     // next is the position to fill next in the child.
-    int next = slice.second % n;
-    for (int i = next; i != slice.second - 1; i = Math.floorMod(i + 1, n)) {
+    int next = Math.floorMod(slice.second, n);
+    for (int i = next; i != Math.floorMod(slice.second - 1, n); i = Math.floorMod(i + 1, n)) {
       // If the current element is already in the
       Integer current = secondParent.getGenotype().get(i);
       if (elementInPopRange(current, child, slice)) {
