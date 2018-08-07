@@ -25,7 +25,7 @@ public class OrderCrossover implements Recombine {
    * @param slice         The range [start, end) of the order to select
    * @return The resulting child
    */
-  public Individual recombine(Individual firstParent, Individual secondParent, IntegerPair slice)
+  Individual recombine(Individual firstParent, Individual secondParent, IntegerPair slice)
   throws IllegalArgumentException {
     final int n = firstParent.getGenotype().size();
     slice.first = slice.first % n;
@@ -72,9 +72,7 @@ public class OrderCrossover implements Recombine {
 
   private boolean elementInPopRange(Integer element, Individual population, IntegerPair range) {
     final int n = population.getGenotype().size();
-    for (int i = range.first;
-         i != range.second;
-         i = Math.floorMod(i + 1, n)) {
+    for (int i = range.first; i != range.second; i = Math.floorMod(i + 1, n)) {
       if (population.getGenotype().get(i) == element) {
         return true;
       }

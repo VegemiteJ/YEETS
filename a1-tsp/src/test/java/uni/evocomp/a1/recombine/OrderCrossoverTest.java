@@ -1,7 +1,6 @@
 package uni.evocomp.a1.recombine;
 
 import static junit.framework.Assert.assertEquals;
-
 import java.util.Random;
 import java.util.Arrays;
 import org.junit.Before;
@@ -10,7 +9,7 @@ import uni.evocomp.util.IntegerPair;
 import uni.evocomp.a1.Individual;
 
 public class OrderCrossoverTest {
-  OrderCrossover crossover;
+  private OrderCrossover crossover;
 
   @Before
   public void setUp() {

@@ -4,5 +4,5 @@ import uni.evocomp.util.Pair;
 import uni.evocomp.a1.Individual;
 
 public interface Recombine {
-  Pair<Individual, Individual> recombine(Individual firstParent, Individual secondParent);
+  public Pair<Individual, Individual> recombine(Individual firstParent, Individual secondParent);
 }
