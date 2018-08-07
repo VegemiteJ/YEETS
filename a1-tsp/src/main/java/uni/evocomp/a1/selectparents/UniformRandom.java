@@ -30,7 +30,7 @@ public class UniformRandom implements SelectParents {
    * @param individuals
    * @return a list of pairs containing pairs of individuals representing matched parents
    */
-  private List<Pair<Individual, Individual>> setParents(List<Individual> individuals) {
+  List<Pair<Individual, Individual>> setParents(List<Individual> individuals) {
     List<Pair<Individual, Individual>> parentPairs = new ArrayList<>();
     for (int i = 0; i < individuals.size() / 2; i++) {
       Pair<Individual, Individual> pair =
