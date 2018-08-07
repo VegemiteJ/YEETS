@@ -41,8 +41,8 @@ public class Insert implements Mutate {
   @Override
   public void run(Individual i, List<IntegerPair> pairs) {
     for (Iterator<IntegerPair> it = pairs.iterator(); it.hasNext();) {
-      Pair<?, ?> p = it.next();
-      insert(i, (int) p.first, (int) p.second);
+      IntegerPair p = it.next();
+      insert(i, p.first, p.second);
     }
   }
 }
