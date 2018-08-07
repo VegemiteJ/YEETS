@@ -17,6 +17,7 @@ import uni.evocomp.util.Pair;
 
 public class UniformRandomTest {
   private Population population;
+  private TSPProblem problem;
   Individual i0;
   Individual i1;
   Individual i2;
