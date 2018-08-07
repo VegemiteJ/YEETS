@@ -51,15 +51,16 @@ public class Main {
    * @param recombine a class to define how to recombine parents to produce offspring
    * @param mutate a class to define how to mutate the resulting offspring
    * @param selectSurvivors a class to define how to select <code>Individuals</code> for next round
+   * @param populationSize the size of the population
    * @return the <code>Individual</code> with the best fitness
    */
   public static Population evolutionaryAlgorithm(TSPProblem problem, Evaluate evaluate,
       SelectParents selectParents, Recombine recombine, Mutate mutate,
-      SelectSurvivors selectSurvivors, int populationSize, int individualSize) {
+      SelectSurvivors selectSurvivors, int populationSize) {
 
     // Initialise population with random candidate solutions and
     // Evaluate each candidate
-    Population population = new Population(populationSize, individualSize);
+    Population population = new Population(populationSize, problem.getSize());
     population.getPopulation().stream().forEach(i -> i.setCost(i.evaluateCost(problem)));
 
     // TODO : define terminal condition
@@ -132,7 +133,7 @@ public class Main {
     // TODO : record metrics
     for (int i = 0; i < timesToRun; i++) {
       Population resultingPopulation = evolutionaryAlgorithm(problem, evaluate, selectParents,
-          recombine, mutate, selectSurvivors, populationSize, problem.getSize());
+          recombine, mutate, selectSurvivors, populationSize);
       System.out.println("Resulting pop: " + resultingPopulation);
     }
   }
@@ -145,6 +146,7 @@ public class Main {
       e.printStackTrace();
     }
 
-    benchmark("config.properties", 20, 1); // this fails because some implementations DNE
+    String configName = (args.length < 1 ? "config.properties" : args[0]);
+    benchmark(configName, 20, 1); // this fails because some implementations DNE
   }
 }
