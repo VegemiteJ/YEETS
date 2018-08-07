@@ -21,10 +21,14 @@ public class OrderCrossover implements Recombine {
   public Individual recombine(Individual firstParent, Individual secondParent, IntegerPair slice)
   throws IllegalArgumentException {
     final int n = firstParent.getGenotype().size();
+    slice.first = slice.first % n;
+    slice.second = slice.second % n;
 
     // Validate inputs.
-    if (slice.first < 0 || slice.second < 1 || slice.first >= slice.second
-        || slice.first >= n || slice.second > n || secondParent.getGenotype().size() != n) {
+    if (slice.first < 0 || slice.second < 0 || slice.first > n || slice.second > n
+        || slice.first == slice.second
+        || slice.first == (slice.second + 1) % n
+        || secondParent.getGenotype().size() != n) {
       throw new IllegalArgumentException();
     }
 
@@ -41,19 +45,30 @@ public class OrderCrossover implements Recombine {
 
     // next is the position to fill next in the child.
     int next = slice.second % n;
-    for (int i = next; i == slice.second - 1; i = (i + 1) % n) {
+    for (int i = next; i != slice.second - 1; i = Math.floorMod(i + 1, n)) {
       // If the current element is already in the
       Integer current = secondParent.getGenotype().get(i);
-      if (child.getGenotype().subList(slice.first, slice.second).contains(current)) {
+      if (elementInPopRange(current, child, slice)) {
         continue;
       }
 
       child.getGenotype().set(next, current);
       next = (next + 1) % n;
     }
-    assert next == slice.first;
 
     child.assertIsValidTour();
     return child;
+  }
+
+  private boolean elementInPopRange(Integer element, Individual population, IntegerPair range) {
+    final int n = population.getGenotype().size();
+    for (int i = range.first;
+         i != range.second;
+         i = Math.floorMod(i + 1, n)) {
+      if (population.getGenotype().get(i) == element) {
+        return true;
+      }
+    }
+    return false;
   }
 }
