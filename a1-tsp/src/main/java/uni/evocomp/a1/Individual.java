@@ -116,6 +116,7 @@ public class Individual {
     sb.append("-1"); // Complete the tour
     return sb.toString();
   }
+ 
 
   private String getTourAsDebugString(List<Integer> tour) {
     StringBuilder sb = new StringBuilder();

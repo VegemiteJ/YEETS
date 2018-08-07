@@ -48,7 +48,15 @@ public class TSPIO {
       int cityCounter = 0; // used to break early of numCities > dimension
       Map<Integer, DoublePair> points = new HashMap<>();
       List<List<Double>> weights = new ArrayList<>();
-      for (int i = 1; (line = br.readLine()) != null && !line.trim().equals("EOF"); i++) {
+
+      for (int i = 1; (line = br.readLine()) != null; i++) {
+        line = line.trim();
+        if (line.equals("EOF")) {
+          break;
+        }
+        if (line.isEmpty()) {
+          continue;
+        }
         // Read header
         if (header) {
           String[] split = line.trim().split("(\\s*):(\\s*)");
@@ -93,16 +101,11 @@ public class TSPIO {
           }
         } else // read body
         {
-          if (line.equals("EOF")) {
-            break;
-          }
-
           String[] split = line.trim().split("(\\s)+"); // should be {n, x, y}
           if (split.length < 3) {
             throw new IOException("Bad body format on line " + i + ": " + line);
           }
-          points.put(
-              Integer.parseInt(split[0]),
+          points.put(Integer.parseInt(split[0]),
               new DoublePair(Double.valueOf(split[1]), Double.valueOf(split[2])));
           cityCounter++;
           if (cityCounter > dimension) {
@@ -137,7 +140,15 @@ public class TSPIO {
       String type = new String();
       int dimension = 0;
       List<Integer> solution = new ArrayList<>();
-      for (int i = 1; (line = br.readLine()) != null && !line.trim().equals("EOF"); i++) {
+
+      for (int i = 1; (line = br.readLine()) != null; i++) {
+        line = line.trim();
+        if (line.equals("EOF")) {
+          break;
+        }
+        if (line.isEmpty()) {
+          continue;
+        }
         // Read header
         if (header) {
           String[] split = line.trim().split("(\\s*):(\\s*)");
