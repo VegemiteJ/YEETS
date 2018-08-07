@@ -31,7 +31,7 @@ public class TournamentSelectionTest extends TestCase {
     // set up the random stub
     rand = new RandomStub();
     TSPIO io = new TSPIO();
-    try (Reader r = new FileReader("src/test/java/uni/evocomp/a1/testmaps/test1.tsp")) {
+    try (Reader r = new FileReader("tests/custom/test1.tsp")) {
       problem = io.read(r);
     } catch (IOException e) {
       e.printStackTrace();

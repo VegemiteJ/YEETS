@@ -38,7 +38,7 @@ public class TournamentSelection implements SelectSurvivors {
   /**
    * Default constructor, this generally shouldn't be called ever
    */
-  TournamentSelection() {
+  public TournamentSelection() {
     this.evaluate = new EvaluateEuclid();
   }
 

@@ -9,6 +9,10 @@ import uni.evocomp.util.Matrix;
 
 public class Jump implements Mutate {
 
+  public Jump() {
+    ;
+  }
+
   /**
    * Perform a list of mutation operations on an Individual
    *

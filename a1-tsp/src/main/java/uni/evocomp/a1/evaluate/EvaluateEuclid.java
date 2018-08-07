@@ -7,6 +7,10 @@ import uni.evocomp.util.Matrix;
 
 public class EvaluateEuclid implements Evaluate {
 
+  public EvaluateEuclid() {
+    ;
+  }
+  
   @Override
   public double evaluate(TSPProblem problem, Individual individual) {
     double cost = 0;

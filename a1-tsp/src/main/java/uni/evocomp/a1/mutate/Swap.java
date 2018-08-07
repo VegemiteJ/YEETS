@@ -15,6 +15,10 @@ import uni.evocomp.util.Matrix;
  */
 public class Swap implements Mutate {
 
+  public Swap() {
+    ;
+  }
+
   /**
    * Perform a swap on position n and m of i's genotype
    *

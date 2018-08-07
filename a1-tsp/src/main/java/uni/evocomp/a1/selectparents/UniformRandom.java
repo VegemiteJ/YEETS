@@ -14,6 +14,11 @@ import uni.evocomp.util.Pair;
  *
  */
 public class UniformRandom implements SelectParents {
+
+  public UniformRandom() {
+    ;
+  }
+
   /**
    * Take a population, scramble the individuals within the population and match parents in new
    * order
