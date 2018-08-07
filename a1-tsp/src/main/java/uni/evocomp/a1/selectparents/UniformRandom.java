@@ -20,9 +20,18 @@ public class UniformRandom implements SelectParents {
    */
   @Override
   public List<Pair<Individual, Individual>> selectParents(Population population) {
-    List<Pair<Individual, Individual>> parentPairs = new ArrayList<>();
     ArrayList<Individual> individuals = new ArrayList<>(population.getPopulation());
     Collections.shuffle(individuals);
+    return setParents(individuals);
+  }
+
+  /**
+   * Takes a list of individuals and pairs them up by simply matching them in order
+   * @param individuals
+   * @return a list of pairs containing pairs of individuals representing matched parents
+   */
+  private List<Pair<Individual, Individual>> setParents(List<Individual> individuals) {
+    List<Pair<Individual, Individual>> parentPairs = new ArrayList<>();
     for (int i = 0; i < individuals.size() / 2; i++) {
       Pair<Individual, Individual> pair =
           new Pair<Individual, Individual>(individuals.get(i * 2), individuals.get(i * 2 + 1));
@@ -30,5 +39,4 @@ public class UniformRandom implements SelectParents {
     }
     return parentPairs;
   }
-
 }
