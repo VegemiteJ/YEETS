@@ -1,5 +1,7 @@
 package uni.evocomp.a1;
 
+import uni.evocomp.util.Pair;
+
 public interface Recombine {
-  Individual recombine(Individual firstParent, Individual secondParent);
+  Pair<Individual, Individual> recombine(Individual firstParent, Individual secondParent);
 }

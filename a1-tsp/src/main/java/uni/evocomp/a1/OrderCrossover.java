@@ -1,5 +1,7 @@
 package uni.evocomp.a1;
 
+import java.util.Random;
+import uni.evocomp.util.Pair;
 import uni.evocomp.util.IntegerPair;
 
 /**
@@ -8,8 +10,12 @@ import uni.evocomp.util.IntegerPair;
  */
 public class OrderCrossover implements Recombine {
   @Override
-  public Individual recombine(Individual firstParent, Individual secondParent) {
-    return null;
+  public Pair<Individual, Individual> recombine(Individual firstParent, Individual secondParent) {
+    IntegerPair slice = getRandomSlice(firstParent.getGenotype().size());
+    return new Pair<>(
+        recombine(firstParent, secondParent, slice),
+        recombine(secondParent, firstParent, slice)
+    );
   }
 
   /**
@@ -46,9 +52,12 @@ public class OrderCrossover implements Recombine {
 
     // next is the position to fill next in the child.
     int next = Math.floorMod(slice.second, n);
-    for (int i = next; i != Math.floorMod(slice.second - 1, n); i = Math.floorMod(i + 1, n)) {
+    // pos is the position iterating through the second array.
+    int pos = next;
+    for (int i = 0; i < n; i += 1) {
       // If the current element is already in the
-      Integer current = secondParent.getGenotype().get(i);
+      Integer current = secondParent.getGenotype().get(pos);
+      pos = Math.floorMod(pos + 1, n);
       if (elementInPopRange(current, child, slice)) {
         continue;
       }
@@ -71,5 +80,15 @@ public class OrderCrossover implements Recombine {
       }
     }
     return false;
+  }
+
+  private IntegerPair getRandomSlice(Integer n) {
+    Random r = new Random();
+    int start = r.nextInt(n);
+    int end = r.nextInt(n - 1);
+    if (end >= start) {
+      end += 1;
+    }
+    return new IntegerPair(start, end);
   }
 }

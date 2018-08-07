@@ -2,6 +2,7 @@ package uni.evocomp.a1;
 
 import static junit.framework.Assert.assertEquals;
 
+import java.util.Random;
 import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,6 +32,16 @@ public class OrderCrossoverTest {
     assertEquals(Arrays.asList(1, 2, 3, 4, 5, 6), child.getGenotype());
   }
 
+  @Test
+  public void testFuzzed() {
+    Random r = new Random();
+    for (int i = 3; i < 16; i += 1) {
+      Individual a = new Individual(i);
+      Individual b = new Individual(i);
+      crossover.recombine(a, b);
+    }
+  }
+
   @Test(expected = IllegalArgumentException.class)
   public void testEntireSlice() {
     Individual a = new Individual(Arrays.asList(1, 2));
@@ -43,7 +54,7 @@ public class OrderCrossoverTest {
   public void testSliceTooSmall() {
     Individual a = new Individual(Arrays.asList(1, 2));
     Individual b = new Individual(Arrays.asList(2, 1));
-    Individual child = crossover.recombine(a, b, new IntegerPair(0, 1));
+    crossover.recombine(a, b, new IntegerPair(0, 1));
   }
 
   @Test
