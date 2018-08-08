@@ -15,6 +15,7 @@ import uni.evocomp.a1.evaluate.Evaluate;
 import uni.evocomp.a1.evaluate.EvaluateEuclid;
 
 public class EvaluateEuclidTest {
+
   Evaluate e;
   TSPProblem testProblem;
 
@@ -38,49 +39,30 @@ public class EvaluateEuclidTest {
 
   @Test
   public void testSimpleTour1() {
-    // 1,2,3 -> 1+5 = 6
+    // 1,2,3 -> 1+5+6 = 12
     List<Integer> tour = new ArrayList<>(Arrays.asList(1, 2, 3));
     Individual i = new Individual(tour, 0.0);
     double cost = e.evaluate(testProblem, i);
-    Assert.assertEquals(cost, 6.0, 0);
+    Assert.assertEquals(12.0, cost, 0);
   }
 
   @Test
   public void testSimpleTour2() {
-    // 1,2,3,2,1 -> 1+5+7+3 = 16
+    // 1,2,3,2,1 -> 1+5+7+3+0 = 16
     List<Integer> tour = new ArrayList<>(Arrays.asList(1, 2, 3, 2, 1));
     Individual i = new Individual(tour, 0.0);
     double cost = e.evaluate(testProblem, i);
-    Assert.assertEquals(cost, 16.0, 0);
+    Assert.assertEquals(16.0, cost, 0);
   }
 
   @Test
   public void testSimpleTour3() {
-    // 3,1,2,1,2,3 -> 6+1+3+1+5=16
-    List<Integer> tour = new ArrayList<>(Arrays.asList(1, 2, 3, 2, 1));
+    // 3,1,2,1,2,3 -> 6+1+3+1+5+8=24
+    List<Integer> tour = new ArrayList<>(Arrays.asList(3, 1, 2, 1, 2, 3));
     Individual i = new Individual(tour, 0.0);
     double cost = e.evaluate(testProblem, i);
-    Assert.assertEquals(cost, 16.0, 0);
+    Assert.assertEquals(24.0, cost, 0);
   }
 
   // TODO: Failure tests
-
-  // This is more of an integration test
-  @Test
-  public void testFileAgainstBest() throws IOException {
-    // Read a problem file and it's best tour
-    TSPProblem problem;
-    Individual bestTour;
-
-    TSPIO io = new TSPIO();
-    double cost = -1;
-    try (FileReader fr1 = new FileReader("tests/pcb442.tsp");
-        FileReader fr2 = new FileReader("tests/pcb442.opt.tour")) {
-      problem = io.read(fr1);
-      bestTour = io.readSolution(fr2);
-      cost = e.evaluate(problem, bestTour);
-    }
-
-    System.out.println(cost);
-  }
 }
