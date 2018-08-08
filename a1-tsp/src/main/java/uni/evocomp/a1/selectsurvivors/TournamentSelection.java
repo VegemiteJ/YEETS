@@ -31,7 +31,7 @@ import uni.evocomp.a1.evaluate.EvaluateEuclid;
  */
 public class TournamentSelection implements SelectSurvivors {
   private Evaluate evaluate;
-  private double tournamentSize;
+  private int tournamentSize;
   private double survivalProportion;
   private double p;
 
@@ -41,7 +41,7 @@ public class TournamentSelection implements SelectSurvivors {
   public TournamentSelection() {
     this.evaluate = new EvaluateEuclid();
     
-    tournamentSize = 0.5;
+//    tournamentSize = 0.5;
     survivalProportion = 0.5;
     p = 0.9;
   }
@@ -49,11 +49,11 @@ public class TournamentSelection implements SelectSurvivors {
   /**
    * Initialise the TournamentSelection object by assigning its configurable fields
    * 
-   * @param tournamentSize the number of individuals per run of a tournament
+   * @param tournamentSize the proportion of individuals per run of a tournament
    * @param survivalProportion the proportion of survivors per tournament
    * @param p (p*(1-p)^i) = the probability that the ith fittest survives
    */
-  TournamentSelection(double tournamentSize, double survivalProportion, double p) {
+  TournamentSelection(int tournamentSize, double survivalProportion, double p) {
     this();
     this.tournamentSize = tournamentSize; // should I just change this to a prop now?
     this.survivalProportion = survivalProportion;
