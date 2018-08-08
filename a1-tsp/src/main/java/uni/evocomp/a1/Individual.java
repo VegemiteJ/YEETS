@@ -49,8 +49,6 @@ public class Individual implements Serializable {
   /**
    * 
    * @param n initialise to have a tour of n cities
-   *
-   *        /** @param n initialise to have a tour of n cities
    */
   public Individual(int n) {
     initialise(n);
@@ -149,7 +147,7 @@ public class Individual implements Serializable {
     try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename))) {
       out.writeObject(individual);
     }
-    System.out.print("Serialised data is saved in \"" + serialLocation + "\"");
+    System.out.println("Serialised data is saved in \"" + filename + "\"");
   }
 
   /**
