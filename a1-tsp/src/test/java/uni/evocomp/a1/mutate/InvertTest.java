@@ -1,7 +1,6 @@
 package uni.evocomp.a1.mutate;
 
 import static org.junit.Assert.assertEquals;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

@@ -147,6 +147,6 @@ public class Main {
     }
 
     String configName = (args.length < 1 ? "config.properties" : args[0]);
-    benchmark(configName, 20, 1); // this fails because some implementations DNE
+    benchmark(configName, 20, 1);
   }
 }
