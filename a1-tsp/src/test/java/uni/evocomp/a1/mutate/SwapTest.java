@@ -56,6 +56,8 @@ public class SwapTest {
     Individual i = new Individual(new ArrayList<>(original), initialCost);
     m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(1, 4))));
     assertEquals(i.getGenotype(), Arrays.asList(1, 5, 3, 4, 2));
+    double cost = eval2D.evaluate(p, i);
+    assertEquals(cost, i.getCost(), 0.00001);
   }
 
   @Test
@@ -63,6 +65,8 @@ public class SwapTest {
     Individual i = new Individual(new ArrayList<>(original), initialCost);
     m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(2, 2))));
     assertEquals(i.getGenotype(), original);
+    double cost = eval2D.evaluate(p, i);
+    assertEquals(cost, i.getCost(), 0.00001);
   }
 
   @Test
@@ -70,6 +74,8 @@ public class SwapTest {
     Individual i = new Individual(new ArrayList<>(original), initialCost);
     m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(4, 1))));
     assertEquals(i.getGenotype(), Arrays.asList(1, 5, 3, 4, 2));
+    double cost = eval2D.evaluate(p, i);
+    assertEquals(cost, i.getCost(), 0.00001);
   }
 
   @Test(expected = IndexOutOfBoundsException.class)
@@ -77,6 +83,8 @@ public class SwapTest {
     Individual i = new Individual(new ArrayList<>(original), initialCost);
     m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(-1, 4))));
     assertEquals(i.getGenotype(), original);
+    double cost = eval2D.evaluate(p, i);
+    assertEquals(cost, i.getCost(), 0.00001);
   }
 
   @Test(expected = IndexOutOfBoundsException.class)
@@ -84,6 +92,8 @@ public class SwapTest {
     Individual i = new Individual(new ArrayList<>(original), initialCost);
     m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(1, 10))));
     assertEquals(i.getGenotype(), original);
+    double cost = eval2D.evaluate(p, i);
+    assertEquals(cost, i.getCost(), 0.00001);
   }
 
   @Test
@@ -91,5 +101,7 @@ public class SwapTest {
     Individual i = new Individual(new ArrayList<>(original), initialCost);
     m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(1, 4), new IntegerPair(4, 1))));
     assertEquals(i.getGenotype(), original);
+    double cost = eval2D.evaluate(p, i);
+    assertEquals(cost, i.getCost(), 0.00001);
   }
 }
