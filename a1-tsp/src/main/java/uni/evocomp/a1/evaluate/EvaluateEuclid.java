@@ -19,6 +19,9 @@ public class EvaluateEuclid implements Evaluate {
       }
       cost += weights.get(genotype.get(i) - 1, genotype.get(i + 1) - 1);
     }
+    //Complete loop
+    cost += weights.get(genotype.get(genotype.size()-1), genotype.get(0));
+
     return cost;
   }
 }
