@@ -54,12 +54,12 @@ public class IndividualTest {
     List<Integer> array = Arrays.asList(1, 2, 3, 4);
     Individual i = new Individual(array, 0.0);
     Individual.serialise(i);
-    
+
     // Read back and check same
     Individual recreate = Individual.deserialise();
     assertEquals(0.0, recreate.getCost(), 0);
     assertEquals(array, recreate.getGenotype());
-    
+
     // Clean up the file created by serialise()
     File file = new File(Individual.serialLocation);
     assertTrue(file.delete());

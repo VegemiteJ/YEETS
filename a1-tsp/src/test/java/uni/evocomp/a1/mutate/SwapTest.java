@@ -1,7 +1,6 @@
 package uni.evocomp.a1.mutate;
 
 import static junit.framework.Assert.assertEquals;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -38,7 +37,7 @@ public class SwapTest {
     // 0,1,2
     // 3,4,5
     // 6,7,8
-    p = new TSPProblem("", "", "", "", weights);
+    p = new TSPProblem(weights);
     original = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
     eval2D = new EvaluateEuclid();
     initialCost = eval2D.evaluate(p, new Individual(original, 0.0));
