@@ -55,7 +55,7 @@ public class LocalSearchBenchmark {
         benchmarks.add(new Pair<>(problem, null));
       }
     }
-
+    benching:
     for (Pair<TSPProblem, Individual> benchmark : benchmarks) {
       TSPProblem problemDef = benchmark.first;
       if (problemDef == null){
@@ -88,6 +88,12 @@ public class LocalSearchBenchmark {
           }
           averageCost += result.getCost();
           //          System.out.println("===================================");
+          try {
+            Individual.serialise(result);
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+          break benching;
         }
         averageCost /= repeats;
 

@@ -9,8 +9,16 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
+import uni.evocomp.a1.Individual;
+import uni.evocomp.a1.TSPIO;
+import uni.evocomp.a1.TSPProblem;
+import uni.evocomp.a1.evaluate.Evaluate;
+import uni.evocomp.a1.evaluate.EvaluateEuclid;
 import uni.evocomp.util.DoublePair;
+import uni.evocomp.util.Pair;
 
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -63,10 +71,50 @@ public class PlotBestTour extends Application {
 
   @Override
   public void start(Stage stage) {
-    Group box = new Group();
+    final String[] testNames = {
+            "tests/eil51",
+            "tests/eil76",
+            "tests/eil101",
+            "tests/kroA100",
+            "tests/kroC100",
+            "tests/kroD100",
+            "tests/lin105",
+            "tests/pcb442",
+            "tests/pr2392",
+            "tests/usa13509"};
+    final String testSuffix = ".tsp";
+    final String tourSuffix = ".opt.tour";
 
-    List<DoublePair> cities = new ArrayList<>(Arrays.asList(new DoublePair(300.0,250.0),new DoublePair(250.0,350.0),new DoublePair(100.0,550.0),new DoublePair(600.0,550.0)));
-    List<Integer> genotype = new ArrayList<>(Arrays.asList(0,1,2,3));
+    Individual best = null;
+    try {
+      best = Individual.deserialise();
+    } catch (IOException e) {
+      e.printStackTrace();
+    } catch (ClassNotFoundException e) {
+      e.printStackTrace();
+    }
+
+    Evaluate evaluator = new EvaluateEuclid();
+    TSPIO io = new TSPIO();
+    ArrayList<Pair<TSPProblem, Individual>> benchmarks = new ArrayList<>();
+    for (String testString : testNames) {
+      TSPProblem problem = null;
+      try (FileReader fr1 = new FileReader(testString + testSuffix);
+           FileReader fr2 = new FileReader(testString + tourSuffix)) {
+        problem = io.read(fr1);
+        Individual solution = io.readSolution(fr2);
+        solution.setCost(evaluator.evaluate(problem, solution));
+        benchmarks.add(new Pair<>(problem, solution));
+      } catch (IOException e) {
+//        e.printStackTrace();
+        benchmarks.add(new Pair<>(problem, null));
+      }
+    }
+
+    List<DoublePair> cities = benchmarks.get(0).first.getPoints();
+
+    Group box = new Group();
+    List<Integer> genotype = best.getGenotype();
     List<Circle> cityPoints = plotCities(cities, 1200, 800, 100, 50);
     for (Circle c : cityPoints) {
       box.getChildren().add(c);
