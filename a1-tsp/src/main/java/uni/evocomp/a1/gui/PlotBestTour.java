@@ -46,8 +46,8 @@ public class PlotBestTour extends Application {
     List<Line> lines = new ArrayList<>();
     for (int i=0; i<genotype.size()-1; i++) {
       int next = i+1;
-      int cityI = genotype.get(i);
-      int cityJ = genotype.get(next);
+      int cityI = genotype.get(i)-1;
+      int cityJ = genotype.get(next)-1;
 
       double startX = locs.get(cityI).getCenterX();
       double startY = locs.get(cityI).getCenterY();
@@ -58,10 +58,10 @@ public class PlotBestTour extends Application {
       l.setStroke(Color.BLUE);
       lines.add(l);
     }
-    double startX = locs.get(genotype.get(0)).getCenterX();
-    double startY = locs.get(genotype.get(0)).getCenterY();
-    double endX = locs.get(genotype.get(genotype.size()-1)).getCenterX();
-    double endY = locs.get(genotype.get(genotype.size()-1)).getCenterY();
+    double startX = locs.get(genotype.get(0)-1).getCenterX();
+    double startY = locs.get(genotype.get(0)-1).getCenterY();
+    double endX = locs.get(genotype.get(genotype.size()-1)-1).getCenterX();
+    double endY = locs.get(genotype.get(genotype.size()-1)-1).getCenterY();
     Line l = new Line(startX, startY, endX, endY);
     l.setStroke(Color.RED);
     lines.add(l);
@@ -72,16 +72,16 @@ public class PlotBestTour extends Application {
   @Override
   public void start(Stage stage) {
     final String[] testNames = {
-            "tests/eil51",
-            "tests/eil76",
-            "tests/eil101",
-            "tests/kroA100",
-            "tests/kroC100",
-            "tests/kroD100",
-            "tests/lin105",
-            "tests/pcb442",
-            "tests/pr2392",
-            "tests/usa13509"};
+            "tests/eil51"};
+//            "tests/eil76",
+//            "tests/eil101",
+//            "tests/kroA100",
+//            "tests/kroC100",
+//            "tests/kroD100",
+//            "tests/lin105",
+//            "tests/pcb442",
+//            "tests/pr2392",
+//            "tests/usa13509"};
     final String testSuffix = ".tsp";
     final String tourSuffix = ".opt.tour";
 
