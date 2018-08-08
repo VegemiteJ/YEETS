@@ -26,7 +26,7 @@ import uni.evocomp.util.Matrix;
 public class Individual implements Serializable {
 
   private static final long serialVersionUID = -8931448347288126553L;
-  private static final String serialLocation = "individual.ser";
+  static final String serialLocation = "individual.ser";
 
   private List<Integer> genotype; // the tour, elements should be 1-n
   private double cost;
@@ -130,11 +130,11 @@ public class Individual implements Serializable {
    * @param individual Individual object to serialise
    * @throws IOException
    */
-  public static final void writeObject(Individual individual) throws IOException {
+  public static final void serialise(Individual individual) throws IOException {
     try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(serialLocation))) {
       out.writeObject(individual);
     }
-    System.out.print("Serialized data is saved in \"" + serialLocation + "\"");
+    System.out.print("Serialised data is saved in \"" + serialLocation + "\"");
   }
 
   /**
@@ -143,7 +143,7 @@ public class Individual implements Serializable {
    * @throws IOException
    * @throws ClassNotFoundException
    */
-  public static final Individual readObject() throws IOException, ClassNotFoundException {
+  public static final Individual deserialise() throws IOException, ClassNotFoundException {
     try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(serialLocation))) {
       return (Individual) in.readObject();
     }
