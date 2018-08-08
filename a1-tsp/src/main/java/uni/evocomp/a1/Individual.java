@@ -1,5 +1,11 @@
 package uni.evocomp.a1;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -17,7 +23,10 @@ import uni.evocomp.util.Matrix;
  * 
  * @author Namdrib
  */
-public class Individual {
+public class Individual implements Serializable {
+
+  private static final long serialVersionUID = -8931448347288126553L;
+  static final String serialLocation = "individual.ser";
 
   private List<Integer> genotype; // the tour, elements should be 1-n
   private double cost;
@@ -116,7 +125,30 @@ public class Individual {
     sb.append("-1"); // Complete the tour
     return sb.toString();
   }
- 
+
+  /**
+   * @param individual Individual object to serialise
+   * @throws IOException
+   */
+  public static final void serialise(Individual individual) throws IOException {
+    try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(serialLocation))) {
+      out.writeObject(individual);
+    }
+    System.out.print("Serialised data is saved in \"" + serialLocation + "\"");
+  }
+
+  /**
+   * 
+   * @return an Individual object read from a serialised Individual
+   * @throws IOException
+   * @throws ClassNotFoundException
+   */
+  public static final Individual deserialise() throws IOException, ClassNotFoundException {
+    try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(serialLocation))) {
+      return (Individual) in.readObject();
+    }
+  }
+
 
   private String getTourAsDebugString(List<Integer> tour) {
     StringBuilder sb = new StringBuilder();
