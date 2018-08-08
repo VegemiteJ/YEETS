@@ -127,28 +127,56 @@ public class Individual implements Serializable {
   }
 
   /**
+   * Default serialise function for object - write to <code>serialLocation</code>
+   * 
+   * Acts as a wrapper function for <code>serialise(Individual, outFileName)</code>
+   * 
    * @param individual Individual object to serialise
    * @throws IOException
    */
   public static final void serialise(Individual individual) throws IOException {
-    try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(serialLocation))) {
+    serialise(individual, serialLocation);
+  }
+
+  /**
+   * Serialise <code>individual</code> into a file whose name is <code>outFileName</code>
+   * 
+   * @param individual <code>Individual</code> object to serialise
+   * @param filename name of the file to write
+   * @throws IOException
+   */
+  public static final void serialise(Individual individual, String filename) throws IOException {
+    try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename))) {
       out.writeObject(individual);
     }
     System.out.print("Serialised data is saved in \"" + serialLocation + "\"");
   }
 
   /**
+   * Default deserialise function for object - read from <code>serialLocation</code>
    * 
    * @return an Individual object read from a serialised Individual
    * @throws IOException
    * @throws ClassNotFoundException
    */
   public static final Individual deserialise() throws IOException, ClassNotFoundException {
-    try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(serialLocation))) {
+    return deserialise(serialLocation);
+  }
+
+  /**
+   * Deserialise an Individual object from a file whose name is <code>filename</code>
+   * 
+   * @param filename the name of the file to read
+   * @return an Individual object read from a serialised Individual
+   * @throws IOException
+   * @throws ClassNotFoundException
+   */
+  public static final Individual deserialise(String filename)
+      throws IOException, ClassNotFoundException {
+    try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
       return (Individual) in.readObject();
     }
   }
-
 
   private String getTourAsDebugString(List<Integer> tour) {
     StringBuilder sb = new StringBuilder();
