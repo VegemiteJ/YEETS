@@ -113,16 +113,21 @@ public class TSPIO {
           }
         }
       }
+      
+      // Store the coordinates of the cities in the tour
+      // city 1 at coords[0], city n at coords[n-1]
+      List<DoublePair> coords = new ArrayList<>();
 
       // Finished reading lines, construct weights based on points
       for (int i = 1; i <= dimension; i++) {
+        coords.add(points.get(i));
         List<Double> temp = new ArrayList<>();
         for (int j = 1; j <= dimension; j++) {
           temp.add(Util.euclideanDistance2D(points.get(i), points.get(j)));
         }
         weights.add(temp);
       }
-      return new TSPProblem(name, comment, type, edgeWeightType, weights);
+      return new TSPProblem(name, comment, type, edgeWeightType, coords, weights);
     }
   }
 
