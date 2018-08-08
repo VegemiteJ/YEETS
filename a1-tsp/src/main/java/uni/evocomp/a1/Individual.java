@@ -174,7 +174,7 @@ public class Individual {
       newCost += weights.get(genotype.get(i) - 1, genotype.get(i + 1) - 1);
     }
     //Complete loop
-    newCost += weights.get(genotype.get(genotype.size()-1), genotype.get(0));
+    newCost += weights.get(genotype.get(genotype.size()-1)-1, genotype.get(0)-1);
 
     return newCost;
   }
