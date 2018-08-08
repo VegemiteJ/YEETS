@@ -17,7 +17,7 @@ import uni.evocomp.util.Matrix;
  * 
  * @author Namdrib
  */
-public class Individual {
+public class Individual implements Comparable<Individual> {
 
   private List<Integer> genotype; // the tour, elements should be 1-n
   private double cost;
@@ -166,12 +166,27 @@ public class Individual {
     double newCost = 0;
     Matrix weights = problem.getWeights();
     for (int i = 0; i < genotype.size() - 1; i++) {
-      // TODO: Loading tour file has the last element as -1, should change in TSPIO
-      if (genotype.get(i + 1) == -1) {
-        break;
-      }
       newCost += weights.get(genotype.get(i) - 1, genotype.get(i + 1) - 1);
     }
     return newCost;
+  }
+
+  /**
+   * Compare Individuals by cost. Assumes both individuals in question (this and i) have the most
+   * up-to-date cost, otherwise may give incorrect results
+   */
+  @Override
+  public int compareTo(Individual i) {
+    if (i == null) {
+      return -1;
+    }
+
+    if (this.getCost() < i.getCost()) {
+      return -1;
+    } else if (this.getCost() > i.getCost()) {
+      return 1;
+    } else {
+      return 0;
+    }
   }
 }

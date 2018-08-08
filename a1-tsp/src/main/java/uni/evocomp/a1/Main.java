@@ -6,8 +6,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.concurrent.ThreadLocalRandom;
 import uni.evocomp.a1.evaluate.Evaluate;
@@ -27,11 +30,12 @@ public class Main {
       "kroD100", "lin105", "pcb442", "pr2392", "st70", "usa13509"};
   public static final String testSuffix = ".tsp";
   public static final String tourSuffix = ".opt.tour";
+  public static final String a1Prefix = "uni.evocomp.a1";
 
   /**
    *
    * A typical evolutionary algorithm. Pass in different implementations of each argument to result
-   * in a new algorithm.
+   * in a new algorithm. Return the best <code>Individual</code> after termination
    *
    * <pre>
    * INITIALISE population with random candidate solutions;
@@ -54,7 +58,7 @@ public class Main {
    * @param populationSize the size of the population
    * @return the <code>Individual</code> with the best fitness
    */
-  public static Population evolutionaryAlgorithm(TSPProblem problem, Evaluate evaluate,
+  public static Individual evolutionaryAlgorithm(TSPProblem problem, Evaluate evaluate,
       SelectParents selectParents, Recombine recombine, Mutate mutate,
       SelectSurvivors selectSurvivors, int populationSize) {
 
@@ -63,8 +67,11 @@ public class Main {
     Population population = new Population(populationSize, problem.getSize());
     population.getPopulation().stream().forEach(i -> i.setCost(i.evaluateCost(problem)));
 
+    // The return value
+    Individual bestIndividual = null;
+
     // TODO : define terminal condition
-    boolean RUN_ONCE = false;
+    boolean RUN_ONCE = true;
     while (RUN_ONCE) {
       // 1. select parents from the population
       List<Pair<Individual, Individual>> parents = selectParents.selectParents(population);
@@ -87,12 +94,25 @@ public class Main {
         individual.setCost(Math.min(individual.getCost(), individual.evaluateCost(problem)));
       });
 
+      if (problem == null) {
+        System.out.println("pop is null");
+      }
       // 5. select individuals for next generation
       population =
           selectSurvivors.selectSurvivors(population, problem, ThreadLocalRandom.current());
-      RUN_ONCE = true;
+
+      // Update best individual so far
+      // Optional<Individual> popBest = population.getPopulation().stream().min((i1, i2) ->
+      // Double.compare(i1.getCost(), i2.getCost()));
+      Individual popBest = Collections.min(population.getPopulation());
+      System.out.println("A : " + popBest.getCost());
+      if (popBest.compareTo(bestIndividual) < 0) {
+        System.out.println("Happen");
+        bestIndividual = popBest;
+      }
+      RUN_ONCE = false;;
     }
-    return population;
+    return bestIndividual;
   }
 
   // TODO : Benchmark function
@@ -116,15 +136,14 @@ public class Main {
       prop.load(input);
 
       evaluate = (Evaluate) Util
-          .classFromName(prop.getProperty("Evaluate", "uni.evocomp.a1.evaluate.EvaluateEuclid"));
+          .classFromName(prop.getProperty("Evaluate", a1Prefix + ".evaluate.EvaluateEuclid"));
       selectParents = (SelectParents) Util.classFromName(
-          prop.getProperty("SelectParents", "uni.evocomp.a1.selectparents.UniformRandom"));
+          prop.getProperty("SelectParents", a1Prefix + ".selectparents.UniformRandom"));
       recombine = (Recombine) Util
-          .classFromName(prop.getProperty("Recombine", "uni.evocomp.a1.recombine.OrderCrossover"));
-      mutate =
-          (Mutate) Util.classFromName(prop.getProperty("Mutate", "uni.evocomp.a1.mutate.Invert"));
-      selectSurvivors = (SelectSurvivors) Util.classFromName(prop.getProperty("SelectSurvivors",
-          "uni.evocomp.a1.selectsurvivors.TournamentSelection"));
+          .classFromName(prop.getProperty("Recombine", a1Prefix + ".recombine.OrderCrossover"));
+      mutate = (Mutate) Util.classFromName(prop.getProperty("Mutate", a1Prefix + ".mutate.Invert"));
+      selectSurvivors = (SelectSurvivors) Util.classFromName(
+          prop.getProperty("SelectSurvivors", a1Prefix + ".selectsurvivors.TournamentSelection"));
     } catch (Exception ex) {
       ex.printStackTrace();
       return;
@@ -132,9 +151,9 @@ public class Main {
 
     // TODO : record metrics
     for (int i = 0; i < timesToRun; i++) {
-      Population resultingPopulation = evolutionaryAlgorithm(problem, evaluate, selectParents,
-          recombine, mutate, selectSurvivors, populationSize);
-      System.out.println("Resulting pop: " + resultingPopulation);
+      Individual bestIndividual = evolutionaryAlgorithm(problem, evaluate, selectParents, recombine,
+          mutate, selectSurvivors, populationSize);
+      System.out.println("Best individual in iteration " + i + ": " + bestIndividual);
     }
   }
 
@@ -147,6 +166,6 @@ public class Main {
     }
 
     String configName = (args.length < 1 ? "config.properties" : args[0]);
-    benchmark(configName, 20, 1);
+    benchmark(configName, 20, 3);
   }
 }
