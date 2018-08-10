@@ -25,7 +25,7 @@ public class UniformRandom implements SelectParents {
    */
   @Override
   public List<Pair<Individual, Individual>> selectParents(Population population) {
-    ArrayList<Individual> individuals = new ArrayList<>(population.getPopulation());
+    List<Individual> individuals = new ArrayList<>(population.getPopulation());
     Collections.shuffle(individuals);
     return setParents(individuals);
   }

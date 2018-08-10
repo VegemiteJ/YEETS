@@ -7,10 +7,8 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 import java.util.Properties;
 import java.util.concurrent.ThreadLocalRandom;
 import uni.evocomp.a1.evaluate.Evaluate;
@@ -23,9 +21,6 @@ import uni.evocomp.util.Pair;
 import uni.evocomp.util.Util;
 
 public class Main {
-
-  public static TSPProblem problem; // this changes
-  public static final TSPIO io = new TSPIO();
   public static final String[] testNames = {"eil51", "eil76", "eil101", "kroA100", "kroC100",
       "kroD100", "lin105", "pcb442", "pr2392", "st70", "usa13509"};
   public static final String testSuffix = ".tsp";
@@ -65,7 +60,8 @@ public class Main {
     // Initialise population with random candidate solutions and
     // Evaluate each candidate
     Population population = new Population(populationSize, problem.getSize());
-    population.getPopulation().stream().forEach(i -> i.setCost(i.evaluateCost(problem)));
+    System.out.println("Old pop size: " + population.getSize());
+    population.getPopulation().parallelStream().forEach(i -> i.setCost(i.evaluateCost(problem)));
 
     // The return value
     Individual bestIndividual = null;
@@ -76,6 +72,8 @@ public class Main {
       // 1. select parents from the population
       List<Pair<Individual, Individual>> parents = selectParents.selectParents(population);
 
+      System.out.println("old pop, parents sizes: " + population.getSize() + ", " + parents.size());
+
       // 2. recombine pairs of parents, add resulting offspring to existing population
       for (Iterator<Pair<Individual, Individual>> it = parents.iterator(); it.hasNext();) {
         Pair<Individual, Individual> p = it.next();
@@ -84,23 +82,28 @@ public class Main {
         population.add(offspring.second);
       }
 
+      System.out.println("New population size: " + population.getSize());
+
       // 3. mutate resulting offspring and
       // 4. evaluate new candidates
-      population.getPopulation().stream().forEach(individual -> {
+      population.getPopulation().parallelStream().forEach(individual -> {
         // Pick a random range to mutate
         IntegerPair ip = new IntegerPair(ThreadLocalRandom.current().nextInt(0, problem.getSize()),
             ThreadLocalRandom.current().nextInt(0, problem.getSize()));
         mutate.run(problem, individual, Arrays.asList(ip));
+        System.out.println("Done. Old cost was " + individual.getCost());
         individual.setCost(Math.min(individual.getCost(), individual.evaluateCost(problem)));
+        System.out.println("Done. New cost is " + individual.getCost());
       });
 
       if (problem == null) {
         System.out.println("pop is null");
       }
       // 5. select individuals for next generation
+      System.out.println("selecting!");
       population =
           selectSurvivors.selectSurvivors(population, problem, ThreadLocalRandom.current());
-
+      System.out.println("selected!");
       // Update best individual so far
       // Optional<Individual> popBest = population.getPopulation().stream().min((i1, i2) ->
       // Double.compare(i1.getCost(), i2.getCost()));
@@ -116,7 +119,8 @@ public class Main {
   }
 
   // TODO : Benchmark function
-  public static void benchmark(String propertiesFileName, int populationSize, int timesToRun) {
+  public static void benchmark(TSPProblem problem, String propertiesFileName, int populationSize,
+      int timesToRun) {
     // TODO : Read a .properties file to figure out which implementations to use
     // and instantiate one of each using Evaluate, SelectParents, Recombine, Mutate and
     // SelectSurvivors
@@ -158,7 +162,8 @@ public class Main {
   }
 
   public static void main(String[] args) {
-    problem = new TSPProblem();
+    TSPProblem problem = new TSPProblem();
+    TSPIO io = new TSPIO();
     try (Reader r = new FileReader("tests/eil51.tsp")) {
       problem = io.read(r);
     } catch (IOException e) {
@@ -166,6 +171,6 @@ public class Main {
     }
 
     String configName = (args.length < 1 ? "config.properties" : args[0]);
-    benchmark(configName, 20, 3);
+    benchmark(problem, configName, 20, 3);
   }
 }

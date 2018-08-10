@@ -35,7 +35,7 @@ public class Population {
   public Population(int popSize, int indSize) {
     this();
 
-    for (int i = 0; i < getSize(); i++) {
+    for (int i = 0; i < popSize; i++) {
       population.add(new Individual(indSize));
     }
   }
