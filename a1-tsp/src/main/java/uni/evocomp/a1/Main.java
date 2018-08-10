@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 import uni.evocomp.a1.evaluate.Evaluate;
 import uni.evocomp.a1.mutate.Mutate;
 import uni.evocomp.a1.recombine.Recombine;
@@ -75,12 +76,25 @@ public class Main {
       System.out.println("old pop, parents sizes: " + population.getSize() + ", " + parents.size());
 
       // 2. recombine pairs of parents, add resulting offspring to existing population
-      for (Iterator<Pair<Individual, Individual>> it = parents.iterator(); it.hasNext();) {
-        Pair<Individual, Individual> p = it.next();
-        Pair<Individual, Individual> offspring = recombine.recombine(p.first, p.second);
-        population.add(offspring.first);
-        population.add(offspring.second);
+      List<Individual> thing = parents.parallelStream()
+          // Can't use {} notation in flatMap to produce intermediate variables
+          // Unnecessarily calls recombine twice, which already calls recombine twice
+          .flatMap(pi ->
+          // Pair<Individual, Individual> offspring = recombine.recombine(pi.first, pi.second);
+          Arrays.asList(recombine.recombine(pi.first, pi.second).first,
+              recombine.recombine(pi.first, pi.second).second).stream())
+          .collect(Collectors.toList());
+      System.out.println("Thing size: " + thing.size());
+      for (Individual i : thing) {
+        population.add(i);
       }
+
+//      for (Iterator<Pair<Individual, Individual>> it = parents.iterator(); it.hasNext();) {
+//        Pair<Individual, Individual> p = it.next();
+//        Pair<Individual, Individual> offspring = recombine.recombine(p.first, p.second);
+//        population.add(offspring.first);
+//        population.add(offspring.second);
+//      }
 
       System.out.println("New population size: " + population.getSize());
 
@@ -91,9 +105,9 @@ public class Main {
         IntegerPair ip = new IntegerPair(ThreadLocalRandom.current().nextInt(0, problem.getSize()),
             ThreadLocalRandom.current().nextInt(0, problem.getSize()));
         mutate.run(problem, individual, Arrays.asList(ip));
-        System.out.println("Done. Old cost was " + individual.getCost());
+        System.out.println("Done mutating. Old cost was " + individual.getCost());
         individual.setCost(Math.min(individual.getCost(), individual.evaluateCost(problem)));
-        System.out.println("Done. New cost is " + individual.getCost());
+        System.out.println("New cost is " + individual.getCost());
       });
 
       if (problem == null) {
