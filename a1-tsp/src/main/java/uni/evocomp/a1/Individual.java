@@ -157,6 +157,21 @@ public class Individual implements Comparable<Individual> {
   }
 
   /**
+   * Used for assertEquals() in JUnit 4
+   * 
+   * @param o Object to test against
+   * @return <code>true</code> if o is an <code>Individual</code> and the genotypes are equal,
+   *         <code>false</code> otherwise
+   */
+  @Override
+  public boolean equals(Object o) {
+    if (!(o instanceof Individual)) {
+      return false;
+    }
+    return this.getGenotype().equals(((Individual) o).getGenotype());
+  }
+
+  /**
    * Finds the cost of the tour the individual is holding. Note: does not update Individual.cost
    *
    * @param problem Problem to evaluate cost against
