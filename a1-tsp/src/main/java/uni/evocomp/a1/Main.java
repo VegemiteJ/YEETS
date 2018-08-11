@@ -61,7 +61,6 @@ public class Main {
     // Initialise population with random candidate solutions and
     // Evaluate each candidate
     Population population = new Population(populationSize, problem.getSize());
-    System.out.println("Old pop size: " + population.getSize());
     population.getPopulation().parallelStream().forEach(i -> i.setCost(i.evaluateCost(problem)));
 
     // The return value
@@ -73,8 +72,6 @@ public class Main {
       // 1. select parents from the population
       List<Pair<Individual, Individual>> parents = selectParents.selectParents(population);
 
-      System.out.println("old pop, parents sizes: " + population.getSize() + ", " + parents.size());
-
       // 2. recombine pairs of parents, add resulting offspring to existing population
       List<Individual> thing = parents.parallelStream()
           // Can't use {} notation in flatMap to produce intermediate variables
@@ -84,7 +81,6 @@ public class Main {
           Arrays.asList(recombine.recombine(pi.first, pi.second).first,
               recombine.recombine(pi.first, pi.second).second).stream())
           .collect(Collectors.toList());
-      System.out.println("Thing size: " + thing.size());
       for (Individual i : thing) {
         population.add(i);
       }
@@ -95,8 +91,6 @@ public class Main {
 //        population.add(offspring.first);
 //        population.add(offspring.second);
 //      }
-
-      System.out.println("New population size: " + population.getSize());
 
       // 3. mutate resulting offspring and
       // 4. evaluate new candidates

@@ -41,9 +41,9 @@ public class TournamentSelection implements SelectSurvivors {
   public TournamentSelection() {
     this.evaluate = new EvaluateEuclid();
     
-//    tournamentSize = 0.5;
+    tournamentSize = 10;
     survivalProportion = 0.5;
-    p = 0.9;
+    p = 0.65;
   }
 
   /**
@@ -85,17 +85,23 @@ public class TournamentSelection implements SelectSurvivors {
     Set<Integer> s = new LinkedHashSet<>();
     List<Individual> tournamentList = new ArrayList<>();
 
+//    System.out.println("Should be " + tournamentSize + " * " + population.getSize());
+//    System.out.println("Should have " + (int) (tournamentSize * population.getSize()));
+    
     // choose k random individuals from population
     if (tournamentSize < population.getSize()) {
       while (s.size() < tournamentSize) {
         int index = rand.nextInt(population.getSize());
+//        System.out.println("Adding index1 " + index);
         s.add(index);
       }
+//      System.out.println("S size is " + s.size());
       // Iterate over HashSet and add individuals to the tournament list
       List<Individual> individualList = new ArrayList<>(population.getPopulation());
       Iterator<Integer> itr = s.iterator();
       while (itr.hasNext()) {
         int index = itr.next();
+//        System.out.println("Adding index2 " + index);
         Individual next = individualList.get(index);
         tournamentList.add(next);
       }
@@ -121,6 +127,8 @@ public class TournamentSelection implements SelectSurvivors {
       }
       i++;
     }
+    
+//    System.out.println("After selection, survivor size is " + survivors.size());
   }
 }
 
