@@ -21,10 +21,12 @@ public class Individual {
 
   private List<Integer> genotype; // the tour, elements should be 1-n
   private double cost;
+  private boolean dirty;
 
   public Individual() {
     genotype = new ArrayList<>();
     initialise(0);
+    this.dirty = false;
   }
 
   /**
@@ -35,6 +37,8 @@ public class Individual {
   public Individual(Individual src) {
     this.genotype = new ArrayList<>(src.getGenotype());
     this.setCost(src.cost);
+    // Unsure what the best case is here? Copy src dirty bit or assume not dirty?
+    this.dirty = src.dirty;
   }
 
   /**
@@ -99,11 +103,15 @@ public class Individual {
   }
 
   public Double getCost() {
+    if (this.dirty) {
+      
+    }
     return this.cost;
   }
 
   public void setCost(Double cost) {
     this.cost = cost;
+    this.dirty = false;
   }
 
   @Override
