@@ -49,6 +49,7 @@ public class Individual {
    */
   public Individual(int n) {
     initialise(n);
+    this.dirty = true;
   }
 
   /**
@@ -74,6 +75,7 @@ public class Individual {
    */
   public Individual(List<Integer> genotype) {
     this.genotype = genotype;
+    this.dirty = true;
   }
 
   /**
