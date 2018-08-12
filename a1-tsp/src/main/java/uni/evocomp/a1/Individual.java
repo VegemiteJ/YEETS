@@ -182,10 +182,6 @@ public class Individual {
     double newCost = 0;
     Matrix weights = problem.getWeights();
     for (int i = 0; i < genotype.size() - 1; i++) {
-      // TODO: Loading tour file has the last element as -1, should change in TSPIO
-      if (genotype.get(i + 1) == -1) {
-        break;
-      }
       newCost += weights.get(genotype.get(i) - 1, genotype.get(i + 1) - 1);
     }
     return newCost;
