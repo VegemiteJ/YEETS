@@ -1,32 +1,36 @@
 package uni.evocomp.a1.recombine;
 
 import java.util.Random;
+import uni.evocomp.a1.TSPProblem;
 import uni.evocomp.util.Pair;
 import uni.evocomp.util.IntegerPair;
 import uni.evocomp.a1.Individual;
 
 /**
- * Perform the order crossover recombination: take an ordered part of the first parent,
- * then fill in the remaining elements with the
+ * Perform the order crossover recombination: take an ordered part of the first parent, then fill in
+ * the remaining elements with the
  */
 public class OrderCrossover implements Recombine {
+
   @Override
-  public Pair<Individual, Individual> recombine(Individual firstParent, Individual secondParent) {
+  public Pair<Individual, Individual> recombine(Individual firstParent, Individual secondParent,
+      TSPProblem problem) {
     IntegerPair slice = getRandomSlice(firstParent.getGenotype().size());
     return new Pair<>(
-        recombine(firstParent, secondParent, slice),
-        recombine(secondParent, firstParent, slice)
+        recombine(firstParent, secondParent, slice, problem),
+        recombine(secondParent, firstParent, slice, problem)
     );
   }
 
   /**
-   * @param firstParent   The first individual to crossover
-   * @param secondParent  The second individual to crossover
-   * @param slice         The range [start, end) of the order to select
+   * @param firstParent The first individual to crossover
+   * @param secondParent The second individual to crossover
+   * @param slice The range [start, end) of the order to select
    * @return The resulting child
    */
-  Individual recombine(Individual firstParent, Individual secondParent, IntegerPair slice)
-  throws IllegalArgumentException {
+  Individual recombine(Individual firstParent, Individual secondParent, IntegerPair slice,
+      TSPProblem problem)
+      throws IllegalArgumentException {
     final int n = firstParent.getGenotype().size();
     slice.first = slice.first % n;
     slice.second = slice.second % n;
@@ -66,6 +70,12 @@ public class OrderCrossover implements Recombine {
       next = (next + 1) % n;
     }
 
+    //TODO: Hack, OrderCrossOverTests don't give a problem or check for cost
+    if (problem != null) {
+      child.setCost(child.evaluateCost(problem));
+    }
+
+    //TODO: this is slow, shouldn't be done every recombine?
     child.assertIsValidTour();
     return child;
   }
