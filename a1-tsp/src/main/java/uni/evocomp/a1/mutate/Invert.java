@@ -43,7 +43,7 @@ public class Invert implements Mutate {
    * @param m last index to insert
    */
   private void invert(TSPProblem problem, Individual individual, int n, int m) {
-    double cost = individual.getCost();
+    double cost = individual.getCost(problem);
     cost -= calculateDifferentialCost(problem, individual, n, m);
     int first = Math.min(n, m);
     int second = Math.max(n, m);

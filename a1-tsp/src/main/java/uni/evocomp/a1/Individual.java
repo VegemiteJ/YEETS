@@ -102,9 +102,9 @@ public class Individual {
     return genotype;
   }
 
-  public Double getCost() {
+  public Double getCost(TSPProblem problem) {
     if (this.dirty) {
-      
+      setCost(evaluateCost(problem));
     }
     return this.cost;
   }

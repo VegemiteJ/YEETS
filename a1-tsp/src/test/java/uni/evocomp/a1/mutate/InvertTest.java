@@ -54,7 +54,7 @@ public class InvertTest {
     m.run(p, i, new ArrayList<>());
     assertEquals(original, i.getGenotype());
     double cost = eval2D.evaluate(p, i);
-    assertEquals(cost, i.getCost(), 0.00001);
+    assertEquals(cost, i.getCost(p), 0.00001);
   }
 
   @Test
@@ -63,7 +63,7 @@ public class InvertTest {
     m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(1, 4))));
     assertEquals(Arrays.asList(1, 5, 4, 3, 2), i.getGenotype());
     double cost = eval2D.evaluate(p, i);
-    assertEquals(cost, i.getCost(), 0.00001);
+    assertEquals(cost, i.getCost(p), 0.00001);
   }
 
   @Test
@@ -72,7 +72,7 @@ public class InvertTest {
     m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(0, 1))));
     assertEquals(Arrays.asList(2, 1, 3, 4, 5), i.getGenotype());
     double cost = eval2D.evaluate(p, i);
-    assertEquals(cost, i.getCost(), 0.00001);
+    assertEquals(cost, i.getCost(p), 0.00001);
   }
 
   @Test
@@ -81,7 +81,7 @@ public class InvertTest {
     m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(2, 2))));
     assertEquals(original, i.getGenotype());
     double cost = eval2D.evaluate(p, i);
-    assertEquals(cost, i.getCost(), 0.00001);
+    assertEquals(cost, i.getCost(p), 0.00001);
   }
 
   @Test
@@ -90,7 +90,7 @@ public class InvertTest {
     m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(4, 1))));
     assertEquals(Arrays.asList(1, 5, 4, 3, 2), i.getGenotype());
     double cost = eval2D.evaluate(p, i);
-    assertEquals(cost, i.getCost(), 0.00001);
+    assertEquals(cost, i.getCost(p), 0.00001);
   }
 
   @Test(expected = IndexOutOfBoundsException.class)
@@ -113,7 +113,7 @@ public class InvertTest {
     m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(0, 3), new IntegerPair(3, 4))));
     assertEquals(Arrays.asList(4, 3, 2, 5, 1), i.getGenotype());
     double cost = eval2D.evaluate(p, i);
-    assertEquals(cost, i.getCost(), 0.00001);
+    assertEquals(cost, i.getCost(p), 0.00001);
   }
 
   @Test
@@ -122,7 +122,7 @@ public class InvertTest {
     m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(0, 3), new IntegerPair(3, 0))));
     assertEquals(original, i.getGenotype());
     double cost = eval2D.evaluate(p, i);
-    assertEquals(cost, i.getCost(), 0.00001);
+    assertEquals(cost, i.getCost(p), 0.00001);
   }
 
   @Test(expected = NullPointerException.class)

@@ -30,7 +30,7 @@ public class Jump implements Mutate {
   }
 
   private void jumpSingle(TSPProblem problem, Individual i, IntegerPair pair) {
-    double cost = i.getCost();
+    double cost = i.getCost(problem);
 
     List<Integer> data = i.getGenotype();
     if (!Bounds.inBounds(data, pair.first) || !Bounds.inBounds(data, pair.second)) {

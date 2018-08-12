@@ -24,7 +24,7 @@ public class Swap implements Mutate {
    */
   private void swap(TSPProblem problem, Individual individual, int n, int m)
       throws IndexOutOfBoundsException, NullPointerException {
-    double cost = individual.getCost();
+    double cost = individual.getCost(problem);
     cost -= calculateDifferentialCost(problem, individual, n, m);
 
     Collections.swap(individual.getGenotype(), n, m);

@@ -62,7 +62,7 @@ public class LocalSearchBenchmark {
         continue;
       }
       if (benchmark.second != null) {
-        System.out.println(problemDef.getName() + " (Best: " + benchmark.second.getCost() + ")");
+        System.out.println(problemDef.getName() + " (Best: " + benchmark.second.getCost(problemDef) + ")");
       }
 
       for (int mi = 0; mi < mutationFunctions.length; mi++) {
@@ -80,13 +80,13 @@ public class LocalSearchBenchmark {
           //          System.out.println("Running a new test");
           //          System.out.println("===================================");
           Individual result = ls.solve();
-          if (result.getCost() < minCost) {
-            minCost = result.getCost();
+          if (result.getCost(problemDef) < minCost) {
+            minCost = result.getCost(problemDef);
           }
-          if (result.getCost() > maxCost) {
-            maxCost = result.getCost();
+          if (result.getCost(problemDef) > maxCost) {
+            maxCost = result.getCost(problemDef);
           }
-          averageCost += result.getCost();
+          averageCost += result.getCost(problemDef);
           //          System.out.println("===================================");
         }
         averageCost /= repeats;
