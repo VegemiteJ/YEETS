@@ -72,7 +72,8 @@ public class Jump implements Mutate {
   */
 
   private double calculateDifferentialCost(
-      TSPProblem problem, Individual individual, int i, int j, boolean beforeJump, boolean forwards) {
+      TSPProblem problem, Individual individual, int i, int j, boolean beforeJump,
+      boolean forwards) {
     List<Integer> g = individual.getGenotype();
     Matrix weights = problem.getWeights();
 
@@ -98,7 +99,7 @@ public class Jump implements Mutate {
     double differentialCost = 0.0;
 
     //Stop if jump is just a rotate (no change in cost)
-    if(j_plus_1 == i) {
+    if (j_plus_1 == i) {
       return 0;
     }
 

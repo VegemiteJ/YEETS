@@ -67,11 +67,11 @@ public class EvaluateEuclidTest {
   @Test
   public void testWrapCost() {
     // same loop, just starting at different position
-    List<Integer> tour = new ArrayList<>(Arrays.asList(1,2,3));
+    List<Integer> tour = new ArrayList<>(Arrays.asList(1, 2, 3));
     Individual i = new Individual(tour);
     double cost1 = e.evaluate(testProblem, i);
 
-    List<Integer> tour2 = new ArrayList<>(Arrays.asList(2,3,1));
+    List<Integer> tour2 = new ArrayList<>(Arrays.asList(2, 3, 1));
     Individual j = new Individual(tour2);
     double cost2 = e.evaluate(testProblem, i);
 
