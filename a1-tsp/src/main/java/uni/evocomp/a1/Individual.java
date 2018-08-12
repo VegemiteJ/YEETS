@@ -20,7 +20,7 @@ import uni.evocomp.util.Matrix;
  * <p>
  * As such, it should contain a Set of numbers, where each number is a city, representing a
  * permutation of all the cities (from 1-n)
- * 
+ *
  * @author Namdrib
  */
 public class Individual implements Serializable {
@@ -30,28 +30,37 @@ public class Individual implements Serializable {
 
   private List<Integer> genotype; // the tour, elements should be 1-n
   private double cost;
+  private boolean dirty;
 
   public Individual() {
     genotype = new ArrayList<>();
     initialise(0);
+    this.dirty = false;
   }
 
   /**
    * Copy constructor for Individual
-   * 
+   *
    * @param src source Individual object to copy construct
    */
   public Individual(Individual src) {
     this.genotype = new ArrayList<>(src.getGenotype());
     this.setCost(src.cost);
+    // Copy src dirty bit is expected behaviour per chat on #87
+    this.dirty = src.dirty;
   }
 
   /**
-   * 
    * @param n initialise to have a tour of n cities
+<<<<<<< HEAD
+=======
+   *
+   * /** @param n initialise to have a tour of n cities
+>>>>>>> master
    */
   public Individual(int n) {
     initialise(n);
+    this.dirty = true;
   }
 
   /**
@@ -77,6 +86,7 @@ public class Individual implements Serializable {
    */
   public Individual(List<Integer> genotype) {
     this.genotype = genotype;
+    this.dirty = true;
   }
 
   /**
@@ -90,7 +100,7 @@ public class Individual implements Serializable {
 
   /**
    * Initialise as per Exercise 3, "constructs .. a solution [uniformly at random] in linear time"
-   * 
+   *
    * @param n the size of the genotype
    */
   public void initialise(int n) {
@@ -105,18 +115,22 @@ public class Individual implements Serializable {
     return genotype;
   }
 
-  public Double getCost() {
+  public Double getCost(TSPProblem problem) {
+    if (this.dirty) {
+      setCost(evaluateCost(problem));
+    }
     return this.cost;
   }
 
   public void setCost(Double cost) {
     this.cost = cost;
+    this.dirty = false;
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    for (Iterator<Integer> it = genotype.iterator(); it.hasNext();) {
+    for (Iterator<Integer> it = genotype.iterator(); it.hasNext(); ) {
       sb.append(String.valueOf(it.next()));
       sb.append("\n");
     }
@@ -216,6 +230,21 @@ public class Individual implements Serializable {
   }
 
   /**
+   * Used for assertEquals() in JUnit 4
+   * 
+   * @param o Object to test against
+   * @return <code>true</code> if o is an <code>Individual</code> and the genotypes are equal,
+   *         <code>false</code> otherwise
+   */
+  @Override
+  public boolean equals(Object o) {
+    if (!(o instanceof Individual)) {
+      return false;
+    }
+    return this.getGenotype().equals(((Individual) o).getGenotype());
+  }
+
+  /**
    * Finds the cost of the tour the individual is holding. Note: does not update Individual.cost
    *
    * @param problem Problem to evaluate cost against
@@ -225,12 +254,11 @@ public class Individual implements Serializable {
     double newCost = 0;
     Matrix weights = problem.getWeights();
     for (int i = 0; i < genotype.size() - 1; i++) {
-      // TODO: Loading tour file has the last element as -1, should change in TSPIO
-      if (genotype.get(i + 1) == -1) {
-        break;
-      }
       newCost += weights.get(genotype.get(i) - 1, genotype.get(i + 1) - 1);
     }
+    // Complete loop
+    newCost += weights.get(genotype.get(genotype.size() - 1) - 1, genotype.get(0) - 1);
+
     return newCost;
   }
 }

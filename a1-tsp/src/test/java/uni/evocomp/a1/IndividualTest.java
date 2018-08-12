@@ -46,6 +46,29 @@ public class IndividualTest {
     assertTrue(didThrowException(i));
   }
 
+  @Test
+  public void testEqualsOverrideHappy() {
+    Individual i = new Individual(Arrays.asList(1, 2, 3, 4), 0.0);
+    Individual j = new Individual(Arrays.asList(1, 2, 3, 4), 1.0);
+
+    assertTrue(i.equals(j));
+    assertTrue(j.equals(i));
+    assertEquals(i, j);
+  }
+
+  @SuppressWarnings("unlikely-arg-type")
+  @Test(expected = java.lang.AssertionError.class)
+  public void testEqualsOverrideSad() {
+    Individual i = new Individual(Arrays.asList(1, 2, 3, 4), 0.0);
+    Individual j = new Individual(Arrays.asList(1, 2, 4, 3), 1.0);
+
+    assertFalse(i.equals(j));
+    assertFalse(j.equals(i));
+    assertFalse(i.equals("Hello"));
+    assertFalse(i.equals(1));
+    assertEquals(i, j); // this should fail
+  }
+
   @Test(expected = Test.None.class)
   public void testSerialiseDefault() throws IOException, ClassNotFoundException {
     // Create and serialise an object
@@ -58,7 +81,7 @@ public class IndividualTest {
 
     // Read back and check same
     Individual recreate = Individual.deserialise();
-    assertEquals(0.0, recreate.getCost(), 0);
+    assertEquals(0.0, recreate.getCost(new TSPProblem()), 0);
     assertEquals(array, recreate.getGenotype());
 
     // Clean up the file created by serialise()
@@ -78,7 +101,7 @@ public class IndividualTest {
 
     // Read back and check same
     Individual recreate = Individual.deserialise(outName);
-    assertEquals(0.0, recreate.getCost(), 0);
+    assertEquals(0.0, recreate.getCost(new TSPProblem()), 0);
     assertEquals(array, recreate.getGenotype());
 
     // Clean up the file created by serialise()
