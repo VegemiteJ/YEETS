@@ -37,7 +37,7 @@ public class Individual {
   public Individual(Individual src) {
     this.genotype = new ArrayList<>(src.getGenotype());
     this.setCost(src.cost);
-    // Unsure what the best case is here? Copy src dirty bit or assume not dirty?
+    // Copy src dirty bit is expected behaviour per chat on #87
     this.dirty = src.dirty;
   }
 
