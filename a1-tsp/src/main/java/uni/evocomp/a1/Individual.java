@@ -38,21 +38,19 @@ public class Individual implements Comparable<Individual> {
   }
 
   /**
-   * 
-   * @param n initialise to have a tour of n cities
-   *
-   *        /** @param n initialise to have a tour of n cities
+   * @param n the number of cities in the <code>Individual</code>'s tour
    */
   public Individual(int n) {
     initialise(n);
   }
 
   /**
-   * @param n initialise to have a tour of n cities
+   * Initialise the Individual with random solution for <code>problem</code>, and set initial cost
+   * 
    * @param problem problem to evaluate initial cost against
    */
-  public Individual(int n, TSPProblem problem) {
-    initialise(n);
+  public Individual(TSPProblem problem) {
+    initialise(problem.getSize());
     setCost(evaluateCost(problem));
   }
 

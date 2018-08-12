@@ -32,11 +32,11 @@ public class Population {
    * @param popSize how many Individuals in the Population
    * @param indSize the size of each Individual
    */
-  public Population(int popSize, int indSize) {
+  public Population(TSPProblem problem, int popSize) {
     this();
 
     for (int i = 0; i < popSize; i++) {
-      population.add(new Individual(indSize));
+      population.add(new Individual(problem));
     }
   }
 

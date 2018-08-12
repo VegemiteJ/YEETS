@@ -60,8 +60,7 @@ public class Main {
 
     // Initialise population with random candidate solutions and
     // Evaluate each candidate
-    Population population = new Population(populationSize, problem.getSize());
-    population.getPopulation().parallelStream().forEach(i -> i.setCost(i.evaluateCost(problem)));
+    Population population = new Population(problem, populationSize);
 
     // The return value
     Individual bestIndividual = new Individual();
