@@ -64,11 +64,12 @@ public class Main {
     population.getPopulation().parallelStream().forEach(i -> i.setCost(i.evaluateCost(problem)));
 
     // The return value
-    Individual bestIndividual = null;
+    Individual bestIndividual = new Individual();
+    bestIndividual.setCost(Double.MAX_VALUE);
 
     // TODO : define terminal condition
-    boolean RUN_ONCE = true;
-    while (RUN_ONCE) {
+    int numRuns = 0;
+    while (numRuns < 10) {
       // 1. select parents from the population
       List<Pair<Individual, Individual>> parents = selectParents.selectParents(population);
 
@@ -85,12 +86,14 @@ public class Main {
         population.add(i);
       }
 
-//      for (Iterator<Pair<Individual, Individual>> it = parents.iterator(); it.hasNext();) {
-//        Pair<Individual, Individual> p = it.next();
-//        Pair<Individual, Individual> offspring = recombine.recombine(p.first, p.second);
-//        population.add(offspring.first);
-//        population.add(offspring.second);
-//      }
+      // Step 2 but normal for loop. Can't just automagically parallelise but doesn't need to call
+      // recombine twice
+      // for (Iterator<Pair<Individual, Individual>> it = parents.iterator(); it.hasNext();) {
+      // Pair<Individual, Individual> p = it.next();
+      // Pair<Individual, Individual> offspring = recombine.recombine(p.first, p.second);
+      // population.add(offspring.first);
+      // population.add(offspring.second);
+      // }
 
       // 3. mutate resulting offspring and
       // 4. evaluate new candidates
@@ -98,37 +101,32 @@ public class Main {
         // Pick a random range to mutate
         IntegerPair ip = new IntegerPair(ThreadLocalRandom.current().nextInt(0, problem.getSize()),
             ThreadLocalRandom.current().nextInt(0, problem.getSize()));
+        // System.out.print("Mutation from " + individual.getCost() + " -> ");
         mutate.run(problem, individual, Arrays.asList(ip));
-        System.out.println("Done mutating. Old cost was " + individual.getCost());
+        // System.out.print(individual.getCost() + " -> ");
         individual.setCost(Math.min(individual.getCost(), individual.evaluateCost(problem)));
-        System.out.println("New cost is " + individual.getCost());
+        // System.out.println(individual.getCost());
       });
 
-      if (problem == null) {
-        System.out.println("pop is null");
-      }
       // 5. select individuals for next generation
-      System.out.println("selecting!");
       population =
           selectSurvivors.selectSurvivors(population, problem, ThreadLocalRandom.current());
-      System.out.println("selected!");
       // Update best individual so far
       // Optional<Individual> popBest = population.getPopulation().stream().min((i1, i2) ->
       // Double.compare(i1.getCost(), i2.getCost()));
       Individual popBest = Collections.min(population.getPopulation());
-      System.out.println("A : " + popBest.getCost());
+      System.out.println("Best cost : " + popBest.getCost());
       if (popBest.compareTo(bestIndividual) < 0) {
-        System.out.println("Happen");
         bestIndividual = popBest;
       }
-      RUN_ONCE = false;;
+      numRuns++;
     }
     return bestIndividual;
   }
 
   // TODO : Benchmark function
   public static void benchmark(TSPProblem problem, String propertiesFileName, int populationSize,
-      int timesToRun) {
+      int repeats) {
     // TODO : Read a .properties file to figure out which implementations to use
     // and instantiate one of each using Evaluate, SelectParents, Recombine, Mutate and
     // SelectSurvivors
@@ -162,17 +160,38 @@ public class Main {
     }
 
     // TODO : record metrics
-    for (int i = 0; i < timesToRun; i++) {
-      Individual bestIndividual = evolutionaryAlgorithm(problem, evaluate, selectParents, recombine,
-          mutate, selectSurvivors, populationSize);
-      System.out.println("Best individual in iteration " + i + ": " + bestIndividual);
+    double minCost = Double.MAX_VALUE;
+    double maxCost = Double.MIN_VALUE;
+    double averageCost = 0;
+
+    for (int i = 0; i < repeats; i++) {
+      Individual result = evolutionaryAlgorithm(problem, evaluate, selectParents, recombine, mutate,
+          selectSurvivors, populationSize);
+      // System.out.println("Best individual in iteration " + i + ": " + result);
+      if (result.getCost() < minCost) {
+        System.out.println("New min cost: " + minCost + " to " + result.getCost());
+        minCost = result.getCost();
+      }
+      if (result.getCost() > maxCost) {
+        System.out.println("New max cost: " + minCost + " to " + result.getCost());
+        maxCost = result.getCost();
+      }
+      averageCost += result.getCost();
     }
+
+    averageCost /= repeats;
+
+    System.out.println("    Min: " + minCost);
+    System.out.println("    Max: " + maxCost);
+    System.out.println("    Ave: " + averageCost);
   }
 
   public static void main(String[] args) {
     TSPProblem problem = new TSPProblem();
     TSPIO io = new TSPIO();
-    try (Reader r = new FileReader("tests/eil51.tsp")) {
+    String testfile = (args.length > 0 ? args[0] : "tests/eil51.tsp");
+    System.out.println("Test file is " + testfile);
+    try (Reader r = new FileReader(testfile)) {
       problem = io.read(r);
     } catch (IOException e) {
       e.printStackTrace();
