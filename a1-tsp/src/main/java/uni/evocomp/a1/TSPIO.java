@@ -108,7 +108,7 @@ public class TSPIO {
           Integer cityIdx = Integer.parseInt(split[0]);
           Double xCoord = Double.valueOf(split[1]);
           Double yCoord = Double.valueOf(split[2]);
-          if (cityIdx < 0) {
+          if (cityIdx <= 0) {
             throw new IOException("Bad body format (City Idx) on line " + i + ": " + line);
           }
           points.put(cityIdx, new DoublePair(xCoord, yCoord));
@@ -201,7 +201,7 @@ public class TSPIO {
             throw new IOException("Bad body format on line " + i + ": " + line);
           }
           Integer cityIdx = Integer.parseInt(split[0]);
-          if (cityIdx < 0) {
+          if (cityIdx <= 0) {
             throw new IOException("Bad body format (Negative City Index) on line " + i + ": " + line);
           }
           solution.add(cityIdx);
