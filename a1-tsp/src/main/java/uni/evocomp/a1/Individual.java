@@ -187,7 +187,7 @@ public class Individual {
    * @param problem Problem to evaluate cost against
    * @return Cost of the tour
    */
-  public double evaluateCost(TSPProblem problem) {
+  private double evaluateCost(TSPProblem problem) {
     double newCost = 0;
     Matrix weights = problem.getWeights();
     for (int i = 0; i < genotype.size() - 1; i++) {

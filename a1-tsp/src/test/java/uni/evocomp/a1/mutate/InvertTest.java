@@ -150,7 +150,7 @@ public class InvertTest {
         m.run(p, individual, Arrays.asList(pair));
 
         double cost = eval2D.evaluate(p, individual);
-        assertEquals(individual.getCost(), cost, 0);
+        assertEquals(individual.getCost(p), cost, 0);
       }
     }
   }
