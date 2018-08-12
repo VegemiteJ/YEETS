@@ -38,21 +38,21 @@ public class Jump implements Mutate {
           String.format("Jump called with invalid index %d, %d\n", pair.first, pair.second));
     }
     if (pair.first <= pair.second) {
-      cost -= calculateDifferentialCostForwards(problem, i, pair.first, pair.second, true);
+      cost -= calculateDifferentialCost(problem, i, pair.first, pair.second, true, true);
       Integer value = data.get(pair.first);
       for (int i1 = pair.first; i1 < pair.second; i1++) {
         data.set(i1, data.get(i1 + 1));
       }
       data.set(pair.second, value);
-      cost += calculateDifferentialCostForwards(problem, i, pair.first, pair.second, false);
+      cost += calculateDifferentialCost(problem, i, pair.first, pair.second, false, true);
     } else {
-      cost -= calculateDifferentialCostBackwards(problem, i, pair.first, pair.second, true);
+      cost -= calculateDifferentialCost(problem, i, pair.first, pair.second, true, false);
       Integer value = data.get(pair.first);
       for (int i1 = pair.first; i1 > pair.second; i1--) {
         data.set(i1, data.get(i1 - 1));
       }
       data.set(pair.second, value);
-      cost += calculateDifferentialCostBackwards(problem, i, pair.first, pair.second, false);
+      cost += calculateDifferentialCost(problem, i, pair.first, pair.second, false, false);
     }
 
     i.setCost(cost);
@@ -66,11 +66,13 @@ public class Jump implements Mutate {
     Remove(Before):(i-1,i),(j-1,j),(j,j+1)
     Add(After)    :(i-1,i),(i,i+1),(j,j+1)
 
-  Only middle column is different, could refactor even further
+  However doesn't cancel if no-op (i==j)
+  or if path just rotates (a-b-c -> b-c-a)
+  needs to be handled as special case
   */
 
-  private double calculateDifferentialCostForwards(
-      TSPProblem problem, Individual individual, int i, int j, boolean beforeJump) {
+  private double calculateDifferentialCost(
+      TSPProblem problem, Individual individual, int i, int j, boolean beforeJump, boolean forwards) {
     List<Integer> g = individual.getGenotype();
     Matrix weights = problem.getWeights();
 
@@ -86,6 +88,7 @@ public class Jump implements Mutate {
       j = t;
     }
 
+    //Prepare modulo indices
     int n = problem.getSize();
     int i_plus_1 = (i + 1 + n) % n;
     int i_minus_1 = (i - 1 + n) % n;
@@ -94,6 +97,7 @@ public class Jump implements Mutate {
 
     double differentialCost = 0.0;
 
+    //Stop if jump is just a rotate (no change in cost)
     if(j_plus_1 == i) {
       return 0;
     }
@@ -101,61 +105,15 @@ public class Jump implements Mutate {
     // (i-1,i)
     differentialCost += weights.get(g.get(i_minus_1) - 1, g.get(i) - 1);
 
-    // (i,i+1)
-    if (beforeJump) {
+    //if (forwards && before) or (backwards && after)
+    if (forwards == beforeJump) {
+      // (i,i+1)
       differentialCost += weights.get(g.get(i) - 1, g.get(i_plus_1) - 1);
-    }
-
-    // (j-1,j)
-    if (!beforeJump) {
+    } else {
+      // (j-1,j)
       differentialCost += weights.get(g.get(j_minus_1) - 1, g.get(j) - 1);
     }
-    // (j,j+1)
-    differentialCost += weights.get(g.get(j) - 1, g.get(j_plus_1) - 1);
 
-    return differentialCost;
-  }
-
-  private double calculateDifferentialCostBackwards(
-      TSPProblem problem, Individual individual, int i, int j, boolean beforeJump) {
-    List<Integer> g = individual.getGenotype();
-    Matrix weights = problem.getWeights();
-
-    if (i == j) {
-      return 0;
-    }
-
-    // Always make i<j
-    if (i > j) {
-      int t = i;
-      i = j;
-      j = t;
-    }
-
-    int n = problem.getSize();
-    int i_plus_1 = (i + 1 + n) % n;
-    int i_minus_1 = (i - 1 + n) % n;
-    int j_plus_1 = (j + 1 + n) % n;
-    int j_minus_1 = (j - 1 + n) % n;
-
-    if(j_plus_1 == i) {
-      return 0;
-    }
-
-    double differentialCost = 0.0;
-
-    // (i-1,i)
-    differentialCost += weights.get(g.get(i_minus_1) - 1, g.get(i) - 1);
-
-    // (i,i+1)
-    if (!beforeJump) {
-      differentialCost += weights.get(g.get(i) - 1, g.get(i_plus_1) - 1);
-    }
-
-    // (j-1,j)
-    if (beforeJump) {
-      differentialCost += weights.get(g.get(j_minus_1) - 1, g.get(j) - 1);
-    }
     // (j,j+1)
     differentialCost += weights.get(g.get(j) - 1, g.get(j_plus_1) - 1);
 
