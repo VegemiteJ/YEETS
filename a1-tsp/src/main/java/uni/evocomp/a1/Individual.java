@@ -21,10 +21,12 @@ public class Individual {
 
   private List<Integer> genotype; // the tour, elements should be 1-n
   private double cost;
+  private boolean dirty;
 
   public Individual() {
     genotype = new ArrayList<>();
     initialise(0);
+    this.dirty = false;
   }
 
   /**
@@ -35,6 +37,8 @@ public class Individual {
   public Individual(Individual src) {
     this.genotype = new ArrayList<>(src.getGenotype());
     this.setCost(src.cost);
+    // Copy src dirty bit is expected behaviour per chat on #87
+    this.dirty = src.dirty;
   }
 
   /**
@@ -44,6 +48,7 @@ public class Individual {
    */
   public Individual(int n) {
     initialise(n);
+    this.dirty = true;
   }
 
   /**
@@ -69,6 +74,7 @@ public class Individual {
    */
   public Individual(List<Integer> genotype) {
     this.genotype = genotype;
+    this.dirty = true;
   }
 
   /**
@@ -97,12 +103,16 @@ public class Individual {
     return genotype;
   }
 
-  public Double getCost() {
+  public Double getCost(TSPProblem problem) {
+    if (this.dirty) {
+      setCost(evaluateCost(problem));
+    }
     return this.cost;
   }
 
   public void setCost(Double cost) {
     this.cost = cost;
+    this.dirty = false;
   }
 
   @Override
@@ -181,10 +191,6 @@ public class Individual {
     double newCost = 0;
     Matrix weights = problem.getWeights();
     for (int i = 0; i < genotype.size() - 1; i++) {
-      // TODO: Loading tour file has the last element as -1, should change in TSPIO
-      if (genotype.get(i + 1) == -1) {
-        break;
-      }
       newCost += weights.get(genotype.get(i) - 1, genotype.get(i + 1) - 1);
     }
     // Complete loop
