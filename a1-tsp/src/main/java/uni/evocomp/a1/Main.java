@@ -67,7 +67,7 @@ public class Main {
 
     // TODO : define terminal condition
     int numRuns = 0;
-    while (numRuns < 10) {
+    while (numRuns < 50) {
       // 1. select parents from the population
       List<Pair<Individual, Individual>> parents = selectParents.selectParents(population);
 
@@ -102,7 +102,7 @@ public class Main {
         // System.out.print("Mutation from " + individual.getCost() + " -> ");
         mutate.run(problem, individual, Arrays.asList(ip));
         // System.out.print(individual.getCost() + " -> ");
-        individual.setCost(Math.min(individual.getCost(), individual.evaluateCost(problem)));
+        individual.getCost(problem);
         // System.out.println(individual.getCost());
       });
 
@@ -110,10 +110,8 @@ public class Main {
       population =
           selectSurvivors.selectSurvivors(population, problem, ThreadLocalRandom.current());
       // Update best individual so far
-      // Optional<Individual> popBest = population.getPopulation().stream().min((i1, i2) ->
-      // Double.compare(i1.getCost(), i2.getCost()));
       Individual popBest = Collections.min(population.getPopulation());
-      System.out.println("Best cost : " + popBest.getCost());
+//      System.out.println("Best cost : " + popBest.getCost(problem));
       if (popBest.compareTo(bestIndividual) < 0) {
         bestIndividual = popBest;
       }
@@ -166,15 +164,15 @@ public class Main {
       Individual result = evolutionaryAlgorithm(problem, evaluate, selectParents, recombine, mutate,
           selectSurvivors, populationSize);
       // System.out.println("Best individual in iteration " + i + ": " + result);
-      if (result.getCost() < minCost) {
-        System.out.println("New min cost: " + minCost + " to " + result.getCost());
-        minCost = result.getCost();
+      if (result.getCost(problem) < minCost) {
+        System.out.println("New min cost: " + minCost + " to " + result.getCost(problem));
+        minCost = result.getCost(problem);
       }
-      if (result.getCost() > maxCost) {
-        System.out.println("New max cost: " + minCost + " to " + result.getCost());
-        maxCost = result.getCost();
+      if (result.getCost(problem) > maxCost) {
+        System.out.println("New max cost: " + minCost + " to " + result.getCost(problem));
+        maxCost = result.getCost(problem);
       }
-      averageCost += result.getCost();
+      averageCost += result.getCost(problem);
     }
 
     averageCost /= repeats;

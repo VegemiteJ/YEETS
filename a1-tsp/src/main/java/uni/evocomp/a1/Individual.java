@@ -14,27 +14,31 @@ import uni.evocomp.util.Matrix;
  * <p>
  * As such, it should contain a Set of numbers, where each number is a city, representing a
  * permutation of all the cities (from 1-n)
- * 
+ *
  * @author Namdrib
  */
 public class Individual implements Comparable<Individual> {
 
   private List<Integer> genotype; // the tour, elements should be 1-n
   private double cost;
+  private boolean dirty;
 
   public Individual() {
     genotype = new ArrayList<>();
     initialise(0);
+    this.dirty = false;
   }
 
   /**
    * Copy constructor for Individual
-   * 
+   *
    * @param src source Individual object to copy construct
    */
   public Individual(Individual src) {
     this.genotype = new ArrayList<>(src.getGenotype());
     this.setCost(src.cost);
+    // Copy src dirty bit is expected behaviour per chat on #87
+    this.dirty = src.dirty;
   }
 
   /**
@@ -42,6 +46,7 @@ public class Individual implements Comparable<Individual> {
    */
   public Individual(int n) {
     initialise(n);
+    this.dirty = true;
   }
 
   /**
@@ -68,6 +73,7 @@ public class Individual implements Comparable<Individual> {
    */
   public Individual(List<Integer> genotype) {
     this.genotype = genotype;
+    this.dirty = true;
   }
 
   /**
@@ -81,7 +87,7 @@ public class Individual implements Comparable<Individual> {
 
   /**
    * Initialise as per Exercise 3, "constructs .. a solution [uniformly at random] in linear time"
-   * 
+   *
    * @param n the size of the genotype
    */
   public void initialise(int n) {
@@ -96,12 +102,23 @@ public class Individual implements Comparable<Individual> {
     return genotype;
   }
 
-  public Double getCost() {
+  /**
+   * return the cost of this Individual with respect to a TSPProblem. Updates the cost if the dirty
+   * bit is set
+   * 
+   * @param problem TSPProblem against which to derive cost
+   * @return the Individual's cost with respect to the TSPProblem
+   */
+  public Double getCost(TSPProblem problem) {
+    if (this.dirty) {
+      setCost(evaluateCost(problem));
+    }
     return this.cost;
   }
 
   public void setCost(Double cost) {
     this.cost = cost;
+    this.dirty = false;
   }
 
   @Override
@@ -181,6 +198,9 @@ public class Individual implements Comparable<Individual> {
     for (int i = 0; i < genotype.size() - 1; i++) {
       newCost += weights.get(genotype.get(i) - 1, genotype.get(i + 1) - 1);
     }
+    // Complete loop
+    newCost += weights.get(genotype.get(genotype.size() - 1) - 1, genotype.get(0) - 1);
+
     return newCost;
   }
 
@@ -194,9 +214,9 @@ public class Individual implements Comparable<Individual> {
       return -1;
     }
 
-    if (this.getCost() < i.getCost()) {
+    if (this.getCost(null) < i.getCost(null)) {
       return -1;
-    } else if (this.getCost() > i.getCost()) {
+    } else if (this.getCost(null) > i.getCost(null)) {
       return 1;
     } else {
       return 0;

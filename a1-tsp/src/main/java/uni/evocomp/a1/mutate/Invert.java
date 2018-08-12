@@ -20,22 +20,25 @@ public class Invert implements Mutate {
 
   private double calculateDifferentialCost(
       TSPProblem problem, Individual individual, int n, int m) {
+
+    int size = problem.getSize();
+    double differentialCost = 0.0;
+
     int a = Math.min(n, m);
     m = Math.max(n, m);
     n = a;
-    double differentialCost = 0.0;
+
     int idxI = individual.getGenotype().get(n) - 1;
     int idxJ = individual.getGenotype().get(m) - 1;
+
     // (i-1,i)
-    if (n - 1 >= 0) {
-      int idxINegOne = individual.getGenotype().get(n - 1) - 1;
-      differentialCost += problem.getWeights().get(idxINegOne, idxI);
-    }
+    int idxINegOne = individual.getGenotype().get((n - 1 + size) % size) - 1;
+    differentialCost += problem.getWeights().get(idxINegOne, idxI);
+
     // (j,j+1)
-    if (m + 1 < problem.getWeights().size()) {
-      int idxJPosOne = individual.getGenotype().get(m + 1) - 1;
-      differentialCost += problem.getWeights().get(idxJ, idxJPosOne);
-    }
+    int idxJPosOne = individual.getGenotype().get((m + 1 + size) % size) - 1;
+    differentialCost += problem.getWeights().get(idxJ, idxJPosOne);
+
     return differentialCost;
   }
 
@@ -47,7 +50,7 @@ public class Invert implements Mutate {
    * @param m last index to insert
    */
   private void invert(TSPProblem problem, Individual individual, int n, int m) {
-    double cost = individual.getCost();
+    double cost = individual.getCost(problem);
     cost -= calculateDifferentialCost(problem, individual, n, m);
     int first = Math.min(n, m);
     int second = Math.max(n, m);
