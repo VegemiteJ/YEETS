@@ -80,6 +80,21 @@ public class JumpTest extends TestCase {
   }
 
   @Test
+  public void testJumpRotate1() {
+    Individual i = new Individual(new ArrayList<>(original), initialCost);
+    m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(7, 0))));
+    assertEquals(Arrays.asList(8, 1, 2, 3, 4, 5, 6, 7), i.getGenotype());
+    assertEquals(eval2D.evaluate(p, i), i.getCost());
+  }
+
+  public void testJumpRotate2() {
+    Individual i = new Individual(new ArrayList<>(original), initialCost);
+    m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(0, 7))));
+    assertEquals(Arrays.asList(2, 3, 4, 5, 6, 7, 8, 1), i.getGenotype());
+    assertEquals(eval2D.evaluate(p, i), i.getCost());
+  }
+
+  @Test
   public void testJumpSameIndex() {
     Individual i = new Individual(new ArrayList<>(original), initialCost);
     m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(3, 3))));

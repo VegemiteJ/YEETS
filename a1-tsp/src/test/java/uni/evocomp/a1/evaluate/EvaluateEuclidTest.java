@@ -64,5 +64,19 @@ public class EvaluateEuclidTest {
     Assert.assertEquals(24.0, cost, 0);
   }
 
+  @Test
+  public void testWrapCost() {
+    // same loop, just starting at different position
+    List<Integer> tour = new ArrayList<>(Arrays.asList(1,2,3));
+    Individual i = new Individual(tour);
+    double cost1 = e.evaluate(testProblem, i);
+
+    List<Integer> tour2 = new ArrayList<>(Arrays.asList(2,3,1));
+    Individual j = new Individual(tour2);
+    double cost2 = e.evaluate(testProblem, i);
+
+    Assert.assertEquals(cost1, cost2, 0);
+  }
+
   // TODO: Failure tests
 }
