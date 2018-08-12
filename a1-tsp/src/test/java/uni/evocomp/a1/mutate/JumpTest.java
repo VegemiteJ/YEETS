@@ -84,14 +84,14 @@ public class JumpTest extends TestCase {
     Individual i = new Individual(new ArrayList<>(original), initialCost);
     m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(7, 0))));
     assertEquals(Arrays.asList(8, 1, 2, 3, 4, 5, 6, 7), i.getGenotype());
-    assertEquals(eval2D.evaluate(p, i), i.getCost());
+    assertEquals(eval2D.evaluate(p, i), i.getCost(p));
   }
 
   public void testJumpRotate2() {
     Individual i = new Individual(new ArrayList<>(original), initialCost);
     m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(0, 7))));
     assertEquals(Arrays.asList(2, 3, 4, 5, 6, 7, 8, 1), i.getGenotype());
-    assertEquals(eval2D.evaluate(p, i), i.getCost());
+    assertEquals(eval2D.evaluate(p, i), i.getCost(p));
   }
 
   @Test
@@ -156,7 +156,7 @@ public class JumpTest extends TestCase {
         m.run(p, individual, Arrays.asList(pair));
 
         double cost = eval2D.evaluate(p, individual);
-        assertEquals(individual.getCost(), cost);
+        assertEquals(individual.getCost(p), cost);
       }
     }
   }

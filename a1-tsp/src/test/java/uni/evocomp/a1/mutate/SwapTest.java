@@ -59,7 +59,7 @@ public class SwapTest {
     m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(1, 4))));
     assertEquals(i.getGenotype(), Arrays.asList(1, 5, 3, 4, 2));
     double cost = eval2D.evaluate(p, i);
-    assertEquals(cost, i.getCost(), 0.00001);
+    assertEquals(cost, i.getCost(p), 0.00001);
   }
 
   @Test
@@ -68,7 +68,7 @@ public class SwapTest {
     m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(2, 2))));
     assertEquals(i.getGenotype(), original);
     double cost = eval2D.evaluate(p, i);
-    assertEquals(cost, i.getCost(), 0.00001);
+    assertEquals(cost, i.getCost(p), 0.00001);
   }
 
   @Test
@@ -77,7 +77,7 @@ public class SwapTest {
     m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(4, 1))));
     assertEquals(i.getGenotype(), Arrays.asList(1, 5, 3, 4, 2));
     double cost = eval2D.evaluate(p, i);
-    assertEquals(cost, i.getCost(), 0.00001);
+    assertEquals(cost, i.getCost(p), 0.00001);
   }
 
   @Test(expected = IndexOutOfBoundsException.class)
@@ -86,7 +86,7 @@ public class SwapTest {
     m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(-1, 4))));
     assertEquals(i.getGenotype(), original);
     double cost = eval2D.evaluate(p, i);
-    assertEquals(cost, i.getCost(), 0.00001);
+    assertEquals(cost, i.getCost(p), 0.00001);
   }
 
   @Test(expected = IndexOutOfBoundsException.class)
@@ -95,7 +95,7 @@ public class SwapTest {
     m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(1, 10))));
     assertEquals(i.getGenotype(), original);
     double cost = eval2D.evaluate(p, i);
-    assertEquals(cost, i.getCost(), 0.00001);
+    assertEquals(cost, i.getCost(p), 0.00001);
   }
 
   @Test
@@ -104,7 +104,7 @@ public class SwapTest {
     m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(1, 4), new IntegerPair(4, 1))));
     assertEquals(i.getGenotype(), original);
     double cost = eval2D.evaluate(p, i);
-    assertEquals(cost, i.getCost(), 0.00001);
+    assertEquals(cost, i.getCost(p), 0.00001);
   }
 
   @Test
@@ -113,7 +113,7 @@ public class SwapTest {
     m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(0, 4))));
     assertEquals(i.getGenotype(), Arrays.asList(5, 2, 3, 4, 1));
     double cost = eval2D.evaluate(p, i);
-    assertEquals(cost, i.getCost(), 0.00001);
+    assertEquals(cost, i.getCost(p), 0.00001);
   }
 
   @Test
@@ -122,7 +122,7 @@ public class SwapTest {
     m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(4, 0))));
     assertEquals(i.getGenotype(), Arrays.asList(5, 2, 3, 4, 1));
     double cost = eval2D.evaluate(p, i);
-    assertEquals(cost, i.getCost(), 0.00001);
+    assertEquals(cost, i.getCost(p), 0.00001);
   }
 
   @Test
@@ -131,7 +131,7 @@ public class SwapTest {
     m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(2, 3))));
     assertEquals(i.getGenotype(), Arrays.asList(1, 2, 4, 3, 5));
     double cost = eval2D.evaluate(p, i);
-    assertEquals(cost, i.getCost(), 0.00001);
+    assertEquals(cost, i.getCost(p), 0.00001);
   }
 
   @Test
@@ -145,7 +145,7 @@ public class SwapTest {
         m.run(p, individual, Arrays.asList(pair));
 
         double cost = eval2D.evaluate(p, individual);
-        assertEquals(individual.getCost(), cost, 0.00001);
+        assertEquals(individual.getCost(p), cost, 0.00001);
       }
     }
   }
