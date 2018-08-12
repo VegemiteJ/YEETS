@@ -39,7 +39,7 @@ public class Util {
 
   /**
    * Wrapper of createMap(String, String, String, int, String, List<String>, boolean) where the
-   * boolean is true
+   * eof is present
    */
   public static String createMap(
       String name,
@@ -86,6 +86,44 @@ public class Util {
     for (String s : coords) {
       out += s + "\n";
     }
+    if (eof) {
+      out += "EOF\n";
+    }
+    return out;
+  }
+
+  /**
+   * Create a mock test solution in the form of a String. Puts "-1", "EOF" at the end
+   *
+   * @param name
+   * @param comment
+   * @param type
+   * @param dimension
+   * @param cities a list whose elements are of the format "n x y", where n is an int and x and y
+   *     are doubles.
+   * @return a String representing a TSPLIB file contents
+   */
+  public static String createSolutionMap(
+      String name,
+      String comment,
+      String type,
+      int dimension,
+      List<String> cities,
+      boolean eof) {
+    String out =
+        "NAME : "
+            + name
+            + "\nCOMMENT : "
+            + comment
+            + "\nTYPE : "
+            + type
+            + "\nDIMENSION : "
+            + dimension
+            + "\nTOUR_SECTION\n";
+    for (String s : cities) {
+      out += s + "\n";
+    }
+    out += "-1\n";
     if (eof) {
       out += "EOF\n";
     }

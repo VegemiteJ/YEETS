@@ -105,8 +105,13 @@ public class TSPIO {
           if (split.length < 3) {
             throw new IOException("Bad body format on line " + i + ": " + line);
           }
-          points.put(Integer.parseInt(split[0]),
-              new DoublePair(Double.valueOf(split[1]), Double.valueOf(split[2])));
+          Integer cityIdx = Integer.parseInt(split[0]);
+          Double xCoord = Double.valueOf(split[1]);
+          Double yCoord = Double.valueOf(split[2]);
+          if (cityIdx <= 0) {
+            throw new IOException("Bad body format (City Idx) on line " + i + ": " + line);
+          }
+          points.put(cityIdx, new DoublePair(xCoord, yCoord));
           cityCounter++;
           if (cityCounter > dimension) {
             break;
@@ -143,7 +148,7 @@ public class TSPIO {
 
       for (int i = 1; (line = br.readLine()) != null; i++) {
         line = line.trim();
-        if (line.equals("EOF")) {
+        if (line.equals("EOF") || line.contains("-1")) {
           break;
         }
         if (line.isEmpty()) {
@@ -195,7 +200,11 @@ public class TSPIO {
           if (split.length != 1) {
             throw new IOException("Bad body format on line " + i + ": " + line);
           }
-          solution.add(Integer.parseInt(split[0]));
+          Integer cityIdx = Integer.parseInt(split[0]);
+          if (cityIdx <= 0) {
+            throw new IOException("Bad body format (Negative City Index) on line " + i + ": " + line);
+          }
+          solution.add(cityIdx);
         }
       }
       return new Individual(solution, 0.0);

@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.Arrays;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import uni.evocomp.util.Util;
@@ -109,6 +110,36 @@ public class TSPIOTest {
 
     problem = io.read(new BufferedReader(new StringReader(input)));
     assertEquals(1.0, problem.getWeights().get(0, 0), 0.001);
+  }
+
+  @Test
+  public void testReadNegOneIgnored()
+      throws NumberFormatException, NullPointerException, IOException {
+    input =
+        Util.createSolutionMap(
+            "negone_end",
+            "comment",
+            "TOUR",
+            2392,
+            Arrays.asList("1","2","3","-1"), true);
+
+    Individual i = io.readSolution(new BufferedReader(new StringReader(input)));
+    List<Integer> tour = i.getGenotype();
+    assertEquals(3, tour.get(tour.size()-1).intValue());
+  }
+
+  @Test(expected = IOException.class)
+  public void testReadInvalidSolutionNegative()
+      throws NumberFormatException, NullPointerException, IOException {
+    input =
+        Util.createSolutionMap(
+            "negone_end",
+            "comment",
+            "TOUR",
+            2392,
+            Arrays.asList("1","-5","-43","-1"), true);
+
+    Individual i = io.readSolution(new BufferedReader(new StringReader(input)));
   }
 
   @Test
