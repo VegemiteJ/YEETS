@@ -29,7 +29,7 @@ public class RandomizedLocalSearch extends LocalSearch {
   @Override
   public Individual solve() {
     // Initial solution
-    this.currentBestIndividual = new Individual(problem.getSize(), problem);
+    this.currentBestIndividual = new Individual(problem);
 
     // Initial cost
     //    double currentBestCost = evaluate.evaluate(problem, currentBestIndividual);

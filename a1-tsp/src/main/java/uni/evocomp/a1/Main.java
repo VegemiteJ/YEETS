@@ -63,8 +63,7 @@ public class Main {
     Population population = new Population(problem, populationSize);
 
     // The return value
-    Individual bestIndividual = new Individual();
-    bestIndividual.setCost(Double.MAX_VALUE);
+    Individual bestIndividual = Collections.min(population.getPopulation());
 
     // TODO : define terminal condition
     int numRuns = 0;
