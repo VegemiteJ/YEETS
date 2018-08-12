@@ -14,7 +14,9 @@ import uni.evocomp.a1.mutate.Insert;
 import uni.evocomp.a1.mutate.Mutate;
 import uni.evocomp.util.IntegerPair;
 
-/** @author Namdrib */
+/**
+ * @author Namdrib
+ */
 public class InsertTest {
 
   private TSPProblem p;
@@ -28,9 +30,9 @@ public class InsertTest {
     m = new Insert();
 
     List<List<Double>> weights = new ArrayList<>();
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 5; i++) {
       weights.add(new ArrayList<>());
-      for (int j = 0; j < 10; j++) {
+      for (int j = 0; j < 5; j++) {
         weights.get(i).add((double) 3 * i + j);
       }
     }
@@ -108,5 +110,21 @@ public class InsertTest {
   public void testInsertNullPairs() {
     Individual i = new Individual(new ArrayList<>(original), initialCost);
     m.run(p, i, null);
+  }
+
+  @Test
+  public void testValidFuzz() {
+    int size = p.getSize();
+    for (int i = 0; i < size; i++) {
+      for (int j = 0; j < size; j++) {
+        Individual individual = new Individual(original, p);
+        IntegerPair pair = new IntegerPair(i, j);
+
+        m.run(p, individual, Arrays.asList(pair));
+
+        double cost = eval2D.evaluate(p, individual);
+        assertEquals(individual.getCost(), cost, 0);
+      }
+    }
   }
 }

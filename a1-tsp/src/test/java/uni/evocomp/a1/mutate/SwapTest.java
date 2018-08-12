@@ -14,7 +14,9 @@ import uni.evocomp.a1.mutate.Mutate;
 import uni.evocomp.a1.mutate.Swap;
 import uni.evocomp.util.IntegerPair;
 
-/** @author Namdrib */
+/**
+ * @author Namdrib
+ */
 public class SwapTest {
 
   private TSPProblem p;
@@ -130,5 +132,21 @@ public class SwapTest {
     assertEquals(i.getGenotype(), Arrays.asList(1, 2, 4, 3, 5));
     double cost = eval2D.evaluate(p, i);
     assertEquals(cost, i.getCost(), 0.00001);
+  }
+
+  @Test
+  public void testValidFuzz() {
+    int size = p.getSize();
+    for (int i = 0; i < size; i++) {
+      for (int j = 0; j < size; j++) {
+        Individual individual = new Individual(original, p);
+        IntegerPair pair = new IntegerPair(i, j);
+
+        m.run(p, individual, Arrays.asList(pair));
+
+        double cost = eval2D.evaluate(p, individual);
+        assertEquals(individual.getCost(), cost, 0.00001);
+      }
+    }
   }
 }

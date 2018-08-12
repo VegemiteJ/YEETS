@@ -69,7 +69,7 @@ public class Swap implements Mutate {
     differentialCost += weights.get(g.get(i) - 1, g.get(i_plus_1) - 1);
 
     // (j-1,j) -- don't repeat if == (i,i+1)
-    if(j_minus_1 != i) {
+    if (j_minus_1 != i) {
       differentialCost += weights.get(g.get(j_minus_1) - 1, g.get(j) - 1);
     }
     // (j,j+1) -- don't repeat if == (i-1,i)
