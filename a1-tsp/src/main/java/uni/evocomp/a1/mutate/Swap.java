@@ -52,22 +52,21 @@ public class Swap implements Mutate {
 
     double differentialCost = 0.0;
 
+    //Prepare modulo indices
+    int n = problem.getSize();
+    int i_plus_1 = (i + 1 + n) % n;
+    int i_minus_1 = (i - 1 + n) % n;
+    int j_plus_1 = (j + 1 + n) % n;
+    int j_minus_1 = (j - 1 + n) % n;
+
     // (i-1,i)
-    if (i - 1 >= 0) {
-      differentialCost += weights.get(g.get(i - 1) - 1, g.get(i) - 1);
-    }
+    differentialCost += weights.get(g.get(i_minus_1) - 1, g.get(i) - 1);
     // (i,i+1)
-    if (i + 1 < problem.getSize()) {
-      differentialCost += weights.get(g.get(i) - 1, g.get(i + 1) - 1);
-    }
+    differentialCost += weights.get(g.get(i) - 1, g.get(i_plus_1) - 1);
     // (j-1,j)
-    if (j - 1 >= 0) {
-      differentialCost += weights.get(g.get(j - 1) - 1, g.get(j) - 1);
-    }
+    differentialCost += weights.get(g.get(j_minus_1) - 1, g.get(j) - 1);
     // (j,j+1)
-    if (j + 1 < problem.getSize()) {
-      differentialCost += weights.get(g.get(j) - 1, g.get(j + 1) - 1);
-    }
+    differentialCost += weights.get(g.get(j) - 1, g.get(j_plus_1) - 1);
     return differentialCost;
   }
 }
