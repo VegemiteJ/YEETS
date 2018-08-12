@@ -58,19 +58,36 @@ public class Jump implements Mutate {
     i.setCost(cost);
   }
 
-  /*Differential Cost summary:
-  Forwards
-    Remove(Before):(i-1,i),(i,i+1),(j,j+1)
-    Add(After)    :(i-1,i),(j-1,j),(j,j+1)
-   Backwards
-    Remove(Before):(i-1,i),(j-1,j),(j,j+1)
-    Add(After)    :(i-1,i),(i,i+1),(j,j+1)
+  /*
+   * Notes about edges changed in jump operation:
+   *   Forwards
+   *     Remove(Before):(i-1,i),(i,i+1),(j,j+1)
+   *     Add(After)    :(i-1,i),(j-1,j),(j,j+1)
+   *   Backwards
+   *     Remove(Before):(i-1,i),(j-1,j),(j,j+1)
+   *     Add(After)    :(i-1,i),(i,i+1),(j,j+1)
+   *   Only middle column changes, handled with boolean logic
+   *
+   *   However doesn't cancel if no-op (i==j)
+   *   or if path just rotates (a-b-c -> b-c-a)
+   *   needs to be handled as special case
+   */
 
-  However doesn't cancel if no-op (i==j)
-  or if path just rotates (a-b-c -> b-c-a)
-  needs to be handled as special case
-  */
-
+  /**
+   * Find difference in cost due to the Jump mutation, call before the mutation to get cost of edges
+   * removed. Call after mutation to find cost of new edges added.
+   *
+   * @param problem TSPProblem that individual is making a tour for
+   * @param individual Individual that is undergoing a Jump mutation
+   * @param i mutation index
+   * @param j mutation index
+   * @param beforeJump Set True if being called before mutation operation, False if being called
+   * after mutation
+   * @param forwards Set true if mutation is a forward jump (node at i moves forwards to j), false
+   * if backwards jump (node at i moves backwards to j
+   * @return Cost of edges that were removed (when beforeJump==true) or cost of edges added (when
+   * beforeJump==false)
+   */
   private double calculateDifferentialCost(
       TSPProblem problem, Individual individual, int i, int j, boolean beforeJump,
       boolean forwards) {
