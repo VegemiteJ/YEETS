@@ -71,23 +71,25 @@ public class PlotBestTour extends Application {
 
   @Override
   public void start(Stage stage) {
+    // Replace with test case you wanna see
+    final String individualLoadName = "lin105_best.indiv";
     final String[] testNames = {
-            "tests/eil51"};
+//            "tests/eil51"};
 //            "tests/eil76",
 //            "tests/eil101",
 //            "tests/kroA100",
 //            "tests/kroC100",
 //            "tests/kroD100",
-//            "tests/lin105",
+            "tests/lin105"};
 //            "tests/pcb442",
-//            "tests/pr2392",
+//            "tests/pr2392"};
 //            "tests/usa13509"};
     final String testSuffix = ".tsp";
     final String tourSuffix = ".opt.tour";
 
     Individual best = null;
     try {
-      best = Individual.deserialise();
+      best = Individual.deserialise(individualLoadName);
     } catch (IOException e) {
       e.printStackTrace();
     } catch (ClassNotFoundException e) {
@@ -111,6 +113,7 @@ public class PlotBestTour extends Application {
       }
     }
 
+    // Update to what you wanna plot
     List<DoublePair> cities = benchmarks.get(0).first.getPoints();
 
     Group box = new Group();
