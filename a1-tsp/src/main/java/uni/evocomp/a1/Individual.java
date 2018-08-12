@@ -14,7 +14,7 @@ import uni.evocomp.util.Matrix;
  * <p>
  * As such, it should contain a Set of numbers, where each number is a city, representing a
  * permutation of all the cities (from 1-n)
- * 
+ *
  * @author Namdrib
  */
 public class Individual {
@@ -29,7 +29,7 @@ public class Individual {
 
   /**
    * Copy constructor for Individual
-   * 
+   *
    * @param src source Individual object to copy construct
    */
   public Individual(Individual src) {
@@ -38,10 +38,9 @@ public class Individual {
   }
 
   /**
-   * 
    * @param n initialise to have a tour of n cities
    *
-   *        /** @param n initialise to have a tour of n cities
+   * /** @param n initialise to have a tour of n cities
    */
   public Individual(int n) {
     initialise(n);
@@ -83,7 +82,7 @@ public class Individual {
 
   /**
    * Initialise as per Exercise 3, "constructs .. a solution [uniformly at random] in linear time"
-   * 
+   *
    * @param n the size of the genotype
    */
   public void initialise(int n) {
@@ -109,14 +108,14 @@ public class Individual {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    for (Iterator<Integer> it = genotype.iterator(); it.hasNext();) {
+    for (Iterator<Integer> it = genotype.iterator(); it.hasNext(); ) {
       sb.append(String.valueOf(it.next()));
       sb.append("\n");
     }
     sb.append("-1"); // Complete the tour
     return sb.toString();
   }
- 
+
 
   private String getTourAsDebugString(List<Integer> tour) {
     StringBuilder sb = new StringBuilder();
@@ -188,6 +187,9 @@ public class Individual {
       }
       newCost += weights.get(genotype.get(i) - 1, genotype.get(i + 1) - 1);
     }
+    // Complete loop
+    newCost += weights.get(genotype.get(genotype.size() - 1) - 1, genotype.get(0) - 1);
+
     return newCost;
   }
 }

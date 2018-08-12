@@ -14,7 +14,9 @@ import uni.evocomp.a1.mutate.Invert;
 import uni.evocomp.a1.mutate.Mutate;
 import uni.evocomp.util.IntegerPair;
 
-/** @author Namdrib */
+/**
+ * @author Namdrib
+ */
 public class InvertTest {
 
   private TSPProblem p;
@@ -135,5 +137,21 @@ public class InvertTest {
   public void testInvertNullPairs() {
     Individual i = new Individual(new ArrayList<>(original), initialCost);
     m.run(p, i, null);
+  }
+
+  @Test
+  public void testValidFuzz() {
+    int size = p.getSize();
+    for (int i = 0; i < size; i++) {
+      for (int j = 0; j < size; j++) {
+        Individual individual = new Individual(original, p);
+        IntegerPair pair = new IntegerPair(i, j);
+
+        m.run(p, individual, Arrays.asList(pair));
+
+        double cost = eval2D.evaluate(p, individual);
+        assertEquals(individual.getCost(), cost, 0);
+      }
+    }
   }
 }
