@@ -65,7 +65,7 @@ public class Main {
     // The return value
     Individual bestIndividual = Collections.min(population.getPopulation());
 
-    // TODO : define terminal condition
+    // TODO : define better terminal condition
     int numRuns = 0;
     while (numRuns < 50) {
       // 1. select parents from the population
@@ -111,7 +111,7 @@ public class Main {
           selectSurvivors.selectSurvivors(population, problem, ThreadLocalRandom.current());
       // Update best individual so far
       Individual popBest = Collections.min(population.getPopulation());
-//      System.out.println("Best cost : " + popBest.getCost(problem));
+      // System.out.println("Best cost : " + popBest.getCost(problem));
       if (popBest.compareTo(bestIndividual) < 0) {
         bestIndividual = popBest;
       }
@@ -120,12 +120,18 @@ public class Main {
     return bestIndividual;
   }
 
-  // TODO : Benchmark function
+  /**
+   * Runs an EA benchmark on <code>problem</code>
+   * 
+   * @param problem the problem to run EA on
+   * @param propertiesFileName name of properties file to read customisation from
+   * @param populationSize size of the population
+   * @param repeats how many times to repeat the benchmark
+   */
   public static void benchmark(TSPProblem problem, String propertiesFileName, int populationSize,
       int repeats) {
-    // TODO : Read a .properties file to figure out which implementations to use
-    // and instantiate one of each using Evaluate, SelectParents, Recombine, Mutate and
-    // SelectSurvivors
+    // Read a .properties file to figure out which implementations to use and instantiate
+    // one of each using Evaluate, SelectParents, Recombine, Mutate and SelectSurvivors
     Properties prop = new Properties();
 
     Evaluate evaluate = null;
