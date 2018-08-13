@@ -73,16 +73,21 @@ public class LocalSearchBenchmark {
         Mutate mutationFunction = mutationFunctions[mi];
 
         LocalSearch ls = new RandomizedLocalSearch(problemDef, evaluator, mutationFunction);
-        BenchmarkStatsTracker bst = new BenchmarkStatsTracker(problemDef.getName(), problemDef);
+        BenchmarkStatsTracker bst = new BenchmarkStatsTracker(problemDef.getName()+"_"+mutationNames[mi], problemDef);
         for (int i = 0; i < repeats; i++) {
           bst.startSingleRun();
           Individual result = ls.solve(bst);
           bst.endSingleRun();
         }
-
         System.out.println("Avg cost: " + bst.getAvgCost());
         System.out.println("Min cost: " + bst.getMinCost());
         System.out.println("Max cost: " + bst.getMaxCost());
+        System.out.println("Save file: " + bst.getSerialFileName());
+        try {
+          BenchmarkStatsTracker.serialise(bst);
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
       }
     }
   }
