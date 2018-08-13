@@ -25,12 +25,12 @@ import uni.evocomp.util.Matrix;
  */
 public class Individual implements Serializable {
 
-  private static final long serialVersionUID = -8931448347288126553L;
+  protected static final long serialVersionUID = -8931448347288126553L;
   static final String serialLocation = "individual.ser";
 
-  private List<Integer> genotype; // the tour, elements should be 1-n
-  private double cost;
-  private boolean dirty;
+  protected List<Integer> genotype; // the tour, elements should be 1-n
+  protected double cost;
+  protected boolean dirty;
 
   public Individual() {
     genotype = new ArrayList<>();

@@ -5,9 +5,12 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.Test;
+import uni.evocomp.util.Matrix;
+import uni.evocomp.util.Util;
 
 public class IndividualTest {
 
@@ -106,5 +109,82 @@ public class IndividualTest {
 
     // Clean up the file created by serialise()
     new File(outName).delete();
+  }
+
+  @Test
+  public void testDirtyNotSetOnDefaultConstructor() {
+    WhiteBoxIndividual i = new WhiteBoxIndividual();
+    assertEquals(false, i.getDirty());
+  }
+
+  @Test
+  public void testDirtySetOnConstructor1() {
+    WhiteBoxIndividual i = new WhiteBoxIndividual(5);
+    assertEquals(true, i.getDirty());
+  }
+
+  @Test
+  public void testDirtyOnCopyConstructor() {
+    WhiteBoxIndividual i = new WhiteBoxIndividual(5);
+    assertEquals(true, new WhiteBoxIndividual(i).getDirty());
+
+    WhiteBoxIndividual j = new WhiteBoxIndividual();
+    assertEquals(false, new WhiteBoxIndividual(j).getDirty());
+  }
+
+  @Test
+  public void testTSPProblemConstructorDirtyNotSet() {
+    /*
+    1. 1.
+    1. 1.
+     */
+    Matrix DummyWeights = Util.createOnesMatrix(2);
+    TSPProblem p = new TSPProblem(DummyWeights);
+
+    WhiteBoxIndividual i = new WhiteBoxIndividual(2, p);
+    assertEquals(false, i.getDirty());
+  }
+
+  @Test
+  public void testGenotypeWithCostDirtyNotSet() {
+    List<Integer> genotype = new ArrayList<>(Arrays.asList(1,2,3));
+    WhiteBoxIndividual i = new WhiteBoxIndividual(genotype, 0.0);
+    assertEquals(false, i.getDirty());
+  }
+
+  @Test
+  public void testGenotypeNoCostDirtySet() {
+    List<Integer> genotype = new ArrayList<>(Arrays.asList(1,2,3));
+    WhiteBoxIndividual i = new WhiteBoxIndividual(genotype);
+    assertEquals(true, i.getDirty());
+  }
+
+  @Test
+  public void testGenotypeWithTSPProblemConstructorDirtyNotSet() {
+    /*
+    1. 1.
+    1. 1.
+     */
+    Matrix DummyWeights = Util.createOnesMatrix(2);
+    TSPProblem p = new TSPProblem(DummyWeights);
+
+    WhiteBoxIndividual i = new WhiteBoxIndividual(new ArrayList<>(Arrays.asList(2,1)), p);
+    assertEquals(false, i.getDirty());
+  }
+
+  @Test
+  public void testDirtySetOnDeferredCreationThanUnsetOnGetCost() {
+    /*
+    1. 1.
+    1. 1.
+     */
+    Matrix DummyWeights = Util.createOnesMatrix(2);
+    TSPProblem p = new TSPProblem(DummyWeights);
+
+    WhiteBoxIndividual i = new WhiteBoxIndividual(2);
+    assertEquals(true, i.getDirty());
+
+    double cost = i.getCost(p);
+    assertEquals(false, i.getDirty());
   }
 }

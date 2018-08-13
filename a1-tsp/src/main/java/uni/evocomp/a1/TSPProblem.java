@@ -28,6 +28,12 @@ public class TSPProblem {
     this();
     this.weights = new Matrix(weights);
   }
+
+  public TSPProblem(Matrix weights) {
+    this();
+    this.weights = new Matrix(weights);
+  }
+
   /**
    * Copy constructor for TSPProblem
    *
