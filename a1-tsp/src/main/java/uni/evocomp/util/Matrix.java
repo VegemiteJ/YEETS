@@ -1,10 +1,13 @@
 package uni.evocomp.util;
 
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.List;
 
-public class Matrix {
-  /* Variables */
+public class Matrix implements Serializable {
+
+  protected static final long serialVersionUID = 9485234592810292L;
+
   // The dimension of the matrix: rows by cols.
   private int rDim, cDim;
   // The matrix is stored as a 1D array of n*n values.

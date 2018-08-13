@@ -1,5 +1,6 @@
 package uni.evocomp.a1;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import uni.evocomp.util.DoublePair;
@@ -7,7 +8,9 @@ import uni.evocomp.util.Matrix;
 
 // TODO : See whether we need to have this actually handle the IO, or whether IO
 // is separate and gets passed to this.
-public class TSPProblem {
+public class TSPProblem implements Serializable {
+
+  protected static final long serialVersionUID = 1290380191019123112L;
 
   private String name;
   private String comment;
