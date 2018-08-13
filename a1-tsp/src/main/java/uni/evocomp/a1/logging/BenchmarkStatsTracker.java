@@ -27,6 +27,9 @@ import uni.evocomp.util.Pair;
  */
 public class BenchmarkStatsTracker implements Serializable {
 
+  protected static final long serialVersionUID = 393238973421366553L;
+  static final String serialSuffix = ".ser";
+
   private String comment;
   private TSPProblem problem;
   private Individual bestTourFound;
@@ -218,9 +221,6 @@ public class BenchmarkStatsTracker implements Serializable {
   public String getSerialFileName() {
     return this.getComment() + serialSuffix;
   }
-
-  protected static final long serialVersionUID = 393238973421366553L;
-  static final String serialSuffix = ".ser";
 
   public static final void serialise(BenchmarkStatsTracker BENCHMARK) throws IOException {
     serialise(BENCHMARK, BENCHMARK.getComment());
