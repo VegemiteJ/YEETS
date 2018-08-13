@@ -1,5 +1,11 @@
 package uni.evocomp.a1;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -17,7 +23,10 @@ import uni.evocomp.util.Matrix;
  *
  * @author Namdrib
  */
-public class Individual {
+public class Individual implements Serializable {
+
+  private static final long serialVersionUID = -8931448347288126553L;
+  static final String serialLocation = "individual.ser";
 
   private List<Integer> genotype; // the tour, elements should be 1-n
   private double cost;
@@ -43,8 +52,6 @@ public class Individual {
 
   /**
    * @param n initialise to have a tour of n cities
-   *
-   * /** @param n initialise to have a tour of n cities
    */
   public Individual(int n) {
     initialise(n);
@@ -126,6 +133,57 @@ public class Individual {
     return sb.toString();
   }
 
+  /**
+   * Default serialise function for object - write to <code>serialLocation</code>
+   * 
+   * Acts as a wrapper function for <code>serialise(Individual, outFileName)</code>
+   * 
+   * @param individual Individual object to serialise
+   * @throws IOException
+   */
+  public static final void serialise(Individual individual) throws IOException {
+    serialise(individual, serialLocation);
+  }
+
+  /**
+   * Serialise <code>individual</code> into a file whose name is <code>outFileName</code>
+   * 
+   * @param individual <code>Individual</code> object to serialise
+   * @param filename name of the file to write
+   * @throws IOException
+   */
+  public static final void serialise(Individual individual, String filename) throws IOException {
+    try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename))) {
+      out.writeObject(individual);
+    }
+    System.out.println("Serialised data is saved in \"" + filename + "\"");
+  }
+
+  /**
+   * Default deserialise function for object - read from <code>serialLocation</code>
+   * 
+   * @return an Individual object read from a serialised Individual
+   * @throws IOException
+   * @throws ClassNotFoundException
+   */
+  public static final Individual deserialise() throws IOException, ClassNotFoundException {
+    return deserialise(serialLocation);
+  }
+
+  /**
+   * Deserialise an Individual object from a file whose name is <code>filename</code>
+   * 
+   * @param filename the name of the file to read
+   * @return an Individual object read from a serialised Individual
+   * @throws IOException
+   * @throws ClassNotFoundException
+   */
+  public static final Individual deserialise(String filename)
+      throws IOException, ClassNotFoundException {
+    try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
+      return (Individual) in.readObject();
+    }
+  }
 
   private String getTourAsDebugString(List<Integer> tour) {
     StringBuilder sb = new StringBuilder();

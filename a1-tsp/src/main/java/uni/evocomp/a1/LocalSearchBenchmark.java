@@ -23,10 +23,9 @@ public class LocalSearchBenchmark {
     "tests/lin105",
     "tests/pcb442",
     "tests/pr2392",
-    "tests/usa13509"
-  };
+    "tests/usa13509"};
 
-  public static final Mutate[] mutationFunctions = {new Jump(), new Swap(), new Invert()};
+  public static final Mutate[] mutationFunctions = {new Invert(), new Jump(), new Swap()};
   public static final String[] mutationNames = {"Jump", "Exchange", "2-Opt"};
   public static final int repeats = 30;
   public static final String testSuffix = ".tsp";
@@ -51,11 +50,10 @@ public class LocalSearchBenchmark {
         solution.setCost(evaluator.evaluate(problem, solution));
         benchmarks.add(new Pair<>(problem, solution));
       } catch (IOException e) {
-//        e.printStackTrace();
+        e.printStackTrace();
         benchmarks.add(new Pair<>(problem, null));
       }
     }
-
     for (Pair<TSPProblem, Individual> benchmark : benchmarks) {
       TSPProblem problemDef = benchmark.first;
       if (problemDef == null){
@@ -70,8 +68,7 @@ public class LocalSearchBenchmark {
         Mutate mutationFunction = mutationFunctions[mi];
 
         LocalSearch ls = new RandomizedLocalSearch(problemDef, evaluator, mutationFunction);
-
-        double cost = 0;
+        
         double minCost = Double.MAX_VALUE;
         double maxCost = 0;
         double averageCost = 0;
