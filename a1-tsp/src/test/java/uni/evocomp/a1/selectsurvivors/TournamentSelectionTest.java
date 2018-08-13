@@ -39,19 +39,19 @@ public class TournamentSelectionTest extends TestCase {
     // initialise the population
     population = new Population();
     // construct individuals using integer lists
-    i0 = new Individual(Arrays.asList(1, 2, 3, 4, 5)); // 40
-    i1 = new Individual(Arrays.asList(1, 3, 2, 5, 4)); // 50
-    i2 = new Individual(Arrays.asList(5, 1, 2, 3, 4)); // 44
-    i3 = new Individual(Arrays.asList(1, 3, 2, 4, 5)); // 54
-    i4 = new Individual(Arrays.asList(5, 2, 1, 4, 3)); // 52
-    i5 = new Individual(Arrays.asList(1, 5, 2, 4, 3)); // 48
+    i0 = new Individual(Arrays.asList(1, 2, 3, 4, 5), problem); // 40
+    i1 = new Individual(Arrays.asList(1, 3, 2, 5, 4), problem); // 50
+    i2 = new Individual(Arrays.asList(5, 1, 2, 3, 4), problem); // 44
+    i3 = new Individual(Arrays.asList(1, 3, 2, 4, 5), problem); // 54
+    i4 = new Individual(Arrays.asList(5, 2, 1, 4, 3), problem); // 52
+    i5 = new Individual(Arrays.asList(1, 5, 2, 4, 3), problem); // 48
     // debugging purposes
-    // System.out.println("i0: " + i0.hashCode());
-    // System.out.println("i1: " + i1.hashCode());
-    // System.out.println("i2: " + i2.hashCode());
-    // System.out.println("i3: " + i3.hashCode());
-    // System.out.println("i4: " + i4.hashCode());
-    // System.out.println("i5: " + i5.hashCode());
+     System.out.println("i0: " + i0.hashCode() + " costs " + i0.getCost(problem));
+     System.out.println("i1: " + i1.hashCode() + " costs " + i1.getCost(problem));
+     System.out.println("i2: " + i2.hashCode() + " costs " + i2.getCost(problem));
+     System.out.println("i3: " + i3.hashCode() + " costs " + i3.getCost(problem));
+     System.out.println("i4: " + i4.hashCode() + " costs " + i4.getCost(problem));
+     System.out.println("i5: " + i5.hashCode() + " costs " + i5.getCost(problem));
     population.add(i0);
     population.add(i1);
     population.add(i2);
