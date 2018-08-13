@@ -74,6 +74,7 @@ public class LocalSearchBenchmark {
 
         LocalSearch ls = new RandomizedLocalSearch(problemDef, evaluator, mutationFunction);
         BenchmarkStatsTracker bst = new BenchmarkStatsTracker(problemDef.getName()+"_"+mutationNames[mi], problemDef);
+        bst.setSolutionTour(benchmark.second);
         for (int i = 0; i < repeats; i++) {
           bst.startSingleRun();
           Individual result = ls.solve(bst);
