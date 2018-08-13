@@ -4,9 +4,10 @@ import java.util.List;
 
 /**
  * Used purely for testing, hence it's location in test.*.
+ * <p>
  * Exposes protected data members for white box testing.
  *
- * */
+ */
 public class WhiteBoxIndividual extends Individual {
 
   public WhiteBoxIndividual() {
@@ -30,11 +31,10 @@ public class WhiteBoxIndividual extends Individual {
   }
 
   /**
-   * @param n initialise to have a tour of n cities
    * @param problem problem to evaluate initial cost against
    */
-  public WhiteBoxIndividual(int n, TSPProblem problem) {
-    super(n, problem);
+  public WhiteBoxIndividual(TSPProblem problem) {
+    super(problem);
   }
 
   /**
@@ -59,7 +59,7 @@ public class WhiteBoxIndividual extends Individual {
   public WhiteBoxIndividual(List<Integer> genotype, TSPProblem problem) {
     super(genotype, problem);
   }
-  
+
   public boolean getDirty() {
     return this.dirty;
   }

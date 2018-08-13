@@ -10,6 +10,11 @@ import uni.evocomp.a1.Individual;
  * then fill in the remaining elements with the
  */
 public class OrderCrossover implements Recombine {
+
+  public OrderCrossover() {
+    ;
+  }
+
   @Override
   public Pair<Individual, Individual> recombine(Individual firstParent, Individual secondParent) {
     IntegerPair slice = getRandomSlice(firstParent.getGenotype().size());
@@ -20,9 +25,9 @@ public class OrderCrossover implements Recombine {
   }
 
   /**
-   * @param firstParent   The first individual to crossover
-   * @param secondParent  The second individual to crossover
-   * @param slice         The range [start, end) of the order to select
+   * @param firstParent The first individual to crossover
+   * @param secondParent The second individual to crossover
+   * @param slice The range [start, end) of the order to select
    * @return The resulting child
    */
   Individual recombine(Individual firstParent, Individual secondParent, IntegerPair slice)

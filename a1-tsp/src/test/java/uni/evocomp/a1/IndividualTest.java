@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import org.junit.Test;
 import uni.evocomp.util.Matrix;
@@ -57,10 +58,11 @@ public class IndividualTest {
     assertTrue(i.equals(j));
     assertTrue(j.equals(i));
     assertEquals(i, j);
+    assertEquals(j, i);
   }
 
   @SuppressWarnings("unlikely-arg-type")
-  @Test(expected = java.lang.AssertionError.class)
+  @Test
   public void testEqualsOverrideSad() {
     Individual i = new Individual(Arrays.asList(1, 2, 3, 4), 0.0);
     Individual j = new Individual(Arrays.asList(1, 2, 4, 3), 1.0);
@@ -69,7 +71,35 @@ public class IndividualTest {
     assertFalse(j.equals(i));
     assertFalse(i.equals("Hello"));
     assertFalse(i.equals(1));
-    assertEquals(i, j); // this should fail
+  }
+
+  @Test
+  public void testComareTo() {
+    Individual i = new Individual(Arrays.asList(1, 2, 3, 4), 0.0);
+    Individual j = new Individual(Arrays.asList(1, 2, 3, 4), 1.0);
+
+    assertTrue(i.compareTo(j) < 0);
+    assertTrue(j.compareTo(i) > 0);
+
+    j.setCost(0.0);
+    assertEquals(0.0, i.compareTo(j), 0.0);
+  }
+
+  /**
+   * compareTo only checks the Individual's cost, but asserEquals uses equals(Individual). Therefore
+   * need to have different genotypes for the assertion to match the object
+   */
+  @Test
+  public void testCompareToCollection() {
+    Individual i0 = new Individual(Arrays.asList(1, 2, 3, 4), 2.0);
+    Individual i1 = new Individual(Arrays.asList(1, 2, 4, 3), 1.0);
+    Individual i2 = new Individual(Arrays.asList(1, 3, 2, 4), 3.0);
+    Individual i3 = new Individual(Arrays.asList(1, 3, 4, 2), 1.4);
+    List<Individual> list = new ArrayList<>(Arrays.asList(i0, i1, i2, i3));
+    assertEquals(i1, Collections.min(list));
+    assertEquals(i2, Collections.max(list));
+    assertTrue(i1 == Collections.min(list)); // should be the same object
+    assertTrue(i2 == Collections.max(list)); // should be the same object
   }
 
   @Test(expected = Test.None.class)
@@ -141,20 +171,20 @@ public class IndividualTest {
     Matrix DummyWeights = Util.createOnesMatrix(2);
     TSPProblem p = new TSPProblem(DummyWeights);
 
-    WhiteBoxIndividual i = new WhiteBoxIndividual(2, p);
+    WhiteBoxIndividual i = new WhiteBoxIndividual(p);
     assertEquals(false, i.getDirty());
   }
 
   @Test
   public void testGenotypeWithCostDirtyNotSet() {
-    List<Integer> genotype = new ArrayList<>(Arrays.asList(1,2,3));
+    List<Integer> genotype = new ArrayList<>(Arrays.asList(1, 2, 3));
     WhiteBoxIndividual i = new WhiteBoxIndividual(genotype, 0.0);
     assertEquals(false, i.getDirty());
   }
 
   @Test
   public void testGenotypeNoCostDirtySet() {
-    List<Integer> genotype = new ArrayList<>(Arrays.asList(1,2,3));
+    List<Integer> genotype = new ArrayList<>(Arrays.asList(1, 2, 3));
     WhiteBoxIndividual i = new WhiteBoxIndividual(genotype);
     assertEquals(true, i.getDirty());
   }
@@ -162,21 +192,21 @@ public class IndividualTest {
   @Test
   public void testGenotypeWithTSPProblemConstructorDirtyNotSet() {
     /*
-    1. 1.
-    1. 1.
+     * 1. 1.
+     * 1. 1.
      */
     Matrix DummyWeights = Util.createOnesMatrix(2);
     TSPProblem p = new TSPProblem(DummyWeights);
 
-    WhiteBoxIndividual i = new WhiteBoxIndividual(new ArrayList<>(Arrays.asList(2,1)), p);
+    WhiteBoxIndividual i = new WhiteBoxIndividual(new ArrayList<>(Arrays.asList(2, 1)), p);
     assertEquals(false, i.getDirty());
   }
 
   @Test
   public void testDirtySetOnDeferredCreationThanUnsetOnGetCost() {
     /*
-    1. 1.
-    1. 1.
+     * 1. 1.
+     * 1. 1.
      */
     Matrix DummyWeights = Util.createOnesMatrix(2);
     TSPProblem p = new TSPProblem(DummyWeights);
