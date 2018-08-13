@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import uni.evocomp.a1.evaluate.Evaluate;
 import uni.evocomp.a1.evaluate.EvaluateEuclid;
+import uni.evocomp.a1.logging.BenchmarkStatsTracker;
 import uni.evocomp.a1.mutate.Invert;
 import uni.evocomp.a1.mutate.Jump;
 import uni.evocomp.a1.mutate.Mutate;
@@ -23,9 +24,10 @@ public class LocalSearchBenchmark {
     "tests/lin105",
     "tests/pcb442",
     "tests/pr2392",
-    "tests/usa13509"};
+    "tests/usa13509"
+  };
 
-  public static final Mutate[] mutationFunctions = {new Invert(), new Jump(), new Swap()};
+  public static final Mutate[] mutationFunctions = {new Jump(), new Swap(), new Invert()};
   public static final String[] mutationNames = {"Jump", "Exchange", "2-Opt"};
   public static final int repeats = 30;
   public static final String testSuffix = ".tsp";
@@ -44,7 +46,7 @@ public class LocalSearchBenchmark {
     for (String testString : testNames) {
       TSPProblem problem = null;
       try (FileReader fr1 = new FileReader(testString + testSuffix);
-        FileReader fr2 = new FileReader(testString + tourSuffix)) {
+          FileReader fr2 = new FileReader(testString + tourSuffix)) {
         problem = io.read(fr1);
         Individual solution = io.readSolution(fr2);
         solution.setCost(evaluator.evaluate(problem, solution));
@@ -56,41 +58,31 @@ public class LocalSearchBenchmark {
     }
     for (Pair<TSPProblem, Individual> benchmark : benchmarks) {
       TSPProblem problemDef = benchmark.first;
-      if (problemDef == null){
+      if (problemDef == null) {
         continue;
       }
-      if (benchmark.second != null) {
-        System.out.println(problemDef.getName() + " (Best: " + benchmark.second.getCost(problemDef) + ")");
-      }
 
+      System.out.println(
+          "Running Benchmark: " + problemDef.getName() + "(" + problemDef.getComment() + ")");
+      if (benchmark.second != null) {
+        System.out.println(
+            problemDef.getName() + " (Best: " + benchmark.second.getCost(problemDef) + ")");
+      }
       for (int mi = 0; mi < mutationFunctions.length; mi++) {
         System.out.println("  " + mutationNames[mi]);
         Mutate mutationFunction = mutationFunctions[mi];
 
         LocalSearch ls = new RandomizedLocalSearch(problemDef, evaluator, mutationFunction);
-        
-        double minCost = Double.MAX_VALUE;
-        double maxCost = 0;
-        double averageCost = 0;
-
+        BenchmarkStatsTracker bst = new BenchmarkStatsTracker(problemDef.getName(), problemDef);
         for (int i = 0; i < repeats; i++) {
-          //          System.out.println("Running a new test");
-          //          System.out.println("===================================");
-          Individual result = ls.solve();
-          if (result.getCost(problemDef) < minCost) {
-            minCost = result.getCost(problemDef);
-          }
-          if (result.getCost(problemDef) > maxCost) {
-            maxCost = result.getCost(problemDef);
-          }
-          averageCost += result.getCost(problemDef);
-          //          System.out.println("===================================");
+          bst.startSingleRun();
+          Individual result = ls.solve(bst);
+          bst.endSingleRun();
         }
-        averageCost /= repeats;
 
-        System.out.println("    Min: " + minCost);
-        System.out.println("    Max: " + maxCost);
-        System.out.println("    Ave: " + averageCost);
+        System.out.println("Avg cost: " + bst.getAvgCost());
+        System.out.println("Min cost: " + bst.getMinCost());
+        System.out.println("Max cost: " + bst.getMaxCost());
       }
     }
   }

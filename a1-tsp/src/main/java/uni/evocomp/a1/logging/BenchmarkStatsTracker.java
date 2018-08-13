@@ -136,9 +136,10 @@ public class BenchmarkStatsTracker implements Serializable {
    * individual
    *
    * @param newBest
+   * @param iterationNumber
    */
-  public void newBestIndividualForSingleRun(Individual newBest, Integer iterationsSinceLast) {
-    this.currentRunTours.add(new Pair<>(new Individual(newBest), iterationsSinceLast));
+  public void newBestIndividualForSingleRun(Individual newBest, Integer iterationNumber) {
+    this.currentRunTours.add(new Pair<>(new Individual(newBest), iterationNumber));
   }
 
   /**
