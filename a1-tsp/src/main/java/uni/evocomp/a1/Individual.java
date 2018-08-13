@@ -52,11 +52,6 @@ public class Individual implements Serializable {
 
   /**
    * @param n initialise to have a tour of n cities
-<<<<<<< HEAD
-=======
-   *
-   * /** @param n initialise to have a tour of n cities
->>>>>>> master
    */
   public Individual(int n) {
     initialise(n);
