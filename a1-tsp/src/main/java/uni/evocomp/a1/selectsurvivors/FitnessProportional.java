@@ -6,6 +6,10 @@ import uni.evocomp.a1.TSPProblem;
 
 public class FitnessProportional implements SelectSurvivors {
 
+  public FitnessProportional() {
+    ;
+  }
+
   @Override
   public Population selectSurvivors(Population population, TSPProblem problem, Random rand) {
     // TODO Auto-generated method stub

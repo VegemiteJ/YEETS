@@ -14,13 +14,18 @@ import uni.evocomp.util.Pair;
  *
  */
 public class UniformRandom implements SelectParents {
+
+  public UniformRandom() {
+    ;
+  }
+
   /**
    * Take a population, scramble the individuals within the population and match parents in new
    * order
    */
   @Override
   public List<Pair<Individual, Individual>> selectParents(Population population) {
-    ArrayList<Individual> individuals = new ArrayList<>(population.getPopulation());
+    List<Individual> individuals = new ArrayList<>(population.getPopulation());
     Collections.shuffle(individuals);
     return setParents(individuals);
   }
