@@ -1,38 +1,42 @@
 package uni.evocomp.a1.gui;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 import uni.evocomp.a1.Individual;
-import uni.evocomp.a1.TSPIO;
 import uni.evocomp.a1.TSPProblem;
-import uni.evocomp.a1.evaluate.Evaluate;
-import uni.evocomp.a1.evaluate.EvaluateEuclid;
 import uni.evocomp.a1.logging.BenchmarkStatsTracker;
 import uni.evocomp.util.DoublePair;
-import uni.evocomp.util.Pair;
-
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.NoSuchElementException;
 
 public class PlotBestTour extends Application {
   public static void main(String[] args) {
     launch(args);
   }
 
-  private List<Circle> plotCities(List<DoublePair> cities, int xSize, int ySize, int xOff, int yOff) {
-    double maxX = cities.stream().map(city -> city.first).mapToDouble(v -> v).max().orElseThrow(NoSuchElementException::new);
-    double maxY = cities.stream().map(city -> city.second).mapToDouble(v -> v).max().orElseThrow(NoSuchElementException::new);
+  private List<Circle> plotCities(
+      List<DoublePair> cities, int xSize, int ySize, int xOff, int yOff) {
+    double maxX =
+        cities
+            .stream()
+            .map(city -> city.first)
+            .mapToDouble(v -> v)
+            .max()
+            .orElseThrow(NoSuchElementException::new);
+    double maxY =
+        cities
+            .stream()
+            .map(city -> city.second)
+            .mapToDouble(v -> v)
+            .max()
+            .orElseThrow(NoSuchElementException::new);
     List<Circle> positions = new ArrayList<>();
     for (DoublePair city : cities) {
       double newX = city.first * (xSize / maxX) + xOff;
@@ -45,10 +49,10 @@ public class PlotBestTour extends Application {
 
   private List<Line> plotTour(List<Integer> genotype, List<Circle> locs) {
     List<Line> lines = new ArrayList<>();
-    for (int i=0; i<genotype.size()-1; i++) {
-      int next = i+1;
-      int cityI = genotype.get(i)-1;
-      int cityJ = genotype.get(next)-1;
+    for (int i = 0; i < genotype.size() - 1; i++) {
+      int next = i + 1;
+      int cityI = genotype.get(i) - 1;
+      int cityJ = genotype.get(next) - 1;
 
       double startX = locs.get(cityI).getCenterX();
       double startY = locs.get(cityI).getCenterY();
@@ -59,10 +63,10 @@ public class PlotBestTour extends Application {
       l.setStroke(Color.BLUE);
       lines.add(l);
     }
-    double startX = locs.get(genotype.get(0)-1).getCenterX();
-    double startY = locs.get(genotype.get(0)-1).getCenterY();
-    double endX = locs.get(genotype.get(genotype.size()-1)-1).getCenterX();
-    double endY = locs.get(genotype.get(genotype.size()-1)-1).getCenterY();
+    double startX = locs.get(genotype.get(0) - 1).getCenterX();
+    double startY = locs.get(genotype.get(0) - 1).getCenterY();
+    double endX = locs.get(genotype.get(genotype.size() - 1) - 1).getCenterX();
+    double endY = locs.get(genotype.get(genotype.size() - 1) - 1).getCenterY();
     Line l = new Line(startX, startY, endX, endY);
     l.setStroke(Color.RED);
     lines.add(l);
@@ -73,8 +77,8 @@ public class PlotBestTour extends Application {
   @Override
   public void start(Stage stage) {
     // Replace with test case you wanna see
-    final String loadName = "eil101_2-Opt";
-    final boolean plotProvidedBestTour = true;
+    final String loadName = "eil101_Exchange";
+    final boolean plotProvidedBestTour = false;
 
     BenchmarkStatsTracker bst = null;
     try {
@@ -89,11 +93,15 @@ public class PlotBestTour extends Application {
     Individual providedBest = bst.getProvidedBestTour();
     Individual bestFoundBySearch = bst.getBestTourFound();
 
-    List<Integer> genotype = providedBest.getGenotype();
+    Individual plotting = providedBest;
     if (!plotProvidedBestTour) {
-      genotype = bestFoundBySearch.getGenotype();
+      plotting = bestFoundBySearch;
     }
 
+    System.out.println(
+        (plotProvidedBestTour ? "Best Provided Tour Cost: " : "Best Tour Found Cost: ")
+            + plotting.getCost(problem));
+    List<Integer> genotype = plotting.getGenotype();
     List<DoublePair> cities = problem.getPoints();
     Group box = new Group();
 
@@ -106,7 +114,7 @@ public class PlotBestTour extends Application {
       box.getChildren().add(l);
     }
 
-    final Scene scene = new Scene(box,1400, 900);
+    final Scene scene = new Scene(box, 1400, 900);
     scene.setFill(null);
 
     stage.setScene(scene);
