@@ -74,6 +74,7 @@ public class LocalSearchBenchmark {
 
         LocalSearch ls = new RandomizedLocalSearch(problemDef, evaluator, mutationFunction);
         BenchmarkStatsTracker bst = new BenchmarkStatsTracker(problemDef.getName()+"_"+mutationNames[mi], problemDef);
+        long startTime = System.nanoTime();
         for (int i = 0; i < repeats; i++) {
           bst.startSingleRun();
           Individual result = ls.solve(bst);
@@ -82,7 +83,8 @@ public class LocalSearchBenchmark {
         System.out.println("Avg cost: " + bst.getAvgCost());
         System.out.println("Min cost: " + bst.getMinCost());
         System.out.println("Max cost: " + bst.getMaxCost());
-        System.out.println("Avg Elapsed Time (s): " + (double)bst.getAvgTimeTaken()/1000000000.0);
+        System.out.println("Avg search Elapsed Time (s): " + (double)bst.getAvgTimeTaken()/1000000000.0);
+        System.out.println("Benchmark Total Elapsed Time (s): " + (double)(System.nanoTime()-startTime)/1000000000.0);
         System.out.println("Save file: " + bst.getSerialFileName());
         try {
           BenchmarkStatsTracker.serialise(bst);
