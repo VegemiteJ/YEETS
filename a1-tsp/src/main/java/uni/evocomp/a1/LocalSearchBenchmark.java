@@ -18,14 +18,14 @@ public class LocalSearchBenchmark {
     "tests/eil51",
     "tests/eil76",
     "tests/eil101",
-    "tests/kroA100",
-    "tests/kroC100",
-    "tests/kroD100",
-    "tests/lin105",
-    "tests/pcb442",
-    "tests/pr2392",
-    "tests/usa13509"
-  };
+    "tests/kroA100"};
+//    "tests/kroC100",
+//    "tests/kroD100",
+//    "tests/lin105",
+//    "tests/pcb442",
+//    "tests/pr2392",
+//    "tests/usa13509"
+//  };
 
   public static final Mutate[] mutationFunctions = {new Jump(), new Swap(), new Invert()};
   public static final String[] mutationNames = {"Jump", "Exchange", "2-Opt"};

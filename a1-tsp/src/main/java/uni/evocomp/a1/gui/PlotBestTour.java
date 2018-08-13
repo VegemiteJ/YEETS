@@ -77,8 +77,8 @@ public class PlotBestTour extends Application {
   @Override
   public void start(Stage stage) {
     // Replace with test case you wanna see
-    final String loadName = "eil101_Exchange";
-    final boolean plotProvidedBestTour = false;
+    final String loadName = "kroA100_2-Opt";
+    final boolean plotProvidedBestTour = true;
 
     BenchmarkStatsTracker bst = null;
     try {
@@ -98,9 +98,10 @@ public class PlotBestTour extends Application {
       plotting = bestFoundBySearch;
     }
 
-    System.out.println(
-        (plotProvidedBestTour ? "Best Provided Tour Cost: " : "Best Tour Found Cost: ")
-            + plotting.getCost(problem));
+    if (providedBest!=null) {
+      System.out.println("Best Provided Tour Cost: " + providedBest.getCost(problem));
+    }
+    System.out.println("Best Tour Found Cost: " + bestFoundBySearch.getCost(problem));
     List<Integer> genotype = plotting.getGenotype();
     List<DoublePair> cities = problem.getPoints();
     Group box = new Group();
