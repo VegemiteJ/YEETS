@@ -30,13 +30,13 @@ public class RandomizedLocalSearch extends LocalSearch {
   @Override
   public Individual solve(BenchmarkStatsTracker bst) {
     // Initial solution
-    this.currentBestIndividual = new Individual(problem.getSize(), problem);
+    this.currentBestIndividual = new Individual(problem);
     List<Integer> outerIdx =
         IntStream.range(0, this.problem.getSize() - 1).boxed().collect(Collectors.toList());
     List<Integer> innerIdx =
         IntStream.range(0, this.problem.getSize() - 1).boxed().collect(Collectors.toList());
 
-    int totalIterations = 0;
+    totalIterations = 0L;
     boolean madeChange = true;
     long start = System.nanoTime();
     loops:

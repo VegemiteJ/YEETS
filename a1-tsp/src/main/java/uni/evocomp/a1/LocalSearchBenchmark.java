@@ -22,10 +22,10 @@ public class LocalSearchBenchmark {
     "tests/kroC100",
     "tests/kroD100",
     "tests/lin105",
-    "tests/pcb442",
-    "tests/pr2392",
-    "tests/usa13509"
-  };
+    "tests/pcb442"};
+//    "tests/pr2392",
+//    "tests/usa13509"
+//  };
 
   public static final Mutate[] mutationFunctions = {new Jump(), new Swap(), new Invert()};
   public static final String[] mutationNames = {"Jump", "Exchange", "2-Opt"};
@@ -77,11 +77,12 @@ public class LocalSearchBenchmark {
         for (int i = 0; i < repeats; i++) {
           bst.startSingleRun();
           Individual result = ls.solve(bst);
-          bst.endSingleRun();
+          bst.endSingleRun(ls.getTotalIterations());
         }
         System.out.println("Avg cost: " + bst.getAvgCost());
         System.out.println("Min cost: " + bst.getMinCost());
         System.out.println("Max cost: " + bst.getMaxCost());
+        System.out.println("Avg Elapsed Time (s): " + (double)bst.getAvgTimeTaken()/1000000000.0);
         System.out.println("Save file: " + bst.getSerialFileName());
         try {
           BenchmarkStatsTracker.serialise(bst);
