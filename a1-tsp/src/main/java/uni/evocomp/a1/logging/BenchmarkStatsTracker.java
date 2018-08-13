@@ -18,14 +18,25 @@ import uni.evocomp.util.Pair;
  * runs as you want Also provides useful options for serializing this for plotGui or examination
  * later Has toString functions for printing resulting stats + to csv for plotting
  *
- * <p>Usage: Before starting a benchmark run of 30 averages create this class. 1) Call
- * BENCHMARK.setSolutionTour(Individual solution) where solution is the optimal solution from file
- * At the start of each benchmark loop: 2) Call BENCHMARK.startSingleRun() Upon finding a new best
- * individual for the run 3) Call BENCHMARK.newBestIndividualForSingleRun(Individual bestSoFar)
- * Completion of run: 4) Call BENCHMARK.endSingleRun() 5) Call BENCHMARK.get**() to retrieve
- * relevant info you want
+ * <p>
+ * Usage: Before starting a benchmark run of 30 averages create this class.
+ * <p>
+ *  1) Call BENCHMARK.setSolutionTour(Individual solution) where solution is the optimal solution from file
+ * <p>
+ * At the start of each benchmark loop:
+ *  2) Call BENCHMARK.startSingleRun()
+ * <p>
+ * Upon finding a new best individual for the run:
+ *  3) Call BENCHMARK.newBestIndividualForSingleRun(Individual bestSoFar)
+ * <p>
+ * Completion of run:
+ *  4) Call BENCHMARK.endSingleRun()
+ *  5) Call BENCHMARK.get**() to retrieve relevant info you want
  */
 public class BenchmarkStatsTracker implements Serializable {
+
+  protected static final long serialVersionUID = 393238973421366553L;
+  static final String serialSuffix = ".ser";
 
   private String comment;
   private TSPProblem problem;
@@ -221,9 +232,6 @@ public class BenchmarkStatsTracker implements Serializable {
   public String getSerialFileName() {
     return this.getComment() + serialSuffix;
   }
-
-  protected static final long serialVersionUID = 393238973421366553L;
-  static final String serialSuffix = ".ser";
 
   public static final void serialise(BenchmarkStatsTracker BENCHMARK) throws IOException {
     serialise(BENCHMARK, BENCHMARK.getComment());
