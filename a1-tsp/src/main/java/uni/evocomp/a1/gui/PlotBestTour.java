@@ -22,7 +22,7 @@ public class PlotBestTour extends Application {
   }
 
   private List<Circle> plotCities(
-      List<DoublePair> cities, int xSize, int ySize, int xOff, int yOff) {
+      List<DoublePair> cities, Integer initialCity, int xSize, int ySize, int xOff, int yOff) {
     double maxX =
         cities
             .stream()
@@ -38,10 +38,14 @@ public class PlotBestTour extends Application {
             .max()
             .orElseThrow(NoSuchElementException::new);
     List<Circle> positions = new ArrayList<>();
-    for (DoublePair city : cities) {
+    for (int i=0; i<cities.size(); i++) {
+      DoublePair city = cities.get(i);
       double newX = city.first * (xSize / maxX) + xOff;
       double newY = city.second * (ySize / maxY) + yOff;
       Circle c = new Circle(newX, newY, 5.0);
+      if (i == initialCity-1) {
+        c.setFill(Color.RED);
+      }
       positions.add(c);
     }
     return positions;
@@ -78,7 +82,7 @@ public class PlotBestTour extends Application {
   public void start(Stage stage) {
     // Replace with test case you wanna see
     final String loadName = "kroA100_2-Opt";
-    final boolean plotProvidedBestTour = true;
+    final boolean plotProvidedBestTour = false;
 
     BenchmarkStatsTracker bst = null;
     try {
@@ -106,7 +110,7 @@ public class PlotBestTour extends Application {
     List<DoublePair> cities = problem.getPoints();
     Group box = new Group();
 
-    List<Circle> cityPoints = plotCities(cities, 1200, 800, 100, 50);
+    List<Circle> cityPoints = plotCities(cities, genotype.get(0), 1200, 800, 100, 50);
     for (Circle c : cityPoints) {
       box.getChildren().add(c);
     }
