@@ -18,14 +18,14 @@ public class LocalSearchBenchmark {
     "tests/eil51",
     "tests/eil76",
     "tests/eil101",
-    "tests/kroA100"};
-//    "tests/kroC100",
-//    "tests/kroD100",
-//    "tests/lin105",
-//    "tests/pcb442",
-//    "tests/pr2392",
-//    "tests/usa13509"
-//  };
+    "tests/kroA100",
+    "tests/kroC100",
+    "tests/kroD100",
+    "tests/lin105",
+    "tests/pcb442",
+    "tests/pr2392",
+    "tests/usa13509"
+  };
 
   public static final Mutate[] mutationFunctions = {new Jump(), new Swap(), new Invert()};
   public static final String[] mutationNames = {"Jump", "Exchange", "2-Opt"};
@@ -75,14 +75,17 @@ public class LocalSearchBenchmark {
         LocalSearch ls = new RandomizedLocalSearch(problemDef, evaluator, mutationFunction);
         BenchmarkStatsTracker bst = new BenchmarkStatsTracker(problemDef.getName()+"_"+mutationNames[mi], problemDef);
         bst.setSolutionTour(benchmark.second);
+        long startTime = System.nanoTime();
         for (int i = 0; i < repeats; i++) {
           bst.startSingleRun();
           Individual result = ls.solve(bst);
-          bst.endSingleRun();
+          bst.endSingleRun(ls.getTotalIterations());
         }
         System.out.println("Avg cost: " + bst.getAvgCost());
         System.out.println("Min cost: " + bst.getMinCost());
         System.out.println("Max cost: " + bst.getMaxCost());
+        System.out.println("Avg search Elapsed Time (s): " + (double)bst.getAvgTimeTaken()/1000000000.0);
+        System.out.println("Benchmark Total Elapsed Time (s): " + (double)(System.nanoTime()-startTime)/1000000000.0);
         System.out.println("Save file: " + bst.getSerialFileName());
         try {
           BenchmarkStatsTracker.serialise(bst);

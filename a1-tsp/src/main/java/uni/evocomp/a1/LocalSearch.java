@@ -10,6 +10,7 @@ public abstract class LocalSearch {
   protected Individual currentBestIndividual;
   protected TSPProblem problem;
   protected Mutate mutator;
+  protected long totalIterations;
 
   LocalSearch(TSPProblem problem, Evaluate evaluate, Mutate mutationFunction) {
     // Load Problem
@@ -20,6 +21,10 @@ public abstract class LocalSearch {
 
     // Mutate function
     this.mutator = mutationFunction;
+  }
+
+  public Long getTotalIterations() {
+    return this.totalIterations;
   }
 
   abstract Individual solve(BenchmarkStatsTracker bst);

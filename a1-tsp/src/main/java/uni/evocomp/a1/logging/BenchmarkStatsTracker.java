@@ -47,10 +47,12 @@ public class BenchmarkStatsTracker implements Serializable {
 
   // Stores Best Individual Tour + number of iterations since last improvement
   //   Number of iterations is fuzzy for evoalg
-  private List<Pair<Individual, Integer>> bestToursFromMinRun;
-  private List<Pair<Individual, Integer>> bestToursFromMaxRun;
-  private List<Pair<Individual, Integer>> currentRunTours;
-  private List<Pair<Long,Integer>> timePerRun;
+  private List<Pair<Individual, Long>> bestToursFromMinRun;
+  private List<Pair<Individual, Long>> bestToursFromMaxRun;
+  private List<Pair<Individual, Long>> currentRunTours;
+
+  // Time Elapsed, Number of Iterations
+  private List<Pair<Long,Long>> timePerRun;
 
   private long currStartTime;
   private long currEndTime;
@@ -102,14 +104,14 @@ public class BenchmarkStatsTracker implements Serializable {
     return this.bestToursFromMaxRun.stream().map(i -> i.first).collect(Collectors.toList());
   }
 
-  public List<Pair<Double, Integer>> getIterationsSinceImprovementFromMinRun() {
+  public List<Pair<Double, Long>> getIterationsSinceImprovementFromMinRun() {
     return this.bestToursFromMinRun
         .stream()
         .map(i -> new Pair<>(i.first.getCost(problem), i.second))
         .collect(Collectors.toList());
   }
 
-  public List<Pair<Double, Integer>> getIterationsSinceImprovementFromMaxRun() {
+  public List<Pair<Double, Long>> getIterationsSinceImprovementFromMaxRun() {
     return this.bestToursFromMaxRun
         .stream()
         .map(i -> new Pair<>(i.first.getCost(problem), i.second))
@@ -144,7 +146,7 @@ public class BenchmarkStatsTracker implements Serializable {
     return this.averageTimePerRun;
   }
 
-  public List<Pair<Long, Integer>> getTimePerRun() {
+  public List<Pair<Long, Long>> getTimePerRun() {
     return this.timePerRun;
   }
 
@@ -169,7 +171,7 @@ public class BenchmarkStatsTracker implements Serializable {
    * @param newBest
    * @param iterationNumber
    */
-  public void newBestIndividualForSingleRun(Individual newBest, Integer iterationNumber) {
+  public void newBestIndividualForSingleRun(Individual newBest, Long iterationNumber) {
     this.currentRunTours.add(new Pair<>(new Individual(newBest), iterationNumber));
   }
 
@@ -181,7 +183,7 @@ public class BenchmarkStatsTracker implements Serializable {
    * found overall sets bestToursFromMinRun = currentRunTours (as this is the current minimum cost
    * run)
    */
-  public void endSingleRun(Integer iterations) {
+  public void endSingleRun(Long iterations) {
     // Update timing
     this.currEndTime = System.nanoTime();
     long timeElapsed = this.currEndTime - this.currStartTime;

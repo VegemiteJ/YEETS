@@ -81,7 +81,7 @@ public class PlotBestTour extends Application {
   @Override
   public void start(Stage stage) {
     // Replace with test case you wanna see
-    final String loadName = "kroA100_2-Opt";
+    final String loadName = "pcb442_2-Opt";
     final boolean plotProvidedBestTour = false;
 
     BenchmarkStatsTracker bst = null;
