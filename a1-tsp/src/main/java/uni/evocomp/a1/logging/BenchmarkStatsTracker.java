@@ -8,8 +8,10 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import uni.evocomp.a1.Individual;
 import uni.evocomp.a1.TSPProblem;
+import uni.evocomp.util.Pair;
 
 /** 
  * Intended for tracking stats throughout a (approx 30) benchmark run.
@@ -41,10 +43,11 @@ public class BenchmarkStatsTracker implements Serializable {
 
   private List<Individual> bestTourPerRun;
 
-  private List<Individual> bestToursFromMinRun;
-  private List<Individual> bestToursFromMaxRun;
-
-  private List<Individual> currentRunTours;
+  // Stores Best Individual Tour + number of iterations since last improvement
+  //   Number of iterations is fuzzy for evoalg
+  private List<Pair<Individual, Integer>> bestToursFromMinRun;
+  private List<Pair<Individual, Integer>> bestToursFromMaxRun;
+  private List<Pair<Individual, Integer>> currentRunTours;
 
   /**
    * Initialize a new benchmark.
@@ -84,11 +87,21 @@ public class BenchmarkStatsTracker implements Serializable {
   }
 
   public List<Individual> getBestToursFromMinRun() {
-    return this.bestToursFromMinRun;
+    return this.bestToursFromMinRun.stream().map(i -> i.first).collect(Collectors.toList());
   }
 
   public List<Individual> getBestToursFromMaxRun() {
-    return this.bestToursFromMaxRun;
+    return this.bestToursFromMaxRun.stream().map(i -> i.first).collect(Collectors.toList());
+  }
+
+  public List<Pair<Double, Integer>> getIterationsSinceImprovementFromMinRun() {
+    return this.bestToursFromMinRun.stream().map( i-> new Pair<>(i.first.getCost(problem), i.second)).collect(
+        Collectors.toList());
+  }
+
+  public List<Pair<Double, Integer>> getIterationsSinceImprovementFromMaxRun() {
+    return this.bestToursFromMaxRun.stream().map( i-> new Pair<>(i.first.getCost(problem), i.second)).collect(
+        Collectors.toList());
   }
 
   public Individual getProvidedBestTour() {
@@ -124,8 +137,8 @@ public class BenchmarkStatsTracker implements Serializable {
    *
    * @param newBest
    */
-  public void newBestIndividualForSingleRun(Individual newBest) {
-    this.currentRunTours.add(new Individual(newBest));
+  public void newBestIndividualForSingleRun(Individual newBest, Integer iterationsSinceLast) {
+    this.currentRunTours.add(new Pair<>(new Individual(newBest), iterationsSinceLast));
   }
 
   /**
@@ -139,7 +152,7 @@ public class BenchmarkStatsTracker implements Serializable {
    */
   public void endSingleRun() {
     // this.currentRunTours should always have size >= 1 (Initial Individual is always added)
-    Individual bestForRun = this.currentRunTours.get(currentRunTours.size() - 1);
+    Individual bestForRun = this.currentRunTours.get(currentRunTours.size() - 1).first;
     this.bestTourPerRun.add(bestForRun);
     double bestCostForRun = bestForRun.getCost(this.problem);
 

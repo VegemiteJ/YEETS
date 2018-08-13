@@ -39,7 +39,7 @@ public class BenchmarkStatsTrackerTest {
 
     bst.startSingleRun();
     Individual newBest = new Individual(Arrays.asList(1,2), 5.0);
-    bst.newBestIndividualForSingleRun(newBest);
+    bst.newBestIndividualForSingleRun(newBest, 0);
     bst.endSingleRun();
 
     assertEquals(5.0, bst.getAvgCost(), 0.0);
@@ -61,15 +61,15 @@ public class BenchmarkStatsTrackerTest {
     Individual middle = new Individual(Arrays.asList(2,3,1), 3.0);
 
     bst.startSingleRun();
-    bst.newBestIndividualForSingleRun(best);
+    bst.newBestIndividualForSingleRun(best,0);
     bst.endSingleRun();
 
     bst.startSingleRun();
-    bst.newBestIndividualForSingleRun(worst);
+    bst.newBestIndividualForSingleRun(worst,0);
     bst.endSingleRun();
 
     bst.startSingleRun();
-    bst.newBestIndividualForSingleRun(middle);
+    bst.newBestIndividualForSingleRun(middle,0);
     bst.endSingleRun();
 
     assertEquals(10.0/3, bst.getAvgCost(), 0.0000001);
@@ -97,14 +97,14 @@ public class BenchmarkStatsTrackerTest {
     Individual e = new Individual(Arrays.asList(2,1,3), 4.0);
 
     bst.startSingleRun();
-    bst.newBestIndividualForSingleRun(b);
-    bst.newBestIndividualForSingleRun(a);
+    bst.newBestIndividualForSingleRun(b,0);
+    bst.newBestIndividualForSingleRun(a,0);
     bst.endSingleRun();
 
     bst.startSingleRun();
-    bst.newBestIndividualForSingleRun(c);
-    bst.newBestIndividualForSingleRun(e);
-    bst.newBestIndividualForSingleRun(d);
+    bst.newBestIndividualForSingleRun(c,0);
+    bst.newBestIndividualForSingleRun(e,0);
+    bst.newBestIndividualForSingleRun(d,0);
     bst.endSingleRun();
 
     // Best Tour is from d in Run 2 = 1.0
@@ -129,14 +129,14 @@ public class BenchmarkStatsTrackerTest {
     Individual e = new Individual(Arrays.asList(2,1,3), 4.0);
 
     bst.startSingleRun();
-    bst.newBestIndividualForSingleRun(b);
-    bst.newBestIndividualForSingleRun(a);
+    bst.newBestIndividualForSingleRun(b,0);
+    bst.newBestIndividualForSingleRun(a,0);
     bst.endSingleRun();
 
     bst.startSingleRun();
-    bst.newBestIndividualForSingleRun(c);
-    bst.newBestIndividualForSingleRun(e);
-    bst.newBestIndividualForSingleRun(d);
+    bst.newBestIndividualForSingleRun(c,0);
+    bst.newBestIndividualForSingleRun(e,0);
+    bst.newBestIndividualForSingleRun(d,0);
     bst.endSingleRun();
 
     BenchmarkStatsTracker.serialise(bst);
@@ -168,14 +168,14 @@ public class BenchmarkStatsTrackerTest {
     Individual e = new Individual(Arrays.asList(2,1,3), 4.0);
 
     bst.startSingleRun();
-    bst.newBestIndividualForSingleRun(b);
-    bst.newBestIndividualForSingleRun(a);
+    bst.newBestIndividualForSingleRun(b,0);
+    bst.newBestIndividualForSingleRun(a,0);
     bst.endSingleRun();
 
     bst.startSingleRun();
-    bst.newBestIndividualForSingleRun(c);
-    bst.newBestIndividualForSingleRun(e);
-    bst.newBestIndividualForSingleRun(d);
+    bst.newBestIndividualForSingleRun(c,0);
+    bst.newBestIndividualForSingleRun(e,0);
+    bst.newBestIndividualForSingleRun(d,0);
     bst.endSingleRun();
 
     BenchmarkStatsTracker.serialise(bst, "CustomName");
