@@ -43,7 +43,7 @@ public class InvertTest {
     // 2,3,4,5,6
     // 3,4,5,6,7
     // 4,5,6,7,8
-    p = new TSPProblem("", "", "", "", weights);
+    p = new TSPProblem(weights);
     original = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
     eval2D = new EvaluateEuclid();
     initialCost = eval2D.evaluate(p, new Individual(original, 0.0));

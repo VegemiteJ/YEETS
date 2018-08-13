@@ -2,6 +2,7 @@ package uni.evocomp.util;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Util {
@@ -128,6 +129,19 @@ public class Util {
       out += "EOF\n";
     }
     return out;
+  }
+
+  public static Matrix createOnesMatrix(int n) {
+    List<List<Double>> weights = new ArrayList<>();
+    for (int i=0;i<n;i++) {
+      List<Double> weightsRow = new ArrayList<>();
+      for (int j=0;j<n;j++) {
+        weightsRow.add(1.0);
+      }
+      weights.add(weightsRow);
+    }
+
+    return new Matrix(n,n,weights);
   }
 
   /**
