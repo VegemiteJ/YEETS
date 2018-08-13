@@ -14,6 +14,10 @@ import uni.evocomp.util.IntegerPair;
  */
 public class Insert implements Mutate {
 
+  public Insert() {
+    ;
+  }
+
   /**
    * Move the second to follow the first, shifting the rest along to accommodate. As the indices n
    * and m are not necessarily ordered, must extract the highest and lowest
