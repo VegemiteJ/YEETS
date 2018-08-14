@@ -129,7 +129,6 @@ public class TSPIO {
         List<Double> temp = new ArrayList<>();
         for (int j = 1; j <= dimension; j++) {
           Double distance = Util.euclideanDistance2D(points.get(i), points.get(j));
-          System.out.println("Point " + i + ", " + j + " = " + distance);
           temp.add(distance);
         }
         weights.add(temp);
