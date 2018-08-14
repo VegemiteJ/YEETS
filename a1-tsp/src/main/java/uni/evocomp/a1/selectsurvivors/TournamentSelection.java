@@ -50,7 +50,6 @@ public class TournamentSelection implements SelectSurvivors {
    * @param p (p*(1-p)^i) = the probability that the ith fittest survives
    */
   TournamentSelection(int tournamentSize, double survivalProportion, double p) {
-    this();
     this.tournamentSize = tournamentSize;
     this.survivalProportion = survivalProportion;
     this.p = p;
@@ -86,7 +85,7 @@ public class TournamentSelection implements SelectSurvivors {
     if (tournamentSize < population.getSize()) {
       while (s.size() < tournamentSize) {
         int index = rand.nextInt(population.getSize());
-         System.out.println("Adding index1 " + index);
+        // System.out.println("Adding index1 " + index);
         s.add(index);
       }
       // System.out.println("S size is " + s.size());
