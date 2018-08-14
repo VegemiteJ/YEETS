@@ -39,12 +39,12 @@ public class TournamentSelectionTest extends TestCase {
     // initialise the population
     population = new Population();
     // construct individuals using integer lists
-    i0 = new Individual(Arrays.asList(1, 2, 3, 4, 5), problem); // 40
-    i1 = new Individual(Arrays.asList(1, 3, 2, 5, 4), problem); // 50
-    i2 = new Individual(Arrays.asList(5, 1, 2, 3, 4), problem); // 44
-    i3 = new Individual(Arrays.asList(1, 3, 2, 4, 5), problem); // 54
-    i4 = new Individual(Arrays.asList(5, 2, 1, 4, 3), problem); // 52
-    i5 = new Individual(Arrays.asList(1, 5, 2, 4, 3), problem); // 48
+    i0 = new Individual(Arrays.asList(1, 2, 3, 4, 5), problem); // 54
+    i1 = new Individual(Arrays.asList(1, 3, 2, 5, 4), problem); // 72
+    i2 = new Individual(Arrays.asList(5, 1, 2, 3, 4), problem); // 54
+    i3 = new Individual(Arrays.asList(1, 3, 2, 4, 5), problem); // 68
+    i4 = new Individual(Arrays.asList(5, 2, 1, 4, 3), problem); // 66
+    i5 = new Individual(Arrays.asList(1, 5, 2, 4, 3), problem); // 68
     // debugging purposes
      System.out.println("i0: " + i0.hashCode() + " costs " + i0.getCost(problem));
      System.out.println("i1: " + i1.hashCode() + " costs " + i1.getCost(problem));
