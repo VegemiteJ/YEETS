@@ -22,10 +22,10 @@ public class LocalSearchBenchmark {
     "tests/kroC100",
     "tests/kroD100",
     "tests/lin105",
-    "tests/pcb442"};
-//    "tests/pr2392",
-//    "tests/usa13509"
-//  };
+    "tests/pcb442",
+    "tests/pr2392",
+    "tests/usa13509"
+  };
 
   public static final Mutate[] mutationFunctions = {new Jump(), new Swap(), new Invert()};
   public static final String[] mutationNames = {"Jump", "Exchange", "2-Opt"};
@@ -74,6 +74,7 @@ public class LocalSearchBenchmark {
 
         LocalSearch ls = new RandomizedLocalSearch(problemDef, evaluator, mutationFunction);
         BenchmarkStatsTracker bst = new BenchmarkStatsTracker(problemDef.getName()+"_"+mutationNames[mi], problemDef);
+        bst.setSolutionTour(benchmark.second);
         long startTime = System.nanoTime();
         for (int i = 0; i < repeats; i++) {
           bst.startSingleRun();
