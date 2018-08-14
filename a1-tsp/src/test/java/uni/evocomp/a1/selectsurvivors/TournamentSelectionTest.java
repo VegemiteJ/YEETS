@@ -156,8 +156,8 @@ public class TournamentSelectionTest extends TestCase {
     assertEquals(3, result.getSize());
     // check the survivor to see they're who we expect
     // we expect individuals 1, 2 and 0 to survive as they are the lowest in each of their "buckets"
-    System.out.println("Test 6");
-    result.getPopulation().stream().forEach(r -> System.out.println("Hash: " + r.hashCode()));
+    // System.out.println("Test 6");
+    // result.getPopulation().stream().forEach(r -> System.out.println("Hash: " + r.hashCode()));
     assertTrue(result.getPopulation().containsAll(Arrays.asList(i1, i2, i0)));
   }
 
