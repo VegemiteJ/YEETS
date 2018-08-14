@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import uni.evocomp.a1.evaluate.Evaluate;
+import uni.evocomp.a1.logging.BenchmarkStatsTracker;
 import uni.evocomp.a1.mutate.Mutate;
 import uni.evocomp.util.IntegerPair;
 
@@ -27,24 +28,16 @@ public class RandomizedLocalSearch extends LocalSearch {
   }
 
   @Override
-  public Individual solve() {
+  public Individual solve(BenchmarkStatsTracker bst) {
     // Initial solution
-    this.currentBestIndividual = new Individual(problem.getSize(), problem);
+    this.currentBestIndividual = new Individual(problem);
 
-    // Initial cost
-    //    double currentBestCost = evaluate.evaluate(problem, currentBestIndividual);
-    //    currentBestIndividual.setCost(currentBestCost);
-
-    // (Jack): Lol Java... so verbose
     List<Integer> outerIdx =
         IntStream.range(0, this.problem.getSize() - 1).boxed().collect(Collectors.toList());
     List<Integer> innerIdx =
         IntStream.range(0, this.problem.getSize() - 1).boxed().collect(Collectors.toList());
 
-    LinkedList<Integer> iterationsSinceLastBest = new LinkedList<>();
-    iterationsSinceLastBest.addLast(0);
-
-    int totalIterations = 0;
+    totalIterations = 0L;
     boolean madeChange = true;
     long start = System.nanoTime();
     loops:
@@ -62,16 +55,8 @@ public class RandomizedLocalSearch extends LocalSearch {
           double cost = s.getCost(problem);
           if (cost < currentBestIndividual.getCost(problem)) {
             currentBestIndividual = s;
-            //            if (totalIterations % 100 == 0) {
-            //              System.out.println(
-            //                  "New Best: "
-            //                      + currentBestIndividual.getCost()
-            //                      + " - iterations since last best: "
-            //                      + (totalIterations
-            //                      - iterationsSinceLastBest.getLast()));
-            //            }
             madeChange = true;
-            iterationsSinceLastBest.addLast(totalIterations);
+            bst.newBestIndividualForSingleRun(s, totalIterations);
           }
           totalIterations++;
         }

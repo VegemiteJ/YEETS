@@ -16,7 +16,7 @@ import uni.evocomp.a1.TSPProblem;
  *
  * @author joshuafloh
  */
-interface SelectSurvivors {
+public interface SelectSurvivors {
   /**
    * 
    * @param population the initial population

@@ -23,7 +23,7 @@ import uni.evocomp.util.Matrix;
  *
  * @author Namdrib
  */
-public class Individual implements Serializable {
+public class Individual implements Comparable<Individual>, Serializable {
 
   protected static final long serialVersionUID = -8931448347288126553L;
   static final String serialLocation = "individual.ser";
@@ -51,7 +51,7 @@ public class Individual implements Serializable {
   }
 
   /**
-   * @param n initialise to have a tour of n cities
+   * @param n the number of cities in the <code>Individual</code>'s tour
    */
   public Individual(int n) {
     initialise(n);
@@ -59,11 +59,12 @@ public class Individual implements Serializable {
   }
 
   /**
-   * @param n initialise to have a tour of n cities
+   * Initialise the Individual with random solution for <code>problem</code>, and set initial cost
+   * 
    * @param problem problem to evaluate initial cost against
    */
-  public Individual(int n, TSPProblem problem) {
-    initialise(n);
+  public Individual(TSPProblem problem) {
+    initialise(problem.getSize());
     setCost(evaluateCost(problem));
   }
 
@@ -110,6 +111,13 @@ public class Individual implements Serializable {
     return genotype;
   }
 
+  /**
+   * return the cost of this Individual with respect to a TSPProblem. Updates the cost if the dirty
+   * bit is set
+   * 
+   * @param problem TSPProblem against which to derive cost
+   * @return the Individual's cost with respect to the TSPProblem
+   */
   public Double getCost(TSPProblem problem) {
     if (this.dirty) {
       setCost(evaluateCost(problem));
@@ -125,7 +133,7 @@ public class Individual implements Serializable {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    for (Iterator<Integer> it = genotype.iterator(); it.hasNext(); ) {
+    for (Iterator<Integer> it = genotype.iterator(); it.hasNext();) {
       sb.append(String.valueOf(it.next()));
       sb.append("\n");
     }
@@ -255,5 +263,24 @@ public class Individual implements Serializable {
     newCost += weights.get(genotype.get(genotype.size() - 1) - 1, genotype.get(0) - 1);
 
     return newCost;
+  }
+
+  /**
+   * Compare Individuals by cost. Assumes both individuals in question (this and i) have the most
+   * up-to-date cost, otherwise may give incorrect results
+   */
+  @Override
+  public int compareTo(Individual i) {
+    if (i == null) {
+      return -1;
+    }
+
+    if (this.getCost(null) < i.getCost(null)) {
+      return -1;
+    } else if (this.getCost(null) > i.getCost(null)) {
+      return 1;
+    } else {
+      return 0;
+    }
   }
 }
