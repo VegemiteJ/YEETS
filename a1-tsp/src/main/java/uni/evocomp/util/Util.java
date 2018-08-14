@@ -29,13 +29,13 @@ public class Util {
   public static double euclideanDistance2D(IntegerPair i, IntegerPair j) {
     double xd = i.first - j.first;
     double yd = i.second - j.second;
-    return Math.round(Math.sqrt(xd * xd + yd * yd) + 0.5);
+    return Math.floor(Math.sqrt(xd * xd + yd * yd) + 0.5);
   }
 
   public static double euclideanDistance2D(DoublePair i, DoublePair j) {
     double xd = i.first - j.first;
     double yd = i.second - j.second;
-    return Math.round(Math.sqrt(xd * xd + yd * yd) + 0.5);
+    return Math.floor(Math.sqrt(xd * xd + yd * yd) + 0.5);
   }
 
   /**

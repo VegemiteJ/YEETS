@@ -52,6 +52,7 @@ public class TournamentSelectionTest extends TestCase {
      System.out.println("i3: " + i3.hashCode() + " costs " + i3.getCost(problem));
      System.out.println("i4: " + i4.hashCode() + " costs " + i4.getCost(problem));
      System.out.println("i5: " + i5.hashCode() + " costs " + i5.getCost(problem));
+     problem.getWeights().print();
     population.add(i0);
     population.add(i1);
     population.add(i2);
