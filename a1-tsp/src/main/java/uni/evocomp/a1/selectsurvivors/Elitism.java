@@ -50,25 +50,30 @@ public class Elitism implements SelectSurvivors {
   @Override
   public Population selectSurvivors(Population population, TSPProblem problem, Random rand) {
     List<Individual> parents = new ArrayList<>();
-    List<Individual> children = new ArrayList<>();
+    Set<Individual> notElite = new LinkedHashSet<>();
 
     // Really hope here that the population is ordered by insertion order
+    // Divide the population into the parents (first half) and children (second half)
     int count = 0;
     for (Individual individual : population.getPopulation()) {
-      ((count < (population.getSize() / 2)) ? parents : children).add(individual);
+      System.out
+          .println("1st: cost for " + individual.hashCode() + " is " + individual.getCost(problem));
+      ((count < (population.getSize() / 2)) ? parents : notElite).add(individual);
       count++;
     }
     Collections.sort(parents); // lowest cost first
 
-    parents.forEach(i -> System.out.println("Cost is " + i.getCost(problem)));
+    parents.forEach(
+        i -> System.out.println("2nd: Cost for " + i.hashCode() + " is " + i.getCost(problem)));
 
-    // Add the first survivalRate portion of
+    // Add the first survivalRate portion of the parents, everything else to notElite
     Set<Individual> elite = new LinkedHashSet<>();
-    Set<Individual> notElite = new LinkedHashSet<>();
     count = 0;
     for (Individual parent : parents) {
       ((count < (parents.size() * survivalRate)) ? elite : notElite).add(parent);
     }
+
+    // At this point, notElite has everything except the fittest however many Individuals
 
     // TournamentSelect the remaining population
     Population notElitePop =
@@ -78,5 +83,4 @@ public class Elitism implements SelectSurvivors {
     elite.addAll(notElitePop.getPopulation());
     return new Population(elite);
   }
-
 }
