@@ -17,7 +17,17 @@ import uni.evocomp.a1.logging.BenchmarkStatsTracker;
 import uni.evocomp.util.DoublePair;
 
 public class PlotBestTour extends Application {
+
+  public static String loadName = "kroD100_2-Opt";
+  public static boolean plotProvidedBestTour = false;
+
   public static void main(String[] args) {
+    if (args.length > 0) {
+      loadName = args[0];
+    }
+    if (args.length > 1) {
+      plotProvidedBestTour = true;
+    }
     launch(args);
   }
 
@@ -38,12 +48,12 @@ public class PlotBestTour extends Application {
             .max()
             .orElseThrow(NoSuchElementException::new);
     List<Circle> positions = new ArrayList<>();
-    for (int i=0; i<cities.size(); i++) {
+    for (int i = 0; i < cities.size(); i++) {
       DoublePair city = cities.get(i);
       double newX = city.first * (xSize / maxX) + xOff;
       double newY = city.second * (ySize / maxY) + yOff;
       Circle c = new Circle(newX, newY, 5.0);
-      if (i == initialCity-1) {
+      if (i == initialCity - 1) {
         c.setFill(Color.RED);
       }
       positions.add(c);
@@ -80,10 +90,6 @@ public class PlotBestTour extends Application {
 
   @Override
   public void start(Stage stage) {
-    // Replace with test case you wanna see
-    final String loadName = "pcb442_2-Opt";
-    final boolean plotProvidedBestTour = false;
-
     BenchmarkStatsTracker bst = null;
     try {
       bst = BenchmarkStatsTracker.deserialise(loadName);
@@ -102,7 +108,7 @@ public class PlotBestTour extends Application {
       plotting = bestFoundBySearch;
     }
 
-    if (providedBest!=null) {
+    if (providedBest != null) {
       System.out.println("Best Provided Tour Cost: " + providedBest.getCost(problem));
     }
     System.out.println("Best Tour Found Cost: " + bestFoundBySearch.getCost(problem));
