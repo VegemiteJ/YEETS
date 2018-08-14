@@ -38,7 +38,7 @@ public class TSPIOTest {
     assertEquals("TSP", problem.getType());
     assertEquals(3, problem.getSize());
     assertEquals("EUC_2D", problem.getEdgeWeightType());
-    assertEquals(1.0, problem.getWeights().get(0, 0), 0.001);
+    assertEquals(0.0, problem.getWeights().get(0, 0), 0.001);
   }
 
   @Test
@@ -109,7 +109,7 @@ public class TSPIOTest {
             Arrays.asList("1 -1 -1", "2 -1 -1", "3 -1 -1"));
 
     problem = io.read(new BufferedReader(new StringReader(input)));
-    assertEquals(1.0, problem.getWeights().get(0, 0), 0.001);
+    assertEquals(0.0, problem.getWeights().get(0, 0), 0.001);
   }
 
   @Test
@@ -155,7 +155,7 @@ public class TSPIOTest {
             Arrays.asList("1 0.5 0.5", "2 1.5 0.5", "3 0.5 1.5"));
 
     problem = io.read(new BufferedReader(new StringReader(input)));
-    assertEquals(1.0, problem.getWeights().get(0, 0), 0.001);
+    assertEquals(0.0, problem.getWeights().get(0, 0), 0.001);
   }
 
   @Test
