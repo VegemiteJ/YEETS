@@ -14,6 +14,8 @@ import uni.evocomp.a1.TSPProblem;
  * Have some portion of the population that is guaranteed a place in the thing, selected by highest
  * fitness straight up.
  * 
+ * After the appropriate number of parents are taken, randomly select the rest of the survivors
+ * 
  * From the lecture slides (01-Intro:47)
  * 
  * <pre>
@@ -37,13 +39,24 @@ public class Elitism implements SelectSurvivors {
     survivalProportion = 0.5;
   }
 
-  public Elitism(double eliteProportion) {
+  /**
+   * Constructor to set eliteProportion
+   * 
+   * @param eliteProportion portion of parents to preserve
+   */
+  Elitism(double eliteProportion) {
     this();
     this.eliteProportion = eliteProportion;
   }
 
-  public Elitism(double survivalRate, double survivalProportion) {
-    this(survivalRate);
+  /**
+   * Constructor to set eliteProportion and survivalProportion
+   * 
+   * @param eliteProportion portion of parents to preserve
+   * @param survivalProportion portion of population to preserve
+   */
+  Elitism(double eliteProportion, double survivalProportion) {
+    this(eliteProportion);
     this.survivalProportion = survivalProportion;
   }
 
@@ -64,13 +77,9 @@ public class Elitism implements SelectSurvivors {
     // Divide the population into the parents (first half) and children (second half)
     int count = 0;
     for (Individual individual : population.getPopulation()) {
-      // System.out.println("1st: A " + individual.hashCode() + ": " + individual.getCost(problem));
       ((count++ < (population.getSize() / 2)) ? parents : notElite).add(individual);
     }
     Collections.sort(parents); // lowest cost first
-
-    // parents.forEach(i -> System.out.println("2nd: P: " + i.hashCode() + ": " +
-    // i.getCost(problem)));
 
     // Add the first survivalRate portion of the parents, everything else to notElite
     // At the end, elite is what gets returned
@@ -80,13 +89,10 @@ public class Elitism implements SelectSurvivors {
       if (elite.size() >= (int) (survivalProportion * population.getSize())) {
         break;
       }
-      System.out.println("Count is " + count + " and elite size is " + elite.size());
       ((count++ < (eliteProportion * parents.size())) ? elite : notElite).add(parent);
     }
 
     // At this point, notElite has everything except the fittest however many Individuals
-    // elite.forEach(i -> System.out.println("3rd: E: " + i.hashCode() + ": " +
-    // i.getCost(problem)));
 
     // Randomly select remaining population until appropriate size reached
     List<Individual> notEliteList = new ArrayList<>(notElite);
@@ -95,13 +101,9 @@ public class Elitism implements SelectSurvivors {
       if (elite.size() >= (int) (survivalProportion * population.getSize())) {
         break;
       }
-      System.out.println("elite size is " + elite.size());
       elite.add(individual);
     }
-    System.out.println("Final elite size: " + elite.size());
 
-    // Merge the elite and selected population
-    // elite.addAll(notEliteList);
     return new Population(elite);
   }
 }
