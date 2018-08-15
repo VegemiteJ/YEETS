@@ -78,7 +78,7 @@ public class TournamentSelectionTest extends TestCase {
     // population should be halved
     assertEquals(3, result.getSize());
     // check the survivor to see they're who we expect
-    // we expect individuals 0, 2 and 4 to survive because they have the lowest cost
+    // we expect individuals 0, 1 and 2 to survive because they have the lowest cost
     assertTrue(result.getPopulation().containsAll(Arrays.asList(i0, i1, i2)));
   }
 
@@ -92,7 +92,7 @@ public class TournamentSelectionTest extends TestCase {
     // population should be halved
     assertEquals(3, result.getSize());
     // check the survivor to see they're who we expect
-    // we expect individuals 1, 6 and 5 as we skip every second individual due to RNG
+    // we expect individuals 0, 2 and 4 as we skip every second individual due to RNG
     assertTrue(result.getPopulation().containsAll(Arrays.asList(i0, i2, i4)));
     System.out.println();
   }
@@ -107,8 +107,8 @@ public class TournamentSelectionTest extends TestCase {
     // population should be halved
     assertEquals(3, result.getSize());
     // check the survivor to see they're who we expect
-    // we expect individuals 0, 2 and 3 due to RNG
-    // Pick i0, pick i2, skip i4, pick i3
+    // we expect individuals 0, 1 and 3 due to RNG
+    // Pick i0, pick i1, skip i2, pick i3
     assertTrue(result.getPopulation().containsAll(Arrays.asList(i0, i1, i3)));
   }
 
@@ -125,7 +125,7 @@ public class TournamentSelectionTest extends TestCase {
     // population should be halved
     assertEquals(3, result.getSize());
     // check the survivor to see they're who we expect
-    // we expect individuals 0, 2 and 4 to survive because they have the lowest cost
+    // we expect individuals 0, 1 and 2 to survive because they have the lowest cost
     assertTrue(result.getPopulation().containsAll(Arrays.asList(i0, i1, i2)));
   }
 
@@ -143,7 +143,7 @@ public class TournamentSelectionTest extends TestCase {
     // population should be halved
     assertEquals(3, result.getSize());
     // check the survivor to see they're who we expect
-    // we expect individuals 2, 4 and 0 to survive as they are the lowest in each of their "buckets"
+    // we expect individuals 1, 3 and 0 to survive as they are the lowest in each of their "buckets"
     assertTrue(result.getPopulation().containsAll(Arrays.asList(i1, i3, i0)));
   }
 
@@ -173,7 +173,7 @@ public class TournamentSelectionTest extends TestCase {
     // population should be halved
     assertEquals(3, result.getSize());
     // check the survivor to see they're who we expect
-    // we expect individuals 5, 0 and 4 to survive as they are the lowest in each of their "buckets"
+    // we expect individuals 1, 0 and 3 to survive as they are the lowest in each of their "buckets"
     assertTrue(result.getPopulation().containsAll(Arrays.asList(i1, i0, i3)));
   }
 }
