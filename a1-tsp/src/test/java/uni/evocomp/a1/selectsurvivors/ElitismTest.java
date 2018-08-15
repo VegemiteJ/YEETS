@@ -31,7 +31,7 @@ public class ElitismTest {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    selector = new Elitism();
+    selector = new Elitism(0.25, 0.5);
 
     // TODO : Update routes
     // maybe make a helper script to generate every single permutation of cost?
@@ -59,17 +59,19 @@ public class ElitismTest {
   // Expect children to be the same as the population
   @Test
   public void testAllElite() {
-    selector = new Elitism(1.0);
+    selector = new Elitism(1.0, 0.5);
     Population newPop = selector.selectSurvivors(population, problem, ThreadLocalRandom.current());
-    assertTrue(population.getPopulation().containsAll(newPop.getPopulation()));
+    assertTrue(population.getPopulation().containsAll(Arrays.asList(i0, i1, i2, i3)));
+    assertEquals(4, newPop.getPopulation().size());
   }
 
   // Expect children to be the same as the population
   @Test
   public void testMoreThanAllElite() {
-    selector = new Elitism(2.0);
+    selector = new Elitism(2.0, 0.5);
     Population newPop = selector.selectSurvivors(population, problem, ThreadLocalRandom.current());
-    assertTrue(population.getPopulation().containsAll(newPop.getPopulation()));
+    assertTrue(population.getPopulation().containsAll(Arrays.asList(i0, i1, i2, i3)));
+    assertEquals(4, newPop.getPopulation().size());
   }
 
   // The one with the cheapest cost (out of 8) must be elite (25%)
@@ -78,15 +80,27 @@ public class ElitismTest {
   public void testOneElite() {
     Population newPop = selector.selectSurvivors(population, problem, ThreadLocalRandom.current());
     assertTrue(newPop.getPopulation().contains(i0));
+    assertEquals(4, newPop.getPopulation().size());
   }
 
   // The one with the cheapest cost (out of 8) must be elite (25%)
   // since only half of the population were parents (now out of 4)
   @Test
   public void testTwoElite() {
-    selector = new Elitism(0.5);
+    selector = new Elitism(0.5, 0.5);
     Population newPop = selector.selectSurvivors(population, problem, ThreadLocalRandom.current());
     assertTrue(newPop.getPopulation().contains(i0));
     assertTrue(newPop.getPopulation().contains(i2));
+    assertEquals(4, newPop.getPopulation().size());
+  }
+
+  // The one with the cheapest cost (out of 8) must be elite (25%)
+  // since only half of the population were parents (now out of 4)
+  @Test
+  public void testFullPop() {
+    selector = new Elitism(0.5, 1.0);
+    Population newPop = selector.selectSurvivors(population, problem, ThreadLocalRandom.current());
+    assertTrue(newPop.getPopulation().containsAll(population.getPopulation()));
+    assertEquals(population.getSize(), newPop.getPopulation().size());
   }
 }

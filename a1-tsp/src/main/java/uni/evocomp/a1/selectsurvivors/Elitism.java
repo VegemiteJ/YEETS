@@ -73,10 +73,15 @@ public class Elitism implements SelectSurvivors {
     // i.getCost(problem)));
 
     // Add the first survivalRate portion of the parents, everything else to notElite
+    // At the end, elite is what gets returned
     Set<Individual> elite = new LinkedHashSet<>();
     count = 0;
     for (Individual parent : parents) {
-      ((count++ < (parents.size() * eliteProportion)) ? elite : notElite).add(parent);
+      if (elite.size() >= (int) (survivalProportion * population.getSize())) {
+        break;
+      }
+      System.out.println("Count is " + count + " and elite size is " + elite.size());
+      ((count++ < (eliteProportion * parents.size())) ? elite : notElite).add(parent);
     }
 
     // At this point, notElite has everything except the fittest however many Individuals
@@ -86,14 +91,17 @@ public class Elitism implements SelectSurvivors {
     // Randomly select remaining population until appropriate size reached
     List<Individual> notEliteList = new ArrayList<>(notElite);
     Collections.shuffle(notEliteList);
-    count = 0;
-    while (elite.size() < survivalProportion * population.getSize()) {
-      elite.add(notEliteList.get(count));
-      count++;
+    for (Individual individual : notEliteList) {
+      if (elite.size() >= (int) (survivalProportion * population.getSize())) {
+        break;
+      }
+      System.out.println("elite size is " + elite.size());
+      elite.add(individual);
     }
+    System.out.println("Final elite size: " + elite.size());
 
     // Merge the elite and selected population
-    elite.addAll(notEliteList);
+    // elite.addAll(notEliteList);
     return new Population(elite);
   }
 }
