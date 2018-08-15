@@ -29,14 +29,22 @@ import uni.evocomp.a1.TSPProblem;
  */
 public class Elitism implements SelectSurvivors {
 
-  double survivalRate; // the proportion fo the input population to steal solely based on fitness
+  double eliteProportion; // the proportion of the input population to steal solely based on fitness
+  private double survivalProportion; // the proportion of the input population to take through
 
   public Elitism() {
-    survivalRate = 0.25;
+    eliteProportion = 0.25;
+    survivalProportion = 0.5;
   }
 
-  public Elitism(double survivalRate) {
-    this.survivalRate = survivalRate;
+  public Elitism(double eliteProportion) {
+    this();
+    this.eliteProportion = eliteProportion;
+  }
+
+  public Elitism(double survivalRate, double survivalProportion) {
+    this(survivalRate);
+    this.survivalProportion = survivalProportion;
   }
 
   /**
@@ -49,38 +57,43 @@ public class Elitism implements SelectSurvivors {
    */
   @Override
   public Population selectSurvivors(Population population, TSPProblem problem, Random rand) {
-    List<Individual> parents = new ArrayList<>();
-    Set<Individual> notElite = new LinkedHashSet<>();
+    List<Individual> parents = new ArrayList<>(); // separate the population into parents and
+    Set<Individual> notElite = new LinkedHashSet<>(); // non/parents (in notElite)
 
     // Really hope here that the population is ordered by insertion order
     // Divide the population into the parents (first half) and children (second half)
     int count = 0;
     for (Individual individual : population.getPopulation()) {
-      System.out
-          .println("1st: cost for " + individual.hashCode() + " is " + individual.getCost(problem));
-      ((count < (population.getSize() / 2)) ? parents : notElite).add(individual);
-      count++;
+      // System.out.println("1st: A " + individual.hashCode() + ": " + individual.getCost(problem));
+      ((count++ < (population.getSize() / 2)) ? parents : notElite).add(individual);
     }
     Collections.sort(parents); // lowest cost first
 
-    parents.forEach(
-        i -> System.out.println("2nd: Cost for " + i.hashCode() + " is " + i.getCost(problem)));
+    // parents.forEach(i -> System.out.println("2nd: P: " + i.hashCode() + ": " +
+    // i.getCost(problem)));
 
     // Add the first survivalRate portion of the parents, everything else to notElite
     Set<Individual> elite = new LinkedHashSet<>();
     count = 0;
     for (Individual parent : parents) {
-      ((count < (parents.size() * survivalRate)) ? elite : notElite).add(parent);
+      ((count++ < (parents.size() * eliteProportion)) ? elite : notElite).add(parent);
     }
 
     // At this point, notElite has everything except the fittest however many Individuals
+    // elite.forEach(i -> System.out.println("3rd: E: " + i.hashCode() + ": " +
+    // i.getCost(problem)));
 
-    // TournamentSelect the remaining population
-    Population notElitePop =
-        new TournamentSelection().selectSurvivors(new Population(notElite), problem, rand);
+    // Randomly select remaining population until appropriate size reached
+    List<Individual> notEliteList = new ArrayList<>(notElite);
+    Collections.shuffle(notEliteList);
+    count = 0;
+    while (elite.size() < survivalProportion * population.getSize()) {
+      elite.add(notEliteList.get(count));
+      count++;
+    }
 
     // Merge the elite and selected population
-    elite.addAll(notElitePop.getPopulation());
+    elite.addAll(notEliteList);
     return new Population(elite);
   }
 }
