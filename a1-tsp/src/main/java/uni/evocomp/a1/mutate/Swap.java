@@ -13,7 +13,7 @@ import uni.evocomp.util.Matrix;
  *
  * @author Namdrib
  */
-public class Swap implements Mutate {
+public class Swap extends MutateImpl {
 
   public Swap() {
     ;
@@ -38,11 +38,8 @@ public class Swap implements Mutate {
   }
 
   @Override
-  public void run(TSPProblem problem, Individual individual, List<IntegerPair> pairs) {
-    for (Iterator<IntegerPair> it = pairs.iterator(); it.hasNext(); ) {
-      IntegerPair p = it.next();
-      swap(problem, individual, p.first, p.second);
-    }
+  public void run(TSPProblem problem, Individual individual, IntegerPair pair) {
+    swap(problem, individual, pair.first, pair.second);
   }
 
   /*

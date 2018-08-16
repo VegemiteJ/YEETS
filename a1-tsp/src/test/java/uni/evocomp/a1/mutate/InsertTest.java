@@ -46,63 +46,42 @@ public class InsertTest {
   }
 
   @Test
-  public void testInsertEmptyList() {
-    Individual i = new Individual(new ArrayList<>(original), initialCost);
-    m.run(p, i, new ArrayList<>());
-    assertEquals(original, i.getGenotype());
-  }
-
-  @Test
   public void testInsertValid() {
     Individual i = new Individual(new ArrayList<>(original), initialCost);
-    m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(1, 4))));
+    m.run(p, i, new IntegerPair(1, 4));
     assertEquals(Arrays.asList(1, 2, 5, 3, 4), i.getGenotype());
   }
 
   @Test
   public void testInsertSameIndex() {
     Individual i = new Individual(new ArrayList<>(original), initialCost);
-    m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(2, 2))));
+    m.run(p, i, new IntegerPair(2, 2));
     assertEquals(original, i.getGenotype());
   }
 
   @Test
   public void testInsertBadOrder() {
     Individual i = new Individual(new ArrayList<>(original), initialCost);
-    m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(4, 1))));
+    m.run(p, i, new IntegerPair(4, 1));
     assertEquals(Arrays.asList(1, 2, 5, 3, 4), i.getGenotype());
   }
 
   @Test(expected = IndexOutOfBoundsException.class)
   public void testInsertOutOfBoundsLow() {
     Individual i = new Individual(new ArrayList<>(original), initialCost);
-    m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(-1, 4))));
+    m.run(p, i, new IntegerPair(-1, 4));
   }
 
   @Test(expected = IndexOutOfBoundsException.class)
   public void testInsertOutOfBoundsHigh() {
     Individual i = new Individual(new ArrayList<>(original), initialCost);
-    m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(1, 10))));
-  }
-
-  @Test
-  public void testInsertMultipleValid() {
-    Individual i = new Individual(new ArrayList<>(original), initialCost);
-    m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(0, 3), new IntegerPair(3, 4))));
-    assertEquals(Arrays.asList(1, 4, 2, 3, 5), i.getGenotype());
-  }
-
-  @Test
-  public void testInsertMultipleInverse() {
-    Individual i = new Individual(new ArrayList<>(original), initialCost);
-    m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(0, 3), new IntegerPair(3, 0))));
-    assertEquals(Arrays.asList(1, 3, 4, 2, 5), i.getGenotype());
+    m.run(p, i, new IntegerPair(1, 10));
   }
 
   @Test(expected = NullPointerException.class)
   public void testInsertNullIndividual() {
     Individual i = null;
-    m.run(p, i, new ArrayList<>(Arrays.asList(new IntegerPair(0, 4))));
+    m.run(p, i, new IntegerPair(0, 4));
   }
 
   @Test(expected = NullPointerException.class)
@@ -119,7 +98,7 @@ public class InsertTest {
         Individual individual = new Individual(original, p);
         IntegerPair pair = new IntegerPair(i, j);
 
-        m.run(p, individual, Arrays.asList(pair));
+        m.run(p, individual, pair);
 
         double cost = eval2D.evaluate(p, individual);
         assertEquals(individual.getCost(p), cost, 0);
