@@ -21,12 +21,6 @@ import uni.evocomp.util.IntegerPair;
  */
 public abstract class MutateImpl implements Mutate {
 
-  /**
-   * Perform a list of mutation operations on an Individual
-   *
-   * @param individual Individual on which to perform a mutation operation
-   * @param pair List of Points whose x and y dictate which indices to use when mutating
-   */
   @Override
   public abstract void run(TSPProblem problem, Individual individual, IntegerPair pair);
 
