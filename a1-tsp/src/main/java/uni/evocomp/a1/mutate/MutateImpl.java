@@ -36,5 +36,20 @@ public abstract class MutateImpl implements Mutate {
    */
   @Override
   public void mutateWithProbability(double mutateProbability, TSPProblem problem,
-      Individual individual, Random rand) {}
+      Individual individual, Random rand) {
+    if (mutateProbability < rand.nextDouble()) {
+      // Perform a random mutation
+      int numCities = problem.getSize();
+
+      // Generate pair of cities to mutate withing range [0, numCities)
+      //   Avoid indefinite loop by only looping if numCities > 1
+      int city1 = rand.nextInt(numCities);
+      int city2 = rand.nextInt(numCities);
+      while (city2 != city1 && numCities > 1) {
+        city2 = rand.nextInt(numCities);
+      }
+      IntegerPair cityPair = new IntegerPair(city1, city2);
+      run(problem, individual, cityPair);
+    }
+  }
 }
