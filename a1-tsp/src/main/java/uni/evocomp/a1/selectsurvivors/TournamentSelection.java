@@ -10,8 +10,6 @@ import java.util.Set;
 import uni.evocomp.a1.Individual;
 import uni.evocomp.a1.Population;
 import uni.evocomp.a1.TSPProblem;
-import uni.evocomp.a1.evaluate.Evaluate;
-import uni.evocomp.a1.evaluate.EvaluateEuclid;
 
 /**
  * TournamentSelection class, one of the implementations of the SelectSurvivors interface Contains
@@ -30,17 +28,15 @@ import uni.evocomp.a1.evaluate.EvaluateEuclid;
  *
  */
 public class TournamentSelection implements SelectSurvivors {
-  private Evaluate evaluate;
+  /**
+   * should not be a proportion of the population size otherwise it can get huge, resulting in a
+   * never-ending loop as the probablity for selection drops to zer0
+   */
   private int tournamentSize;
   private double survivalProportion;
   private double p;
 
-  /**
-   * Default constructor, this generally shouldn't be called ever
-   */
   public TournamentSelection() {
-    this.evaluate = new EvaluateEuclid();
-    
     tournamentSize = 10;
     survivalProportion = 0.5;
     p = 0.65;
@@ -54,8 +50,7 @@ public class TournamentSelection implements SelectSurvivors {
    * @param p (p*(1-p)^i) = the probability that the ith fittest survives
    */
   TournamentSelection(int tournamentSize, double survivalProportion, double p) {
-    this();
-    this.tournamentSize = tournamentSize; // should I just change this to a prop now?
+    this.tournamentSize = tournamentSize;
     this.survivalProportion = survivalProportion;
     this.p = p;
   }
@@ -63,13 +58,14 @@ public class TournamentSelection implements SelectSurvivors {
   @Override
   public Population selectSurvivors(Population population, TSPProblem problem, Random rand) {
     Set<Individual> survivorSet = new HashSet<>();
+
     // Keep running tournaments until the limit has been reached
     while (survivorSet.size() < (int) (survivalProportion * population.getSize())) {
       runTournament(population, problem, rand, survivorSet);
     }
+
     // Construct the surviving population from the individual set
-    Population survivorPopulation = new Population(survivorSet);
-    return survivorPopulation;
+    return new Population(survivorSet);
   }
 
   /**
@@ -85,23 +81,19 @@ public class TournamentSelection implements SelectSurvivors {
     Set<Integer> s = new LinkedHashSet<>();
     List<Individual> tournamentList = new ArrayList<>();
 
-//    System.out.println("Should be " + tournamentSize + " * " + population.getSize());
-//    System.out.println("Should have " + (int) (tournamentSize * population.getSize()));
-    
     // choose k random individuals from population
     if (tournamentSize < population.getSize()) {
       while (s.size() < tournamentSize) {
         int index = rand.nextInt(population.getSize());
-//        System.out.println("Adding index1 " + index);
+        // System.out.println("Adding index1 " + index);
         s.add(index);
       }
-//      System.out.println("S size is " + s.size());
+      // System.out.println("S size is " + s.size());
       // Iterate over HashSet and add individuals to the tournament list
       List<Individual> individualList = new ArrayList<>(population.getPopulation());
-      Iterator<Integer> itr = s.iterator();
-      while (itr.hasNext()) {
+      for (Iterator<Integer> itr = s.iterator(); itr.hasNext();) {
         int index = itr.next();
-//        System.out.println("Adding index2 " + index);
+        // System.out.println("Adding index2 " + index);
         Individual next = individualList.get(index);
         tournamentList.add(next);
       }
@@ -113,8 +105,7 @@ public class TournamentSelection implements SelectSurvivors {
 
     // Sort the list based on fitness
     // https://stackoverflow.com/questions/49122512/sorting-an-arraylist-based-on-the-result-of-a-method
-    tournamentList
-        .sort((o1, o2) -> (int) (evaluate.evaluate(problem, o1) - evaluate.evaluate(problem, o2)));
+    tournamentList.sort((o1, o2) -> (int) (o1.getCost(problem) - o2.getCost(problem)));
 
     // Choose the best individual with probability p, 2nd with p(1-p), 3rd with p(1-p)^2 etc.
     int i = 0;
@@ -127,8 +118,8 @@ public class TournamentSelection implements SelectSurvivors {
       }
       i++;
     }
-    
-//    System.out.println("After selection, survivor size is " + survivors.size());
+
+    // System.out.println("After selection, survivor size is " + survivors.size());
   }
 }
 
