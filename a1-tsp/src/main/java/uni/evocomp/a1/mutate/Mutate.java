@@ -23,7 +23,7 @@ public interface Mutate {
    * Perform a list of mutation operations on an Individual
    *
    * @param individual Individual on which to perform a mutation operation
-   * @param pair List of Points whose x and y dictate which indices to use when mutating
+   * @param pair Pair of Points whose x and y dictate which indices to use when mutating
    */
   void run(TSPProblem problem, Individual individual, IntegerPair pair);
 
