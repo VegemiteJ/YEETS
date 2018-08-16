@@ -31,40 +31,39 @@ public class EdgeRecombine implements Recombine {
 
     while (offspring.size() < n) {
       Integer current = offspring.get(offspring.size() - 1);
+      table.removeEdgesTo(current);
 
-      // Select the next edge (current, other)
-      // If there is a common edge between the two individuals, use that, otherwise pick
-      // the entry which has the shortest list of possible edges.
-      // (Ties are split at random).
-      List<Integer> candidates = new ArrayList<>();
+      List<Integer> candidatesWithCommonEdge = new ArrayList<>();
+      List<Integer> candidatesWithShortestList = new ArrayList<>();
+      Integer currentShortestListSize = Integer.MAX_VALUE;
+
+      // Build lists of common-edge nodes, then shortest-list nodes.
       for (Pair<Integer, Boolean> node : table.entry(current).edges) {
-        if (node.second) candidates.add(node.first);
-      }
-
-      if (!candidates.isEmpty()) {
-        // Select a node from candidates, add to the offspring, and update current.
-        Integer selected = candidates.get(random.nextInt(candidates.size()));
-        offspring.add(selected);
-        table.removeEdgesTo(selected);
-        continue;
-      }
-
-      // If there are no common edges from current, look for the element(s) with the shortest list
-      // of possible edges.
-      // Build list of possible next edges with the shortest list.
-      int shortestListSize = Integer.MAX_VALUE;
-      for (Pair<Integer, Boolean> node : table.entry(current).edges) {
-        int currentSize = table.entry(node.first).size();
-        if (currentSize < shortestListSize) {
-          candidates = new ArrayList<>();
-          shortestListSize = currentSize;
-          candidates.add(node.first);
-        } else if (currentSize == shortestListSize) {
-          candidates.add(node.first);
+        if (node.second) {
+          candidatesWithCommonEdge.add(node.first);
+        } else if (table.entry(node.first).size() == currentShortestListSize) {
+          candidatesWithShortestList.add(node.first);
+        } else if (table.entry(node.first).size() < currentShortestListSize) {
+          candidatesWithShortestList = new ArrayList<>();
+          candidatesWithShortestList.add(node.first);
+          currentShortestListSize = table.entry(node.first).size();
         }
       }
 
-      Integer selected = candidates.get(random.nextInt(candidates.size()));
+      // Select the next node.
+      Integer selected;
+      if (candidatesWithCommonEdge.size() > 0) {
+        selected = candidatesWithCommonEdge.get(random.nextInt(candidatesWithCommonEdge.size()));
+      } else if (candidatesWithShortestList.size() > 0) {
+        selected = candidatesWithShortestList.get(random.nextInt(candidatesWithShortestList.size()));
+      } else {
+        selected = random.nextInt(n - offspring.size());
+        while (offspring.contains(selected)) {
+          selected += 1;
+        }
+      }
+      assert !offspring.contains(selected);
+
       offspring.add(selected);
       table.removeEdgesTo(selected);
     }
