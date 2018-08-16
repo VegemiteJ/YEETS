@@ -60,7 +60,7 @@ public class EdgeRecombine implements Recombine {
    * Construct an edge table from two individuals
    * @param first   The first individual
    * @param second  The second individual
-   * @return        An edge table showing
+   * @return        An edge table showing the edges in each tour and with common edges marked.
    */
   public Table constructTable(Individual first, Individual second) {
     int n = first.getGenotype().size();
