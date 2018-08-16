@@ -34,7 +34,7 @@ public class MutateImplTest extends TestCase {
   }
 
   @Test
-  public void testExpectedMutate() {
+  public void testExpectedMutate1() {
     Mutate m = new WhiteBoxMutateImpl();
     Individual i = new Individual(Arrays.asList(1, 2, 3, 4, 5, 6));
     rand.setDoubles(Arrays.asList(0.6));
@@ -43,6 +43,30 @@ public class MutateImplTest extends TestCase {
 
     assertEquals(-1, i.getGenotype().get(0).intValue());
     assertEquals(-2, i.getGenotype().get(1).intValue());
+  }
+
+  @Test
+  public void testExpectedMutate2() {
+    Mutate m = new WhiteBoxMutateImpl();
+    Individual i = new Individual(Arrays.asList(1, 2, 3, 4, 5, 6));
+    rand.setDoubles(Arrays.asList(0.6));
+    rand.setInt(Arrays.asList(5, 3));
+    m.mutateWithProbability(0.7, problem, i, rand);
+
+    assertEquals(-1, i.getGenotype().get(5).intValue());
+    assertEquals(-2, i.getGenotype().get(3).intValue());
+  }
+
+  @Test
+  public void testExpectedMutate3() {
+    Mutate m = new WhiteBoxMutateImpl();
+    Individual i = new Individual(Arrays.asList(1, 2, 3, 4, 5, 6));
+    rand.setDoubles(Arrays.asList(0.6));
+    rand.setInt(Arrays.asList(0, 5));
+    m.mutateWithProbability(0.7, problem, i, rand);
+
+    assertEquals(-1, i.getGenotype().get(0).intValue());
+    assertEquals(-2, i.getGenotype().get(5).intValue());
   }
 
   @Test
