@@ -1,8 +1,5 @@
 package uni.evocomp.a1.mutate;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 import uni.evocomp.a1.Individual;
 import uni.evocomp.a1.TSPProblem;
@@ -35,9 +32,9 @@ public abstract class MutateImpl implements Mutate {
    * [0.0, 1.0] with a value of 1.0 representing a guaranteed mutation (random indicies)
    */
   @Override
-  public void mutateWithProbability(double mutateProbability, TSPProblem problem,
-      Individual individual, Random rand) {
-    if (mutateProbability < rand.nextDouble()) {
+  public void mutateWithProbability(
+      double mutateProbability, TSPProblem problem, Individual individual, Random rand) {
+    if (rand.nextDouble() < mutateProbability) {
       // Perform a random mutation
       int numCities = problem.getSize();
 
@@ -45,7 +42,7 @@ public abstract class MutateImpl implements Mutate {
       //   Avoid indefinite loop by only looping if numCities > 1
       int city1 = rand.nextInt(numCities);
       int city2 = rand.nextInt(numCities);
-      while (city2 != city1 && numCities > 1) {
+      while (city2 == city1 && numCities > 1) {
         city2 = rand.nextInt(numCities);
       }
       IntegerPair cityPair = new IntegerPair(city1, city2);
