@@ -104,4 +104,10 @@ public class EdgeRecombineTest {
         )));
   }
 
+  @Test
+  public void testRecombine() {
+    Individual a = new Individual(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9));
+    Individual b = new Individual(Arrays.asList(9, 3, 7, 8, 2, 6, 5, 1, 4));
+    Individual child = edgeRecombine.recombineSingle(a, b);
+  }
 }
