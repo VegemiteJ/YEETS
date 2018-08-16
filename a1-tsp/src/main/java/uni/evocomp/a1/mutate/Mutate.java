@@ -1,6 +1,7 @@
 package uni.evocomp.a1.mutate;
 
 import java.util.List;
+import java.util.Random;
 import uni.evocomp.a1.Individual;
 import uni.evocomp.a1.TSPProblem;
 import uni.evocomp.util.IntegerPair;
@@ -22,7 +23,19 @@ public interface Mutate {
    * Perform a list of mutation operations on an Individual
    *
    * @param individual Individual on which to perform a mutation operation
-   * @param pairs List of Points whose x and y dictate which indices to use when mutating
+   * @param pair Pair of Points whose x and y dictate which indices to use when mutating
    */
-  public void run(TSPProblem problem, Individual individual, List<IntegerPair> pairs);
+  void run(TSPProblem problem, Individual individual, IntegerPair pair);
+
+  /**
+   * Perform a random mutate with probability mutateProbability.
+   * mutateProbability must be in range [0.0, 1.0] with a value of 1.0 representing a
+   * guaranteed mutation (random indicies)
+   *
+   * @param mutateProbability
+   * @param problem
+   * @param individual
+   */
+  void mutateWithProbability(
+      double mutateProbability, TSPProblem problem, Individual individual, Random rand);
 }

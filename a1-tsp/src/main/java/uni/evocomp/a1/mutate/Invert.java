@@ -12,7 +12,7 @@ import uni.evocomp.util.IntegerPair;
  *
  * @author Namdrib
  */
-public class Invert implements Mutate {
+public class Invert extends MutateImpl {
 
   public Invert() {
     ;
@@ -64,10 +64,7 @@ public class Invert implements Mutate {
   }
 
   @Override
-  public void run(TSPProblem problem, Individual individual, List<IntegerPair> pairs) {
-    for (Iterator<IntegerPair> it = pairs.iterator(); it.hasNext(); ) {
-      IntegerPair p = it.next();
-      invert(problem, individual, p.first, p.second);
-    }
+  public void run(TSPProblem problem, Individual individual, IntegerPair pair) {
+    invert(problem, individual, pair.first, pair.second);
   }
 }

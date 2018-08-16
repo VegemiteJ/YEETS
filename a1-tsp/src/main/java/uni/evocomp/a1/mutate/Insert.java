@@ -12,7 +12,7 @@ import uni.evocomp.util.IntegerPair;
  *
  * @author Namdrib
  */
-public class Insert implements Mutate {
+public class Insert extends MutateImpl {
 
   public Insert() {
     ;
@@ -43,10 +43,7 @@ public class Insert implements Mutate {
   }
 
   @Override
-  public void run(TSPProblem problem, Individual individual, List<IntegerPair> pairs) {
-    for (Iterator<IntegerPair> it = pairs.iterator(); it.hasNext(); ) {
-      IntegerPair p = it.next();
-      insert(individual, p.first, p.second);
-    }
+  public void run(TSPProblem problem, Individual individual, IntegerPair pair) {
+    insert(individual, pair.first, pair.second);
   }
 }

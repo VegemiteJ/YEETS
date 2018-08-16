@@ -7,23 +7,15 @@ import uni.evocomp.util.Bounds;
 import uni.evocomp.util.IntegerPair;
 import uni.evocomp.util.Matrix;
 
-public class Jump implements Mutate {
+public class Jump extends MutateImpl {
 
   public Jump() {
     ;
   }
 
-  /**
-   * Perform a list of mutation operations on an Individual
-   *
-   * @param individual Individual on which to perform a mutation operation
-   * @param pairs List of Points whose x and y dictate which indices to use when mutating
-   */
   @Override
-  public void run(TSPProblem problem, Individual individual, List<IntegerPair> pairs) {
-    for (IntegerPair p : pairs) {
-      jumpSingle(problem, individual, p);
-    }
+  public void run(TSPProblem problem, Individual individual, IntegerPair pair) {
+    jumpSingle(problem, individual, pair);
   }
 
   private void printArr(List<Integer> arr) {
