@@ -29,6 +29,8 @@ public class Main {
   public static final String tourSuffix = ".opt.tour";
   public static final String a1Prefix = "uni.evocomp.a1";
 
+  static final int totalGenerations = 20000;
+
   /**
    *
    * A typical evolutionary algorithm. Pass in different implementations of each argument to result
@@ -173,9 +175,6 @@ public class Main {
         BufferedReader br2 = new BufferedReader(new FileReader(testName + Global.tourSuffix))) {
       problem = io.read(br1);
       optimalSolution = io.readSolution(br2);
-      System.out.println("Known Best Solution: " + optimalSolution.getCost(problem));
-      // System.out.println("Known Best Solution: " + optimalSolution.getGenotype());
-      // problem.getWeights().print();
     } catch (IOException e) {
       e.printStackTrace();
       optimalSolution = null;
@@ -194,10 +193,12 @@ public class Main {
     for (int i = 0; i < repeats; i++) {
       bst.startSingleRun();
       Individual result = ea.solve(problem, evaluate, selectParents, recombine, mutate,
-          selectSurvivors, populationSize);
+          selectSurvivors, populationSize, totalGenerations);
       bst.endSingleRun(ea.getGeneration());
     }
-
+    if (optimalSolution != null) {
+      System.out.println("Known Best Solution: " + optimalSolution.getCost(problem));
+    }
     System.out.println("Avg: " + bst.getAvgCost());
     System.out.println("Min: " + bst.getMinCost());
     System.out.println("Max: " + bst.getMaxCost());

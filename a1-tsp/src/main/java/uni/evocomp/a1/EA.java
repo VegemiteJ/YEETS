@@ -27,6 +27,8 @@ public class EA {
   BenchmarkStatsTracker bst;
   long generation;
 
+  final long printItr=1000;
+
 
   EA(BenchmarkStatsTracker bst) {
     this.bst = bst;
@@ -59,7 +61,7 @@ public class EA {
    * @return the <code>Individual</code> with the best fitness
    */
   public Individual solve(TSPProblem problem, Evaluate evaluate, SelectParents selectParents,
-      Recombine recombine, Mutate mutate, SelectSurvivors selectSurvivors, int populationSize) {
+      Recombine recombine, Mutate mutate, SelectSurvivors selectSurvivors, int populationSize, int totalGenerations) {
 
     // Initialise population with random candidate solutions and
     // Evaluate each candidate
@@ -70,7 +72,10 @@ public class EA {
 
     // TODO : define better terminal condition
     generation = 1;
-    while (generation < 10000) {
+    while (generation < totalGenerations) {
+      if (generation % printItr == 0) {
+        System.out.println("At iteration " + generation + " of " + totalGenerations);
+      }
       // 1. select parents from the population
       List<Pair<Individual, Individual>> parents = selectParents.selectParents(population);
 
@@ -89,7 +94,7 @@ public class EA {
       // recombine twice
       for (Iterator<Pair<Individual, Individual>> it = parents.iterator(); it.hasNext();) {
         Pair<Individual, Individual> p = it.next();
-        Pair<Individual, Individual> offspringPair = recombine.recombine(p.first, p.second);
+        Pair<Individual, Individual> offspringPair = recombine.recombineDouble(p.first, p.second);
         offspring.add(offspringPair.first);
         offspring.add(offspringPair.second);
       }
