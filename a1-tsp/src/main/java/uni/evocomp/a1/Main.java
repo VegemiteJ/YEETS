@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
-import uni.evocomp.a1.evaluate.Evaluate;
 import uni.evocomp.a1.logging.BenchmarkStatsTracker;
 import uni.evocomp.a1.mutate.Mutate;
 import uni.evocomp.a1.recombine.Recombine;
@@ -44,7 +43,6 @@ public class Main {
     // one of each using Evaluate, SelectParents, Recombine, Mutate and SelectSurvivors
     Properties prop = new Properties();
 
-    Evaluate evaluate = null;
     SelectParents selectParents = null;
     Recombine recombine = null;
     Mutate mutate = null;
@@ -57,8 +55,6 @@ public class Main {
     try (InputStream input = new FileInputStream(propertiesFileName)) {
       prop.load(input);
 
-      evaluate = (Evaluate) Util.classFromName(
-          prop.getProperty("Evaluate", Global.a1Prefix + ".evaluate.EvaluateEuclid"));
       selectParents = (SelectParents) Util.classFromName(
           prop.getProperty("SelectParents", Global.a1Prefix + ".selectparents.UniformRandom"));
       recombine = (Recombine) Util.classFromName(
@@ -105,7 +101,7 @@ public class Main {
     long startTime = System.nanoTime();
     for (int i = 0; i < repeats; i++) {
       bst.startSingleRun();
-      Individual result = ea.solve(problem, evaluate, selectParents, recombine, mutate,
+      Individual result = ea.solve(problem, selectParents, recombine, mutate,
           selectSurvivors, populationSize, totalGenerations);
       bst.endSingleRun(ea.getGeneration());
     }

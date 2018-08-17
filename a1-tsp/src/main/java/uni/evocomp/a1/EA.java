@@ -7,7 +7,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
-import uni.evocomp.a1.evaluate.Evaluate;
 import uni.evocomp.a1.logging.BenchmarkStatsTracker;
 import uni.evocomp.a1.mutate.Mutate;
 import uni.evocomp.a1.recombine.Recombine;
@@ -52,7 +51,6 @@ public class EA {
    * </pre>
    *
    * @param problem an object representing the problem
-   * @param evaluate a class to define how to evaluate the fitness of an <code>Individual</code>
    * @param selectParents a class to define how to pair parents together
    * @param recombine a class to define how to recombine parents to produce offspring
    * @param mutate a class to define how to mutate the resulting offspring
@@ -60,8 +58,8 @@ public class EA {
    * @param populationSize the size of the population
    * @return the <code>Individual</code> with the best fitness
    */
-  public Individual solve(TSPProblem problem, Evaluate evaluate, SelectParents selectParents,
-      Recombine recombine, Mutate mutate, SelectSurvivors selectSurvivors, int populationSize, int totalGenerations) {
+  public Individual solve(TSPProblem problem, SelectParents selectParents, Recombine recombine,
+      Mutate mutate, SelectSurvivors selectSurvivors, int populationSize, int totalGenerations) {
 
     // Initialise population with random candidate solutions and
     // Evaluate each candidate
