@@ -1,8 +1,10 @@
 package uni.evocomp.a1.selectsurvivors;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import uni.evocomp.a1.Individual;
 import uni.evocomp.a1.Population;
 import uni.evocomp.a1.TSPProblem;
@@ -11,14 +13,16 @@ public class FitnessProportional implements SelectSurvivors {
   private Double maxCost;
   private List<Double> buckets;
   private List<Individual> individuals;
+  private double survivalProportion;
 
   public FitnessProportional() {
-    ;
+    survivalProportion = 0.5;
   }
 
   @Override
   public Population selectSurvivors(Population population, TSPProblem problem, Random rand) {
-    // TODO Auto-generated method stub
+    Set<Individual> survivorSet = new HashSet<>();
+
     for (Individual individual : population.getPopulation()) {
       double c = individual.getCost(problem);
       if (c > maxCost) {
@@ -27,23 +31,30 @@ public class FitnessProportional implements SelectSurvivors {
     }
     buckets = new ArrayList<>();
     individuals = new ArrayList<>(population.getPopulation());
-    double totalCost = individuals.stream().mapToDouble(i -> i.getCost(problem)).sum();
+    double totalFit = individuals.stream().mapToDouble(i -> calcFitness(i, problem)).sum();
     double cumProb = 0.0;
-    
+
     // the range for individuals[i] is
     // buckets[i-1] and buckets[i]
-    
+
     // i.e. if buckets[i-1] < x < buckets[i], then individuals[i]
     // is chosen to survive
     for (Individual individual : individuals) {
-      cumProb += (double)((double)individual.getCost(problem) / (double)totalCost); // im paranoid ok
+      cumProb += (double) ((double) calcFitness(individual, problem) / (double) totalFit);
       buckets.add(cumProb);
     }
-    
-    // run the roulette
-    Double r = rand.nextDouble();
 
-    return null;
+    // run the roulette until survivorSet is full
+    while (survivorSet.size() < (int) (population.getSize() * survivalProportion)) {
+      Double r = rand.nextDouble();
+      int i = 0;
+      for (i = 0; i < buckets.size(); i++) {
+        if (r < buckets.get(i))
+          break;
+      }
+      survivorSet.add(individuals.get(i));
+    }
+    return new Population(survivorSet);
   }
 
   /**
