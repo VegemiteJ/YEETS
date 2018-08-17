@@ -71,7 +71,6 @@ public class OrderCrossover implements Recombine {
       next = (next + 1) % n;
     }
 
-    child.assertIsValidTour();
     return child;
   }
 
