@@ -7,6 +7,7 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class PMXCrossover implements Recombine {
+
   @Override
   public Pair<Individual, Individual> recombineDouble(Individual firstParent,
       Individual secondParent) {
@@ -29,16 +30,16 @@ public class PMXCrossover implements Recombine {
     int n = firstParent.getGenotype().size();
     List<Integer> child_g = new ArrayList<>(Collections.nCopies(n, -1));
 
-    HashMap<Integer, Boolean> valueCopied = new HashMap<>();
+    Map<Integer, Boolean> valueCopied = new HashMap<>();
 
     // Copy segment from 1 into child
-    for (int i = slice.first; i != slice.second % 9; i = (i + 1) % n) {
+    for (int i = slice.first; i != slice.second % n; i = (i + 1) % n) {
       child_g.set(i, firstParent.getGenotype().get(i));
       valueCopied.put(firstParent.getGenotype().get(i), true);
     }
 
     // Look in segment in parent 2, bounce with position in parent 1, to find location
-    for (int i = slice.first; i != slice.second % 9; i = (i + 1) % n) {
+    for (int i = slice.first; i != slice.second % n; i = (i + 1) % n) {
       int i_city = secondParent.getGenotype().get(i);
       if (valueCopied.containsKey(i_city)) {
         // Value has already been copied
@@ -58,7 +59,7 @@ public class PMXCrossover implements Recombine {
       valueCopied.put(i_city, true);
     }
 
-    // fill in balnks
+    // fill in blanks
     for (int i = 0; i < n; i++) {
       if (child_g.get(i) == -1) {
         child_g.set(i, secondParent.getGenotype().get(i));
@@ -70,6 +71,9 @@ public class PMXCrossover implements Recombine {
 
 
   public IntegerPair getRandomSlice(Integer n) {
+    if (n == 0) {
+      return new IntegerPair(0, 0);
+    }
     int r1 = ThreadLocalRandom.current().nextInt(0, n);
     int r2 = ThreadLocalRandom.current().nextInt(0, n);
     while (r1 == r2) {
