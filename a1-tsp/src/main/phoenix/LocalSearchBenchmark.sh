@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH -p batch                                                # partition (this is the queue your job will be added to)
+#SBATCH -p test                                                # partition (this is the queue your job will be added to)
 #SBATCH -n 4                                                    # number of cores (sequential job uses 1 core)
-#SBATCH --time=20:00:00                                         # time allocation, which has the format (D-HH:MM:SS), here set to 1 hour
+#SBATCH --time=00:05:00                                         # time allocation, which has the format (D-HH:MM:SS), here set to 1 hour
 #SBATCH --mem=64GB                                               # specify memory required per node (here set to 4 GB)
 #SBATCH --gres=gpu:1
 
