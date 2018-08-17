@@ -110,7 +110,7 @@ public class EdgeRecombineTest {
   public void testRecombineWorks() {
     Individual a = new Individual(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9));
     Individual b = new Individual(Arrays.asList(9, 3, 7, 8, 2, 6, 5, 1, 4));
-    Individual child = edgeRecombine.recombineSingle(a, b);
+    Individual child = edgeRecombine.recombine(a, b);
   }
 
   @Test
@@ -167,7 +167,7 @@ public class EdgeRecombineTest {
            0,  // 5       | 3, 5    | Common edge   | [1, 2, 4, 5]
            0   // 3       | 3       | Last element  | [1, 2, 4, 5, 3]
     ));
-    Individual child = edgeRecombine.recombineSingle(a, b, random);
+    Individual child = edgeRecombine.recombine(a, b, random);
     assertEquals(child.getGenotype(), Arrays.asList(1, 2, 4, 5, 3));
   }
 }

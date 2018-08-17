@@ -11,20 +11,19 @@ import uni.evocomp.util.IntegerPair;
 import uni.evocomp.util.Pair;
 
 public class EdgeRecombine implements Recombine {
-  public EdgeRecombine() {
+  public EdgeRecombine() { }
 
+  @Override
+  public Pair<Individual, Individual> recombineDouble(Individual firstParent, Individual secondParent) {
+    return new Pair<>(recombine(firstParent, secondParent), recombine(firstParent, secondParent));
   }
 
   @Override
-  public Pair<Individual, Individual> recombine(Individual firstParent, Individual secondParent) {
-    return new Pair<>(recombineSingle(firstParent, secondParent), null);
+  public Individual recombine(Individual firstParent, Individual secondParent) {
+    return recombine(firstParent, secondParent, new Random());
   }
 
-  public Individual recombineSingle(Individual firstParent, Individual secondParent) {
-    return recombineSingle(firstParent, secondParent, new Random());
-  }
-
-  public Individual recombineSingle(
+  public Individual recombine(
       Individual firstParent,
       Individual secondParent,
       Random random) {
