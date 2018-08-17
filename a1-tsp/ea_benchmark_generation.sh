@@ -36,9 +36,6 @@
 # done
 
 target=ea_benchmarks
-# mkdir "$target" || exit 1
-# pushd "$target"
-
 mvn jar:jar
 
 package_path=uni.evocomp.ai
@@ -54,7 +51,6 @@ for recombine in {{Order,Cycle}Crossover,EdgeRecombination,PMX} ;do
 		for pop_size in {2,5,{1,2}0}0 ;do
 
 		target_dir="$target/$recombine-Invert-$sselection-$pop_size"
-		echo "target_dir: $target_dir"
 
 		# Make directory
 		# echo "$recombine-Invert-$sselection"
@@ -82,8 +78,6 @@ done
 
 
 # symlink the .jar
-if [ ! -L "$target_dir/a1-tsp.jar" ] ;then
+if [ ! -L "$target/a1-tsp.jar" ] ;then
 	ln -s "target/a1-tsp.jar" "$target/a1-tsp.jar"
-fi	
-
-# popd
+fi
