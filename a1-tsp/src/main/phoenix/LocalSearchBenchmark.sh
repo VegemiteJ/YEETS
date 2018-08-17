@@ -3,6 +3,7 @@
 #SBATCH -n 4                                                    # number of cores (sequential job uses 1 core)
 #SBATCH --time=12:00:00                                         # time allocation, which has the format (D-HH:MM:SS), here set to 1 hour
 #SBATCH --mem=64GB                                               # specify memory required per node (here set to 4 GB)
+#SBATCH --gres=gpu:1
 
 # Notification configuration
 #SBATCH --mail-type=ALL
