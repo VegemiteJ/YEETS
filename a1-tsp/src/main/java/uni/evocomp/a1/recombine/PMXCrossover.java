@@ -3,70 +3,65 @@ package uni.evocomp.a1.recombine;
 import uni.evocomp.a1.Individual;
 import uni.evocomp.util.IntegerPair;
 import uni.evocomp.util.Pair;
-
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class PMXCrossover implements Recombine {
-    @Override
-    public Pair<Individual, Individual> recombine(Individual firstParent, Individual secondParent) {
-        IntegerPair slice = getRandomSlice(firstParent.getGenotype().size());
-        return new Pair<>(
-                recombine(firstParent, secondParent, slice),
-                recombine(secondParent, firstParent, slice)
-        );
+  @Override
+  public Pair<Individual, Individual> recombineDouble(Individual firstParent,
+      Individual secondParent) {
+    IntegerPair slice = getRandomSlice(firstParent.getGenotype().size());
+    return new Pair<>(recombine(firstParent, secondParent, slice),
+        recombine(secondParent, firstParent, slice));
+  }
+
+  Individual recombine(Individual firstParent, Individual secondParent, IntegerPair slice) {
+    int n = firstParent.getGenotype().size();
+    List<Integer> child_g = new ArrayList<>(Collections.nCopies(n, -1));
+
+    HashMap<Integer, Boolean> valueCopied = new HashMap<>();
+
+    // Copy segment from 1 into child
+    for (int i = slice.first; i != slice.second % 9; i = (i + 1) % n) {
+      child_g.set(i, firstParent.getGenotype().get(i));
+      valueCopied.put(firstParent.getGenotype().get(i), true);
     }
 
-    Individual recombine(Individual firstParent, Individual secondParent, IntegerPair slice) {
-        int n = firstParent.getGenotype().size();
-        List<Integer> child_g = new ArrayList<>(Collections.nCopies(n, -1));
-
-        HashMap<Integer, Boolean> valueCopied = new HashMap<>();
-
-        //Copy segment from 1 into child
-        for (int i = slice.first; i != slice.second%9; i = (i + 1) % n) {
-            child_g.set(i, firstParent.getGenotype().get(i));
-            valueCopied.put(firstParent.getGenotype().get(i), true);
-        }
-
-        //Look in segment in parent 2, bounce with position in parent 1, to find location
-        for (int i = slice.first; i != slice.second%9; i = (i + 1) % n) {
-            int i_city = secondParent.getGenotype().get(i);
-            if (valueCopied.containsKey(i_city)) {
-                //Value has already been copied
-                continue;
-            }
-            //
-            int j_city = firstParent.getGenotype().get(i);
-            //Find location of j in parent 2
-            int j = secondParent.getGenotype().indexOf(j_city); //TODO: SLOW
-            while (child_g.get(j) != -1) {
-                //Bounce
-                j_city = firstParent.getGenotype().get(j);
-                j = secondParent.getGenotype().indexOf(j_city);
-            }
-            //Copy element in i to found idx
-            child_g.set(j, i_city);
-            valueCopied.put(i_city, true);
-        }
-
-        //fill in balnks
-        for (int i = 0; i < n; i++) {
-            if(child_g.get(i) == -1) {
-                child_g.set(i, secondParent.getGenotype().get(i));
-            }
-        }
-        Individual child = new Individual(child_g);
-        return child;
+    // Look in segment in parent 2, bounce with position in parent 1, to find location
+    for (int i = slice.first; i != slice.second % 9; i = (i + 1) % n) {
+      int i_city = secondParent.getGenotype().get(i);
+      if (valueCopied.containsKey(i_city)) {
+        // Value has already been copied
+        continue;
+      }
+      //
+      int j_city = firstParent.getGenotype().get(i);
+      // Find location of j in parent 2
+      int j = secondParent.getGenotype().indexOf(j_city); // TODO: SLOW
+      while (child_g.get(j) != -1) {
+        // Bounce
+        j_city = firstParent.getGenotype().get(j);
+        j = secondParent.getGenotype().indexOf(j_city);
+      }
+      // Copy element in i to found idx
+      child_g.set(j, i_city);
+      valueCopied.put(i_city, true);
     }
 
-
-    public IntegerPair getRandomSlice(Integer n) {
-//    Random r = new Random();
-//    int start = r.nextInt(n);
-//    int end = r.nextInt(n - 2);
-//    if (end >= start) {
-//        end += 2;
-//    }
-        return new IntegerPair(0, 1);
+    // fill in balnks
+    for (int i = 0; i < n; i++) {
+      if (child_g.get(i) == -1) {
+        child_g.set(i, secondParent.getGenotype().get(i));
+      }
     }
+    Individual child = new Individual(child_g);
+    return child;
+  }
+
+
+  public IntegerPair getRandomSlice(Integer n) {
+    int r1 = ThreadLocalRandom.current().nextInt();
+    int r2 = ThreadLocalRandom.current().nextInt();
+    return new IntegerPair(0, 1);
+  }
 }
