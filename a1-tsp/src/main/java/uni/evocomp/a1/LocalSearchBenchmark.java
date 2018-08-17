@@ -1,5 +1,6 @@
 package uni.evocomp.a1;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,22 +24,27 @@ public class LocalSearchBenchmark {
     // new LocalSearch(problem, mutator)
 
     // and there is a search that returns it's best guess
-
+    System.out.println("Version 2");
     Evaluate evaluator = new EvaluateEuclid();
 
     TSPIO io = new TSPIO();
     ArrayList<Pair<TSPProblem, Individual>> benchmarks = new ArrayList<>();
     for (String testString : Global.testNames) {
       TSPProblem problem = null;
-      try (FileReader fr1 = new FileReader(testString + Global.testSuffix);
-          FileReader fr2 = new FileReader(testString + Global.tourSuffix)) {
+      testString = "tests/" + testString;
+      try {
+        FileReader fr1 = new FileReader(testString + Global.testSuffix);
         problem = io.read(fr1);
+        FileReader fr2 = new FileReader(testString + Global.tourSuffix);
         Individual solution = io.readSolution(fr2);
         solution.setCost(evaluator.evaluate(problem, solution));
         benchmarks.add(new Pair<>(problem, solution));
-      } catch (IOException e) {
+      } catch (FileNotFoundException e) {
         e.printStackTrace();
         benchmarks.add(new Pair<>(problem, null));
+      } catch (IOException e) {
+        e.printStackTrace();
+        System.exit(10);
       }
     }
     for (Pair<TSPProblem, Individual> benchmark : benchmarks) {
