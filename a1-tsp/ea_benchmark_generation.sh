@@ -50,36 +50,39 @@ for recombine in {{Order,Cycle}Crossover,EdgeRecombination,PMX} ;do
 
 		# echo "$alg_num"
 
-		target_dir="$target/$recombine-Invert-$sselection"
+		# file for each population size
+		for pop_size in {2,5,{1,2}0}0 ;do
+
+		target_dir="$target/$recombine-Invert-$sselection-$pop_size"
+		echo "target_dir: $target_dir"
 
 		# Make directory
 		# echo "$recombine-Invert-$sselection"
 		mkdir -p "$target_dir"
 
-		# file for each population size
-		for pop_size in {2,5,{1,2}0}0 ;do
 			# create config.properties inside
-			echo -e "Algorithm=EA$alg_num\nSelectParents=$package_path.selectparents.UniformRandom\nRecombine=$package_path.recombine.$recombine\nMutate=$package_path.mutate.Invert\nSelectSurvivors=$package_path.selectsurvivors.$sselection\nPopulationSize=$pop_size\n" > "$target_dir/alg_$alg_num_$pop_size.properties"
+			echo -e "Algorithm=EA$alg_num\nSelectParents=$package_path.selectparents.UniformRandom\nRecombine=$package_path.recombine.$recombine\nMutate=$package_path.mutate.Invert\nSelectSurvivors=$package_path.selectsurvivors.$sselection\nPopulationSize=$pop_size\n" > "$target_dir/config.properties"
+
+			# symlink to the tests
+			for item in tests/* ;do
+				if [ -f "$item" ] ;then
+					if [ ! -d "$target_dir/tests" ] ;then
+						mkdir -p "$target_dir/tests"
+					fi
+					if [ ! -L "$target_dir/$item" ] ;then
+						ln -s "$item" "$target_dir/$item"
+					fi
+				fi
+			done
+
 		done
 		alg_num=$((alg_num+1))
-
-		# symlink to the tests
-		for item in tests/* ;do
-			if [ -f "$item" ] ;then
-				if [ ! -d "$target_dir/tests" ] ;then
-					mkdir -p "$target_dir/tests"
-				fi
-				if [ ! -L "$target_dir/$item" ] ;then
-					ln -s "$item" "$target_dir/$item"
-				fi
-			fi
-		done
 	done
 done
 
 
 # symlink the .jar
-if [ ! -L "$target_dir/a.jar" ] ;then
+if [ ! -L "$target_dir/a1-tsp.jar" ] ;then
 	ln -s "target/a1-tsp.jar" "$target/a1-tsp.jar"
 fi	
 
