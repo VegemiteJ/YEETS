@@ -16,6 +16,10 @@ import uni.evocomp.util.Pair;
  *
  */
 public class CycleCrossover implements Recombine {
+  
+  public CycleCrossover() {
+    ;
+  }
 
   /**
    * @param terminatingValue

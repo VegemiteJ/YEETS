@@ -18,7 +18,7 @@ import uni.evocomp.util.DoublePair;
 
 public class PlotBestTour extends Application {
 
-  public static String loadName = "kroD100_2-Opt";
+  public static String loadName = "eil51_config.properties";
   public static boolean plotProvidedBestTour = false;
 
   public static void main(String[] args) {
