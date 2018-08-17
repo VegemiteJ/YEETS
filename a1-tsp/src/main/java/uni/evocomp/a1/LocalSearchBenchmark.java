@@ -89,6 +89,7 @@ public class LocalSearchBenchmark {
         System.out.println("Save file: " + bst.getSerialFileName());
         try {
           BenchmarkStatsTracker.serialise(bst);
+          bst.writeToFile();
         } catch (IOException e) {
           e.printStackTrace();
         }
