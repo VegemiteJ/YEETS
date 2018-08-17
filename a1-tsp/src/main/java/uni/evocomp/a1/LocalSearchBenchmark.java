@@ -73,6 +73,7 @@ public class LocalSearchBenchmark {
           bst.endSingleRun(ls.getTotalIterations());
         }
         System.out.println("Avg cost: " + bst.getAvgCost());
+        System.out.println("StdDev cost: " + bst.getStandardDeviation());
         System.out.println("Min cost: " + bst.getMinCost());
         System.out.println("Max cost: " + bst.getMaxCost());
         System.out.println("Avg search Elapsed Time (s): " + (double)bst.getAvgTimeTaken()/1000000000.0);

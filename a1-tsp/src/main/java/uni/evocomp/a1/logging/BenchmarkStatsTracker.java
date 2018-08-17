@@ -60,8 +60,8 @@ public class BenchmarkStatsTracker implements Serializable {
   // Stores Best Individual Tour + number of iterations since last improvement
   //   Number of iterations is fuzzy for evoalg
   private List<Pair<Individual, Long>> bestToursFromMinRun;
-  private List<Pair<Individual, Long>> bestToursFromMaxRun;
-  private List<Pair<Individual, Long>> currentRunTours;
+  transient private List<Pair<Individual, Long>> bestToursFromMaxRun;
+  transient private List<Pair<Individual, Long>> currentRunTours;
 
   // Time Elapsed, Number of Iterations
   private List<Pair<Long, Long>> timePerRun;
