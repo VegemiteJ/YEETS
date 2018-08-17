@@ -13,7 +13,6 @@ import uni.evocomp.a1.mutate.Mutate;
 import uni.evocomp.a1.recombine.Recombine;
 import uni.evocomp.a1.selectparents.SelectParents;
 import uni.evocomp.a1.selectsurvivors.SelectSurvivors;
-import uni.evocomp.util.IntegerPair;
 import uni.evocomp.util.Pair;
 
 /**
@@ -27,37 +26,38 @@ import uni.evocomp.util.Pair;
 public class EA {
   BenchmarkStatsTracker bst;
   long generation;
-  
+
 
   EA(BenchmarkStatsTracker bst) {
     this.bst = bst;
   }
+
   /**
-  *
-  * A typical evolutionary algorithm. Pass in different implementations of each argument to result
-  * in a new algorithm. Return the best <code>Individual</code> after termination
-  *
-  * <pre>
-  * INITIALISE population with random candidate solutions;
-  * EVALUATE each candidate;
-  * REPEAT UNTIL (TERMINATION CONDITION is satisfied) DO
-  *   1. SELECT parents;
-  *   2. RECOMBINE pairs of parents;
-  *   3. MUTATE resulting offspring;
-  *   4. EVALUATE new candidates;
-  *   5. SELECT individuals for next generation;.
-  * OD
-  * </pre>
-  *
-  * @param problem an object representing the problem
-  * @param evaluate a class to define how to evaluate the fitness of an <code>Individual</code>
-  * @param selectParents a class to define how to pair parents together
-  * @param recombine a class to define how to recombine parents to produce offspring
-  * @param mutate a class to define how to mutate the resulting offspring
-  * @param selectSurvivors a class to define how to select <code>Individuals</code> for next round
-  * @param populationSize the size of the population
-  * @return the <code>Individual</code> with the best fitness
-  */
+   *
+   * A typical evolutionary algorithm. Pass in different implementations of each argument to result
+   * in a new algorithm. Return the best <code>Individual</code> after termination
+   *
+   * <pre>
+   * INITIALISE population with random candidate solutions;
+   * EVALUATE each candidate;
+   * REPEAT UNTIL (TERMINATION CONDITION is satisfied) DO
+   *   1. SELECT parents;
+   *   2. RECOMBINE pairs of parents;
+   *   3. MUTATE resulting offspring;
+   *   4. EVALUATE new candidates;
+   *   5. SELECT individuals for next generation;.
+   * OD
+   * </pre>
+   *
+   * @param problem an object representing the problem
+   * @param evaluate a class to define how to evaluate the fitness of an <code>Individual</code>
+   * @param selectParents a class to define how to pair parents together
+   * @param recombine a class to define how to recombine parents to produce offspring
+   * @param mutate a class to define how to mutate the resulting offspring
+   * @param selectSurvivors a class to define how to select <code>Individuals</code> for next round
+   * @param populationSize the size of the population
+   * @return the <code>Individual</code> with the best fitness
+   */
   public Individual solve(TSPProblem problem, Evaluate evaluate, SelectParents selectParents,
       Recombine recombine, Mutate mutate, SelectSurvivors selectSurvivors, int populationSize) {
 
@@ -96,15 +96,9 @@ public class EA {
 
       // 3. mutate resulting offspring and
       // 4. evaluate new candidates, then add these to the population
-      offspring.stream().forEach(individual -> {
-        // Pick a random range to mutate
-//        IntegerPair ip = new IntegerPair(ThreadLocalRandom.current().nextInt(0, problem.getSize()),
-//            ThreadLocalRandom.current().nextInt(0, problem.getSize()));
-        // System.out.print("Mutation from " + individual.getCost() + " -> ");
+      offspring.parallelStream().forEach(individual -> {
         mutate.mutateWithProbability(0.2, problem, individual,  ThreadLocalRandom.current());
-        // System.out.print(individual.getCost() + " -> ");
         individual.getCost(problem);
-        // System.out.println(individual.getCost());
       });
       for (Individual i : offspring) {
         population.add(i);
@@ -124,7 +118,7 @@ public class EA {
     }
     return bestIndividual;
   }
-  
+
   public long getGeneration() {
     return generation;
   }

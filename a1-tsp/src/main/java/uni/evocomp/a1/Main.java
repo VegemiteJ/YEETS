@@ -75,18 +75,20 @@ public class Main {
       problem = io.read(br1);
       optimalSolution = io.readSolution(br2);
       System.out.println("Known Best Solution: " + optimalSolution.getCost(problem));
-//      System.out.println("Known Best Solution: " + optimalSolution.getGenotype());
-//      problem.getWeights().print();
+      // System.out.println("Known Best Solution: " + optimalSolution.getGenotype());
+      // problem.getWeights().print();
     } catch (IOException e) {
       e.printStackTrace();
       optimalSolution = null;
     }
 
-    // TODO : record metrics
-    BenchmarkStatsTracker bst = new BenchmarkStatsTracker(problem.getName() + "_" + propertiesFileName, problem);
+    // Record metrics
+    BenchmarkStatsTracker bst =
+        new BenchmarkStatsTracker(problem.getName() + "_" + propertiesFileName, problem);
 
     EA ea = new EA(bst);
-    System.out.println("Running benchmark: " + problem.getName() + "(" + problem.getComment() + ")");
+    System.out
+        .println("Running benchmark: " + problem.getName() + "(" + problem.getComment() + ")");
 
     bst.setSolutionTour(optimalSolution);
     long startTime = System.nanoTime();
@@ -97,13 +99,15 @@ public class Main {
       bst.endSingleRun(ea.getGeneration());
     }
 
-    System.out.println("Avg: "+bst.getAvgCost());
-    System.out.println("Min: "+bst.getMinCost());
-    System.out.println("Max: "+bst.getMaxCost());
-    System.out.println("Avg search Elapsed Time (s): "+(double)bst.getAvgTimeTaken()/1000000000.0);
-    System.out.println("Benchmark Total Elapsed Time (s): "+(double)(System.nanoTime()-startTime)/1000000000.0);
-    System.out.println("Save file: "+bst.getSerialFileName());
-  
+    System.out.println("Avg: " + bst.getAvgCost());
+    System.out.println("Min: " + bst.getMinCost());
+    System.out.println("Max: " + bst.getMaxCost());
+    System.out
+        .println("Avg search Elapsed Time (s): " + (double) bst.getAvgTimeTaken() / 1000000000.0);
+    System.out.println("Benchmark Total Elapsed Time (s): "
+        + (double) (System.nanoTime() - startTime) / 1000000000.0);
+    System.out.println("Save file: " + bst.getSerialFileName());
+
     try {
       BenchmarkStatsTracker.serialise(bst);
     } catch (IOException e) {
@@ -112,7 +116,7 @@ public class Main {
   }
 
   public static void main(String[] args) {
-    String testfile = (args.length > 0 ? args[0] : "tests/pcb442");
+    String testfile = (args.length > 0 ? args[0] : "tests/eil101");
     System.out.println("Test file is " + testfile);
 
     String configName = (args.length < 1 ? "config.properties" : args[0]);
