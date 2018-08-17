@@ -3,6 +3,7 @@ package uni.evocomp.a1.recombine;
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertArrayEquals;
 
+import com.sun.javafx.geom.Edge;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -11,6 +12,7 @@ import org.junit.Test;
 import uni.evocomp.a1.Individual;
 import uni.evocomp.util.IntegerPair;
 import uni.evocomp.util.Pair;
+import uni.evocomp.util.RandomStub;
 
 public class EdgeRecombineTest {
   private EdgeRecombine edgeRecombine;
@@ -105,9 +107,67 @@ public class EdgeRecombineTest {
   }
 
   @Test
-  public void testRecombine() {
+  public void testRecombineWorks() {
     Individual a = new Individual(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9));
     Individual b = new Individual(Arrays.asList(9, 3, 7, 8, 2, 6, 5, 1, 4));
     Individual child = edgeRecombine.recombineSingle(a, b);
+  }
+
+  @Test
+  public void testRecombineFull() {
+    Individual a = new Individual(Arrays.asList(1, 2, 3, 4, 5));
+    Individual b = new Individual(Arrays.asList(2, 1, 3, 5, 4));
+
+    // test table.
+    EdgeRecombine.Table table = edgeRecombine.constructTable(a, b);
+    assertEquals(
+        table.entry(1).edges,
+        new ArrayList<>(Arrays.asList(
+            new Pair<>(2, true),
+            new Pair<>(3, false),
+            new Pair<>(5, false)
+        )));
+    assertEquals(
+        table.entry(2).edges,
+        new ArrayList<>(Arrays.asList(
+            new Pair<>(1, true),
+            new Pair<>(3, false),
+            new Pair<>(4, false)
+        )));
+    assertEquals(
+        table.entry(3).edges,
+        new ArrayList<>(Arrays.asList(
+            new Pair<>(1, false),
+            new Pair<>(2, false),
+            new Pair<>(4, false),
+            new Pair<>(5, false)
+        )));
+    assertEquals(
+        table.entry(4).edges,
+        new ArrayList<>(Arrays.asList(
+            new Pair<>(2, false),
+            new Pair<>(3, false),
+            new Pair<>(5, true)
+        )));
+    assertEquals(
+        table.entry(5).edges,
+        new ArrayList<>(Arrays.asList(
+            new Pair<>(1, false),
+            new Pair<>(3, false),
+            new Pair<>(4, true)
+        )));
+
+    // test crossovered child object.
+    RandomStub random = new RandomStub();
+    random.setInt(Arrays.asList(
+               // Choice  | Choices | Reason        | Partial result
+           1,  // 1       | All     | Random        | [1]
+           0,  // 2       | 2+,3,5  | Common edge   | [1, 2]
+           1,  // 4       | 3, 4    | Random choice | [1, 2, 4]
+           0,  // 5       | 3, 5    | Common edge   | [1, 2, 4, 5]
+           0   // 3       | 3       | Last element  | [1, 2, 4, 5, 3]
+    ));
+    Individual child = edgeRecombine.recombineSingle(a, b, random);
+    assertEquals(child.getGenotype(), Arrays.asList(1, 2, 4, 5, 3));
   }
 }
