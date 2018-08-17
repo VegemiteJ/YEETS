@@ -72,7 +72,9 @@ public class EA {
 
     // TODO : define better terminal condition
     generation = 1;
-    while (generation < totalGenerations) {
+    // Add initial best
+    bst.newBestIndividualForSingleRun(bestIndividual, generation);
+    while (generation <= totalGenerations) {
       if (generation % printItr == 0) {
         System.out.println("At iteration " + generation + " of " + totalGenerations);
       }
@@ -114,13 +116,14 @@ public class EA {
           selectSurvivors.selectSurvivors(population, problem, ThreadLocalRandom.current());
       // Update best individual so far
       Individual popBest = Collections.min(population.getPopulation());
-      // System.out.println("Best cost : " + popBest.getCost(problem));
       if (popBest.compareTo(bestIndividual) < 0) {
         bestIndividual = popBest;
         bst.newBestIndividualForSingleRun(bestIndividual, generation);
       }
+      bst.bestIndividualForThisGeneration(bestIndividual, (int)generation);
       generation++;
     }
+    bst.writeEAGensToFile();
     return bestIndividual;
   }
 
