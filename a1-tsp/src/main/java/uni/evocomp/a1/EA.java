@@ -70,7 +70,7 @@ public class EA {
 
     // TODO : define better terminal condition
     generation = 1;
-    while (generation < 1000) {
+    while (generation < 10000) {
       // 1. select parents from the population
       List<Pair<Individual, Individual>> parents = selectParents.selectParents(population);
 
@@ -96,12 +96,12 @@ public class EA {
 
       // 3. mutate resulting offspring and
       // 4. evaluate new candidates, then add these to the population
-      offspring.parallelStream().forEach(individual -> {
+      offspring.stream().forEach(individual -> {
         // Pick a random range to mutate
-        IntegerPair ip = new IntegerPair(ThreadLocalRandom.current().nextInt(0, problem.getSize()),
-            ThreadLocalRandom.current().nextInt(0, problem.getSize()));
+//        IntegerPair ip = new IntegerPair(ThreadLocalRandom.current().nextInt(0, problem.getSize()),
+//            ThreadLocalRandom.current().nextInt(0, problem.getSize()));
         // System.out.print("Mutation from " + individual.getCost() + " -> ");
-        mutate.run(problem, individual, ip);
+        mutate.mutateWithProbability(0.2, problem, individual,  ThreadLocalRandom.current());
         // System.out.print(individual.getCost() + " -> ");
         individual.getCost(problem);
         // System.out.println(individual.getCost());
