@@ -1,6 +1,8 @@
 package uni.evocomp.a1.recombine;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.fail;
+
 import java.util.Random;
 import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
@@ -10,6 +12,7 @@ import uni.evocomp.util.IntegerPair;
 import uni.evocomp.a1.Individual;
 
 public class OrderCrossoverTest {
+
   private OrderCrossover crossover;
 
   @Before
@@ -35,11 +38,20 @@ public class OrderCrossoverTest {
 
   @Test
   public void testFuzzed() {
-    Random r = new Random();
-    for (int i = 3; i < 16; i += 1) {
-      Individual a = new Individual(i);
-      Individual b = new Individual(i);
-      crossover.recombine(a, b);
+    for (int n = 3; n < 300; n += 1) {
+      IntegerPair p = crossover.getRandomSlice(n);
+      Individual a = new Individual(n);
+      Individual b = new Individual(n);
+      Individual child = crossover.recombine(a, b, p);
+      try {
+        child.assertIsValidTour();
+      } catch (Exception e) {
+        System.out.println("n: " + n);
+        System.out.println("Pair: " + p);
+        System.out.println("a: " + a.getGenotype().toString());
+        System.out.println("b: " + b.getGenotype().toString());
+        throw e;
+      }
     }
   }
 
@@ -65,17 +77,5 @@ public class OrderCrossoverTest {
     Individual b = new Individual(Arrays.asList(1, 2, 4, 3));
     Individual child = crossover.recombine(a, b, new IntegerPair(3, 1));
     assertEquals(Arrays.asList(1, 2, 3, 4), child.getGenotype());
-  }
-
-  @Test
-  public void fuzzer() {
-    for (int i = 0; i < 100; i++) {
-      System.out.println(i);
-      int n = ThreadLocalRandom.current().nextInt(2, 100);
-      Individual a = new Individual(n);
-      Individual b = new Individual(n);
-      Individual child = crossover.recombine(a, b);
-      child.assertIsValidTour();
-    }
   }
 }
