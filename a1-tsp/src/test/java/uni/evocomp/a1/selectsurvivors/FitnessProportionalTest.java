@@ -71,7 +71,7 @@ public class FitnessProportionalTest {
    * 1.0
    * </pre>
    */
-  
+
   // Basic test
   @Test
   public void test1() {
@@ -79,9 +79,9 @@ public class FitnessProportionalTest {
     rand.setDoubles(Arrays.asList(0.0, 0.32, 0.56));
     Population result = fp.selectSurvivors(population, problem, rand);
     assertEquals(3, result.getSize());
-    assertTrue(result.getPopulation().containsAll(Arrays.asList(i0,i1,i2)));
+    assertTrue(result.getPopulation().containsAll(Arrays.asList(i0, i1, i2)));
   }
-  
+
   // Test for duplicates
   @Test
   public void test2() {
@@ -89,34 +89,34 @@ public class FitnessProportionalTest {
     rand.setDoubles(Arrays.asList(0.0, 0.1, 0.32, 0.56));
     Population result = fp.selectSurvivors(population, problem, rand);
     assertEquals(3, result.getSize());
-    assertTrue(result.getPopulation().containsAll(Arrays.asList(i0,i1,i2)));
+    assertTrue(result.getPopulation().containsAll(Arrays.asList(i0, i1, i2)));
   }
-  
+
   @Test
   public void test3() {
     fp = new FitnessProportional();
     rand.setDoubles(Arrays.asList(1.0, 0.9, 0.1));
     Population result = fp.selectSurvivors(population, problem, rand);
     assertEquals(3, result.getSize());
-    assertTrue(result.getPopulation().containsAll(Arrays.asList(i5,i4,i0)));
+    assertTrue(result.getPopulation().containsAll(Arrays.asList(i5, i4, i0)));
   }
-  
+
   @Test
   public void test4() {
     fp = new FitnessProportional();
     rand.setDoubles(Arrays.asList(0.7, 0.8, 0.99));
     Population result = fp.selectSurvivors(population, problem, rand);
     assertEquals(3, result.getSize());
-    assertTrue(result.getPopulation().containsAll(Arrays.asList(i2,i3,i5)));
+    assertTrue(result.getPopulation().containsAll(Arrays.asList(i2, i3, i5)));
   }
-  
+
   @Test
   public void test5() {
     fp = new FitnessProportional();
     rand.setDoubles(Arrays.asList(0.0, 0.8, 1.1));
     Population result = fp.selectSurvivors(population, problem, rand);
     assertEquals(3, result.getSize());
-    assertTrue(result.getPopulation().containsAll(Arrays.asList(i0,i3,i5)));
+    assertTrue(result.getPopulation().containsAll(Arrays.asList(i0, i3, i5)));
   }
 
 }
