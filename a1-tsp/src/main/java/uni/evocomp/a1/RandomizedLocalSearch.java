@@ -51,7 +51,7 @@ public class RandomizedLocalSearch extends LocalSearch {
         for (Integer anInnerIdx : innerIdx) {
           Individual s = new Individual(currentBestIndividual);
           IntegerPair indexPair = new IntegerPair(anOuterIdx, anInnerIdx);
-          mutator.run(problem, s, new ArrayList<>(Arrays.asList(indexPair)));
+          mutator.run(problem, s, indexPair);
           double cost = s.getCost(problem);
           if (cost < currentBestIndividual.getCost(problem)) {
             currentBestIndividual = s;

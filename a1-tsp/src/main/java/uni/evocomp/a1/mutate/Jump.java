@@ -7,30 +7,15 @@ import uni.evocomp.util.Bounds;
 import uni.evocomp.util.IntegerPair;
 import uni.evocomp.util.Matrix;
 
-public class Jump implements Mutate {
+public class Jump extends MutateImpl {
 
   public Jump() {
     ;
   }
 
-  /**
-   * Perform a list of mutation operations on an Individual
-   *
-   * @param individual Individual on which to perform a mutation operation
-   * @param pairs List of Points whose x and y dictate which indices to use when mutating
-   */
   @Override
-  public void run(TSPProblem problem, Individual individual, List<IntegerPair> pairs) {
-    for (IntegerPair p : pairs) {
-      jumpSingle(problem, individual, p);
-    }
-  }
-
-  private void printArr(List<Integer> arr) {
-    for (Integer i : arr) {
-      System.out.print(String.format("%d ", i));
-    }
-    System.out.println();
+  public void run(TSPProblem problem, Individual individual, IntegerPair pair) {
+    jumpSingle(problem, individual, pair);
   }
 
   private void jumpSingle(TSPProblem problem, Individual i, IntegerPair pair) {
@@ -81,16 +66,16 @@ public class Jump implements Mutate {
    * Find difference in cost due to the Jump mutation, call before the mutation to get cost of edges
    * removed. Call after mutation to find cost of new edges added.
    *
-   * @param problem TSPProblem that individual is making a tour for
-   * @param individual Individual that is undergoing a Jump mutation
+   * @param problem <code>TSPProblem</code> that <code>individual</code> is making a tour for
+   * @param individual <code>Individual</code> that is undergoing a Jump mutation
    * @param i mutation index
    * @param j mutation index
-   * @param beforeJump Set True if being called before mutation operation, False if being called
-   * after mutation
-   * @param forwards Set true if mutation is a forward jump (node at i moves forwards to j), false
-   * if backwards jump (node at i moves backwards to j
-   * @return Cost of edges that were removed (when beforeJump==true) or cost of edges added (when
-   * beforeJump==false)
+   * @param beforeJump Set <code>true</code> if being called before mutation operation,
+   *        <code>false</code> if being called after mutation
+   * @param forwards Set <code>true</code> if mutation is a forward jump (node at i moves forwards
+   *        to j), <code>false</code> if backwards jump (node at i moves backwards to j
+   * @return Cost of edges that were removed (when <code>beforeJump==true</code>) or cost of edges
+   *         added (when <code>beforeJump==false</code>)
    */
   private double calculateDifferentialCost(
       TSPProblem problem, Individual individual, int i, int j, boolean beforeJump,
@@ -98,19 +83,19 @@ public class Jump implements Mutate {
     List<Integer> g = individual.getGenotype();
     Matrix weights = problem.getWeights();
 
-    //no-op
+    // no-op
     if (i == j) {
       return 0;
     }
 
-    // Always make i<j
+    // Always make i < j
     if (i > j) {
       int t = i;
       i = j;
       j = t;
     }
 
-    //Prepare modulo indices
+    // Prepare modulo indices
     int n = problem.getSize();
     int i_plus_1 = (i + 1 + n) % n;
     int i_minus_1 = (i - 1 + n) % n;
@@ -119,24 +104,24 @@ public class Jump implements Mutate {
 
     double differentialCost = 0.0;
 
-    //Stop if jump is just a rotate (no change in cost)
+    // Stop if jump is just a rotate (no change in cost)
     if (j_plus_1 == i) {
       return 0;
     }
 
-    // (i-1,i)
+    // (i - 1, i)
     differentialCost += weights.get(g.get(i_minus_1) - 1, g.get(i) - 1);
 
-    //if (forwards && before) or (backwards && after)
+    // if (forwards && before) or (backwards && after)
     if (forwards == beforeJump) {
-      // (i,i+1)
+      // (i, i + 1)
       differentialCost += weights.get(g.get(i) - 1, g.get(i_plus_1) - 1);
     } else {
-      // (j-1,j)
+      // (j - 1, j)
       differentialCost += weights.get(g.get(j_minus_1) - 1, g.get(j) - 1);
     }
 
-    // (j,j+1)
+    // (j, j + 1)
     differentialCost += weights.get(g.get(j) - 1, g.get(j_plus_1) - 1);
 
     return differentialCost;
