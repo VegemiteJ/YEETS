@@ -77,8 +77,8 @@ public class Main {
           // Unnecessarily calls recombine twice, which already calls recombine twice
           .flatMap(pi ->
           // Pair<Individual, Individual> offspring = recombine.recombine(pi.first, pi.second);
-          Arrays.asList(recombine.recombine(pi.first, pi.second).first,
-              recombine.recombine(pi.first, pi.second).second).stream())
+          Arrays.asList(recombine.recombine(pi.first, pi.second),
+              recombine.recombine(pi.second, pi.first)).stream())
           .collect(Collectors.toList());
 
       // Step 2 but normal for loop. Can't just automagically parallelise but doesn't need to call
