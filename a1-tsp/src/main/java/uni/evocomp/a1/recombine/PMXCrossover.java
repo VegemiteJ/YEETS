@@ -71,7 +71,7 @@ public class PMXCrossover implements Recombine {
 
 
   public IntegerPair getRandomSlice(Integer n) {
-    if (n == 0) {
+    if (n < 1) {
       return new IntegerPair(0, 0);
     }
     int r1 = ThreadLocalRandom.current().nextInt(0, n);
