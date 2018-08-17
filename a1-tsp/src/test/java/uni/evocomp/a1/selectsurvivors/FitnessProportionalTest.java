@@ -29,6 +29,7 @@ public class FitnessProportionalTest {
   @Before
   public void setUp() throws Exception
   {
+    rand = new RandomStub();
     TSPIO io = new TSPIO();
     try (Reader r = new FileReader("tests/custom/test1.tsp")) {
       problem = io.read(r);
@@ -61,8 +62,10 @@ public class FitnessProportionalTest {
 
   @Test
   public void test1() {
-    
-    fail("Not yet implemented");
+    fp = new FitnessProportional();
+    rand.setDoubles(Arrays.asList(0.0, 0.5, 0.9, 0.8));
+    Population result = fp.selectSurvivors(population, problem, rand);
+    assertEquals(3, result.getSize());
   }
 
 }

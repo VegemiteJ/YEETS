@@ -18,6 +18,7 @@ public class FitnessProportional implements SelectSurvivors {
 
   public FitnessProportional() {
     survivalProportion = 0.5;
+    maxCost = 0.0;
   }
 
   @Override
@@ -42,6 +43,7 @@ public class FitnessProportional implements SelectSurvivors {
     // is chosen to survive
     for (Individual individual : individuals) {
       cumProb += (double) ((double) calcFitness(individual, problem) / (double) totalFit);
+      System.out.println(cumProb);
       buckets.add(cumProb);
     }
 
