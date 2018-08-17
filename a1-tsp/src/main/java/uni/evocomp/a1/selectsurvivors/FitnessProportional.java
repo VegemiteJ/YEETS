@@ -43,7 +43,7 @@ public class FitnessProportional implements SelectSurvivors {
     // is chosen to survive
     for (Individual individual : individuals) {
       cumProb += (double) ((double) calcFitness(individual, problem) / (double) totalFit);
-      System.out.println(cumProb);
+      // System.out.println(cumProb);
       buckets.add(cumProb);
     }
 
@@ -54,6 +54,9 @@ public class FitnessProportional implements SelectSurvivors {
       for (i = 0; i < buckets.size(); i++) {
         if (r < buckets.get(i))
           break;
+      }
+      if (i >= buckets.size()) {
+        i--;
       }
       survivorSet.add(individuals.get(i));
     }
