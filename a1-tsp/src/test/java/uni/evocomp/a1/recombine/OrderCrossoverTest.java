@@ -50,6 +50,7 @@ public class OrderCrossoverTest {
         System.out.println("Pair: " + p);
         System.out.println("a: " + a.getGenotype().toString());
         System.out.println("b: " + b.getGenotype().toString());
+        System.out.println("child: " + child.getGenotype().toString());
         throw e;
       }
     }
