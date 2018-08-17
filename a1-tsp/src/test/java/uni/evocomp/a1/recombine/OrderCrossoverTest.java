@@ -3,6 +3,7 @@ package uni.evocomp.a1.recombine;
 import static junit.framework.Assert.assertEquals;
 import java.util.Random;
 import java.util.Arrays;
+import java.util.concurrent.ThreadLocalRandom;
 import org.junit.Before;
 import org.junit.Test;
 import uni.evocomp.util.IntegerPair;
@@ -64,5 +65,17 @@ public class OrderCrossoverTest {
     Individual b = new Individual(Arrays.asList(1, 2, 4, 3));
     Individual child = crossover.recombine(a, b, new IntegerPair(3, 1));
     assertEquals(Arrays.asList(1, 2, 3, 4), child.getGenotype());
+  }
+
+  @Test
+  public void fuzzer() {
+    for (int i = 0; i < 100; i++) {
+      System.out.println(i);
+      int n = ThreadLocalRandom.current().nextInt(2, 100);
+      Individual a = new Individual(n);
+      Individual b = new Individual(n);
+      Individual child = crossover.recombine(a, b);
+      child.assertIsValidTour();
+    }
   }
 }
