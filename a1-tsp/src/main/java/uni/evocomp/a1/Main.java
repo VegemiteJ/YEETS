@@ -97,7 +97,7 @@ public class Main {
         IntegerPair ip = new IntegerPair(ThreadLocalRandom.current().nextInt(0, problem.getSize()),
             ThreadLocalRandom.current().nextInt(0, problem.getSize()));
         // System.out.print("Mutation from " + individual.getCost() + " -> ");
-        mutate.run(problem, individual, Arrays.asList(ip));
+        mutate.run(problem, individual, ip);
         // System.out.print(individual.getCost() + " -> ");
         individual.getCost(problem);
         // System.out.println(individual.getCost());

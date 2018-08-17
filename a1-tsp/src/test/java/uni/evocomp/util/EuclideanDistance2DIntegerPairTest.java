@@ -1,7 +1,6 @@
 package uni.evocomp.util;
 
 import static org.junit.Assert.assertEquals;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -34,7 +33,7 @@ public class EuclideanDistance2DIntegerPairTest {
 
   @Test
   public void testSameIntegerPair() {
-    assertEquals(1.0, Util.euclideanDistance2D(realIntegerPair, realIntegerPair), delta);
+    assertEquals(0.0, Util.euclideanDistance2D(realIntegerPair, realIntegerPair), delta);
   }
 
   @Test
