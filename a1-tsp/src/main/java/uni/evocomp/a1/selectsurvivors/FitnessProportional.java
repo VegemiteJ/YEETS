@@ -2,6 +2,7 @@ package uni.evocomp.a1.selectsurvivors;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -47,7 +48,7 @@ public class FitnessProportional implements SelectSurvivors {
     // run the roulette until survivorSet is full
     while (survivorSet.size() < (int) (population.getSize() * survivalProportion)) {
       Double r = rand.nextDouble();
-      int i = 0;
+      int i;
       for (i = 0; i < buckets.size(); i++) {
         if (r < buckets.get(i))
           break;
