@@ -63,10 +63,6 @@ for recombine in {{Order,Cycle}Crossover,EdgeRecombination,PMX} ;do
 		done
 		alg_num=$((alg_num+1))
 
-		if [ ! -L "$target_dir/a.jar" ] ;then
-			ln -s "target/a1-tsp.jar" "$target_dir/a.jar"
-		fi	
-
 		# symlink to the tests
 		for item in tests/* ;do
 			if [ -f "$item" ] ;then
@@ -80,5 +76,11 @@ for recombine in {{Order,Cycle}Crossover,EdgeRecombination,PMX} ;do
 		done
 	done
 done
+
+
+# symlink the .jar
+if [ ! -L "$target_dir/a.jar" ] ;then
+	ln -s "target/a1-tsp.jar" "$target/a1-tsp.jar"
+fi	
 
 # popd
