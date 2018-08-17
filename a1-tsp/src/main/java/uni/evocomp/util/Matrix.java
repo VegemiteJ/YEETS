@@ -13,7 +13,7 @@ public class Matrix implements Serializable {
   // The matrix is stored as a 1D array of n*n values.
   // To access element [i,j], read from index n*i+j.
   // (i and j are zero-indexed).
-  private Double[] array;
+  transient private Double[] array;
 
   public Matrix(Matrix src) {
     this.rDim = src.rDim;
