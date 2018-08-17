@@ -14,6 +14,16 @@ public class PMXCrossover implements Recombine {
     return new Pair<>(recombine(firstParent, secondParent, slice),
         recombine(secondParent, firstParent, slice));
   }
+  
+  /**
+   * This should never be called ever, just to satisfy interface
+   */
+  @Deprecated
+  @Override
+  public Individual recombine(Individual firstParent, Individual secondParent) {
+    IntegerPair slice = getRandomSlice(firstParent.getGenotype().size());
+    return recombine(firstParent, secondParent, slice);
+  }
 
   Individual recombine(Individual firstParent, Individual secondParent, IntegerPair slice) {
     int n = firstParent.getGenotype().size();
@@ -60,8 +70,12 @@ public class PMXCrossover implements Recombine {
 
 
   public IntegerPair getRandomSlice(Integer n) {
-    int r1 = ThreadLocalRandom.current().nextInt();
-    int r2 = ThreadLocalRandom.current().nextInt();
-    return new IntegerPair(0, 1);
+    int r1 = ThreadLocalRandom.current().nextInt(0, n);
+    int r2 = ThreadLocalRandom.current().nextInt(0, n);
+    while (r1 == r2)
+    {
+      r2 = ThreadLocalRandom.current().nextInt(0, n);
+    }
+    return new IntegerPair(r1, r2);
   }
 }
