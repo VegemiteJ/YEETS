@@ -12,7 +12,7 @@ import uni.evocomp.util.Pair;
 
 public class EdgeRecombine implements Recombine {
   public EdgeRecombine() {
-    ;
+
   }
 
   @Override
@@ -21,9 +21,15 @@ public class EdgeRecombine implements Recombine {
   }
 
   public Individual recombineSingle(Individual firstParent, Individual secondParent) {
+    return recombineSingle(firstParent, secondParent, new Random());
+  }
+
+  public Individual recombineSingle(
+      Individual firstParent,
+      Individual secondParent,
+      Random random) {
     Table table = constructTable(firstParent, secondParent);
     Integer n = firstParent.getGenotype().size();
-    Random random = new Random();
 
     // First pick an initial element at random
     List<Integer> offspring = new ArrayList<>();
