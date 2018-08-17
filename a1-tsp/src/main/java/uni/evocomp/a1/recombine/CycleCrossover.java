@@ -16,6 +16,10 @@ import uni.evocomp.util.Pair;
  *
  */
 public class CycleCrossover implements Recombine {
+  
+  public CycleCrossover() {
+    ;
+  }
 
   /**
    * @param terminatingValue
@@ -44,7 +48,12 @@ public class CycleCrossover implements Recombine {
   }
 
   @Override
-  public Pair<Individual, Individual> recombine(Individual firstParent, Individual secondParent) {
+  public Individual recombine(Individual firstParent, Individual secondParent) {
+    return recombineDouble(firstParent, secondParent).first;
+  }
+
+  @Override
+  public Pair<Individual, Individual> recombineDouble(Individual firstParent, Individual secondParent) {
     List<Integer> parentA = firstParent.getGenotype();
     List<Integer> parentB = secondParent.getGenotype();
     int[] childA = new int[parentA.size()];

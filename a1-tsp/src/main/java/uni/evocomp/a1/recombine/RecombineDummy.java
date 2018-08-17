@@ -9,7 +9,13 @@ public class RecombineDummy implements Recombine {
     ;
   }
 
-  public Pair<Individual, Individual> recombine(Individual firstParent, Individual secondParent) {
+  @Override
+  public Individual recombine(Individual firstParent, Individual secondParent) {
+    return firstParent;
+  }
+
+  @Override
+  public Pair<Individual, Individual> recombineDouble(Individual firstParent, Individual secondParent) {
     Pair<Individual, Individual> o = new Pair<>(new Individual(firstParent), new Individual(secondParent));
     return o;
   }

@@ -1,5 +1,6 @@
 package uni.evocomp.a1;
 
+import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -12,6 +13,7 @@ import java.util.Properties;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import uni.evocomp.a1.evaluate.Evaluate;
+import uni.evocomp.a1.logging.BenchmarkStatsTracker;
 import uni.evocomp.a1.mutate.Mutate;
 import uni.evocomp.a1.recombine.Recombine;
 import uni.evocomp.a1.selectparents.SelectParents;
@@ -26,6 +28,8 @@ public class Main {
   public static final String testSuffix = ".tsp";
   public static final String tourSuffix = ".opt.tour";
   public static final String a1Prefix = "uni.evocomp.a1";
+
+  static final int totalGenerations = 20000;
 
   /**
    *
@@ -77,8 +81,8 @@ public class Main {
           // Unnecessarily calls recombine twice, which already calls recombine twice
           .flatMap(pi ->
           // Pair<Individual, Individual> offspring = recombine.recombine(pi.first, pi.second);
-          Arrays.asList(recombine.recombine(pi.first, pi.second).first,
-              recombine.recombine(pi.first, pi.second).second).stream())
+          Arrays.asList(recombine.recombine(pi.first, pi.second),
+              recombine.recombine(pi.second, pi.first)).stream())
           .collect(Collectors.toList());
 
       // Step 2 but normal for loop. Can't just automagically parallelise but doesn't need to call
@@ -123,12 +127,12 @@ public class Main {
   /**
    * Runs an EA benchmark on <code>problem</code>
    * 
-   * @param problem the problem to run EA on
+   * @param testName the name of the test to run, without extension
    * @param propertiesFileName name of properties file to read customisation from
    * @param populationSize size of the population
    * @param repeats how many times to repeat the benchmark
    */
-  public static void benchmark(TSPProblem problem, String propertiesFileName, int populationSize,
+  public static void benchmark(String testName, String propertiesFileName, int populationSize,
       int repeats) {
     // Read a .properties file to figure out which implementations to use and instantiate
     // one of each using Evaluate, SelectParents, Recombine, Mutate and SelectSurvivors
@@ -147,59 +151,75 @@ public class Main {
     try (InputStream input = new FileInputStream(propertiesFileName)) {
       prop.load(input);
 
-      evaluate = (Evaluate) Util
-          .classFromName(prop.getProperty("Evaluate", a1Prefix + ".evaluate.EvaluateEuclid"));
+      evaluate = (Evaluate) Util.classFromName(
+          prop.getProperty("Evaluate", Global.a1Prefix + ".evaluate.EvaluateEuclid"));
       selectParents = (SelectParents) Util.classFromName(
-          prop.getProperty("SelectParents", a1Prefix + ".selectparents.UniformRandom"));
-      recombine = (Recombine) Util
-          .classFromName(prop.getProperty("Recombine", a1Prefix + ".recombine.OrderCrossover"));
-      mutate = (Mutate) Util.classFromName(prop.getProperty("Mutate", a1Prefix + ".mutate.Invert"));
-      selectSurvivors = (SelectSurvivors) Util.classFromName(
-          prop.getProperty("SelectSurvivors", a1Prefix + ".selectsurvivors.TournamentSelection"));
+          prop.getProperty("SelectParents", Global.a1Prefix + ".selectparents.UniformRandom"));
+      recombine = (Recombine) Util.classFromName(
+          prop.getProperty("Recombine", Global.a1Prefix + ".recombine.OrderCrossover"));
+      mutate = (Mutate) Util
+          .classFromName(prop.getProperty("Mutate", Global.a1Prefix + ".mutate.Invert"));
+      selectSurvivors = (SelectSurvivors) Util.classFromName(prop.getProperty("SelectSurvivors",
+          Global.a1Prefix + ".selectsurvivors.TournamentSelection"));
     } catch (Exception ex) {
       ex.printStackTrace();
       return;
     }
 
-    // TODO : record metrics
-    double minCost = Double.MAX_VALUE;
-    double maxCost = Double.MIN_VALUE;
-    double averageCost = 0;
+    TSPIO io = new TSPIO();
+    TSPProblem problem = null;
+    Individual optimalSolution = null;
 
-    for (int i = 0; i < repeats; i++) {
-      Individual result = evolutionaryAlgorithm(problem, evaluate, selectParents, recombine, mutate,
-          selectSurvivors, populationSize);
-      // System.out.println("Best individual in iteration " + i + ": " + result);
-      if (result.getCost(problem) < minCost) {
-        System.out.println("New min cost: " + minCost + " to " + result.getCost(problem));
-        minCost = result.getCost(problem);
-      }
-      if (result.getCost(problem) > maxCost) {
-        System.out.println("New max cost: " + minCost + " to " + result.getCost(problem));
-        maxCost = result.getCost(problem);
-      }
-      averageCost += result.getCost(problem);
+    // Read problem and corresponding solution if available
+    try (BufferedReader br1 = new BufferedReader(new FileReader(testName + Global.testSuffix));
+        BufferedReader br2 = new BufferedReader(new FileReader(testName + Global.tourSuffix))) {
+      problem = io.read(br1);
+      optimalSolution = io.readSolution(br2);
+    } catch (IOException e) {
+      e.printStackTrace();
+      optimalSolution = null;
     }
 
-    averageCost /= repeats;
+    // Record metrics
+    BenchmarkStatsTracker bst =
+        new BenchmarkStatsTracker(problem.getName() + "_" + propertiesFileName, problem);
 
-    System.out.println("    Min: " + minCost);
-    System.out.println("    Max: " + maxCost);
-    System.out.println("    Ave: " + averageCost);
-  }
+    EA ea = new EA(bst);
+    System.out
+        .println("Running benchmark: " + problem.getName() + "(" + problem.getComment() + ")");
 
-  public static void main(String[] args) {
-    TSPProblem problem = new TSPProblem();
-    TSPIO io = new TSPIO();
-    String testfile = (args.length > 0 ? args[0] : "tests/eil51.tsp");
-    System.out.println("Test file is " + testfile);
-    try (Reader r = new FileReader(testfile)) {
-      problem = io.read(r);
+    bst.setSolutionTour(optimalSolution);
+    long startTime = System.nanoTime();
+    for (int i = 0; i < repeats; i++) {
+      bst.startSingleRun();
+      Individual result = ea.solve(problem, evaluate, selectParents, recombine, mutate,
+          selectSurvivors, populationSize, totalGenerations);
+      bst.endSingleRun(ea.getGeneration());
+    }
+    if (optimalSolution != null) {
+      System.out.println("Known Best Solution: " + optimalSolution.getCost(problem));
+    }
+    System.out.println("Avg: " + bst.getAvgCost());
+    System.out.println("Min: " + bst.getMinCost());
+    System.out.println("Max: " + bst.getMaxCost());
+    System.out
+        .println("Avg search Elapsed Time (s): " + (double) bst.getAvgTimeTaken() / 1000000000.0);
+    System.out.println("Benchmark Total Elapsed Time (s): "
+        + (double) (System.nanoTime() - startTime) / 1000000000.0);
+    System.out.println("Save file: " + bst.getSerialFileName());
+
+    try {
+      BenchmarkStatsTracker.serialise(bst);
     } catch (IOException e) {
       e.printStackTrace();
     }
+  }
+
+  public static void main(String[] args) {
+    String testfile = (args.length > 0 ? args[0] : "tests/eil101");
+    System.out.println("Test file is " + testfile);
 
     String configName = (args.length < 1 ? "config.properties" : args[0]);
-    benchmark(problem, configName, 20, 3);
+    benchmark(testfile, configName, 20, 3);
   }
 }

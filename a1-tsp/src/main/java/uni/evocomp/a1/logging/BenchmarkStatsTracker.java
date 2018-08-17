@@ -1,37 +1,32 @@
 package uni.evocomp.a1.logging;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 import uni.evocomp.a1.Individual;
 import uni.evocomp.a1.TSPProblem;
 import uni.evocomp.util.Pair;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Intended for tracking stats throughout a (approx 30) benchmark run. But it can handle as many
  * runs as you want Also provides useful options for serializing this for plotGui or examination
  * later Has toString functions for printing resulting stats + to csv for plotting
  *
- * <p>
- * Usage: Before starting a benchmark run of 30 averages create this class.
- * <p>
- *  1) Call BENCHMARK.setSolutionTour(Individual solution) where solution is the optimal solution from file
- * <p>
- * At the start of each benchmark loop:
- *  2) Call BENCHMARK.startSingleRun()
- * <p>
- * Upon finding a new best individual for the run:
- *  3) Call BENCHMARK.newBestIndividualForSingleRun(Individual bestSoFar)
- * <p>
- * Completion of run:
- *  4) Call BENCHMARK.endSingleRun()
- *  5) Call BENCHMARK.get**() to retrieve relevant info you want
+ * <p>Usage: Before starting a benchmark run of 30 averages create this class.
+ *
+ * <p>1) Call BENCHMARK.setSolutionTour(Individual solution) where solution is the optimal solution
+ * from file
+ *
+ * <p>At the start of each benchmark loop: 2) Call BENCHMARK.startSingleRun()
+ *
+ * <p>Upon finding a new best individual for the run: 3) Call
+ * BENCHMARK.newBestIndividualForSingleRun(Individual bestSoFar)
+ *
+ * <p>Completion of run: 4) Call BENCHMARK.endSingleRun() 5) Call BENCHMARK.get**() to retrieve
+ * relevant info you want
  */
 public class BenchmarkStatsTracker implements Serializable {
 
@@ -60,7 +55,7 @@ public class BenchmarkStatsTracker implements Serializable {
   private List<Pair<Individual, Long>> currentRunTours;
 
   // Time Elapsed, Number of Iterations
-  private List<Pair<Long,Long>> timePerRun;
+  private List<Pair<Long, Long>> timePerRun;
 
   private long currStartTime;
   private long currEndTime;
@@ -127,6 +122,10 @@ public class BenchmarkStatsTracker implements Serializable {
   }
 
   public Individual getProvidedBestTour() {
+    if (this.providedBestTour == null) {
+      Individual i = new Individual(Arrays.asList(1), 0.0);
+      return i;
+    }
     return this.providedBestTour;
   }
 
@@ -198,7 +197,8 @@ public class BenchmarkStatsTracker implements Serializable {
     this.timePerRun.add(new Pair<>(timeElapsed, iterations));
 
     // Don't overflow... Divide first.
-    this.averageTimePerRun = this.timePerRun.stream().mapToLong(i -> i.first / timePerRun.size()).sum();
+    this.averageTimePerRun =
+        this.timePerRun.stream().mapToLong(i -> i.first / timePerRun.size()).sum();
 
     // this.currentRunTours should always have size >= 1 (Initial Individual is always added)
     Individual bestForRun = this.currentRunTours.get(currentRunTours.size() - 1).first;
@@ -218,14 +218,44 @@ public class BenchmarkStatsTracker implements Serializable {
     if (bestCostForRun > maxCost) {
       maxCost = bestCostForRun;
       this.bestToursFromMaxRun = this.currentRunTours;
-      this.maxRunIdx = this.currentRunTours.size()-1;
+      this.maxRunIdx = this.currentRunTours.size() - 1;
     }
     // Update Min cost
     if (bestCostForRun < minCost) {
       minCost = bestCostForRun;
       this.bestTourFound = bestForRun;
       this.bestToursFromMinRun = this.currentRunTours;
-      this.minRunIdx = this.currentRunTours.size()-1;
+      this.minRunIdx = this.currentRunTours.size() - 1;
+    }
+  }
+
+  private String getCsvFormat() {
+    return getComment()
+        + ","
+        + getProvidedBestTour().getCost(getProblem())
+        + ","
+        + getMinCost()
+        + ","
+        + getMaxCost()
+        + ","
+        + getAvgCost()
+        + ","
+        + (double)getAvgTimeTaken()/1000000000.0
+        + "\n";
+  }
+
+  public void writeToFile() {
+    writeToFile(this.getComment() + ".csv");
+  }
+
+  public void writeToFile(String fileName) {
+    System.out.println("Writing Stats to: " + fileName);
+    try {
+      BufferedWriter bw = new BufferedWriter(new FileWriter(fileName));
+      bw.write(getCsvFormat());
+      bw.close();
+    } catch (IOException e) {
+      e.printStackTrace();
     }
   }
 

@@ -16,12 +16,18 @@ public class OrderCrossover implements Recombine {
   }
 
   @Override
-  public Pair<Individual, Individual> recombine(Individual firstParent, Individual secondParent) {
+  public Pair<Individual, Individual> recombineDouble(Individual firstParent, Individual secondParent) {
     IntegerPair slice = getRandomSlice(firstParent.getGenotype().size());
     return new Pair<>(
         recombine(firstParent, secondParent, slice),
         recombine(secondParent, firstParent, slice)
     );
+  }
+
+  @Override
+  public Individual recombine(Individual firstParent, Individual secondParent) {
+    IntegerPair slice = getRandomSlice(firstParent.getGenotype().size());
+    return recombine(firstParent, secondParent, slice);
   }
 
   /**
@@ -71,7 +77,6 @@ public class OrderCrossover implements Recombine {
       next = (next + 1) % n;
     }
 
-    child.assertIsValidTour();
     return child;
   }
 
