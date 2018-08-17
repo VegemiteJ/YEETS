@@ -32,45 +32,48 @@ public class PMXCrossover implements Recombine {
 
     Map<Integer, Boolean> valueCopied = new HashMap<>();
 
-    // Copy segment from 1 into child
+    // Copy segment from parent 1 into child
     for (int i = slice.first; i != slice.second % n; i = (i + 1) % n) {
       child_g.set(i, firstParent.getGenotype().get(i));
       valueCopied.put(firstParent.getGenotype().get(i), true);
     }
 
-    // Look in segment in parent 2, bounce with position in parent 1, to find location
+    // Look in segment in parent 2, bounce with position in parent 1 to find location
     for (int i = slice.first; i != slice.second % n; i = (i + 1) % n) {
+      // i, index of value we're copying from parent 2
+      // j, index we're copying to in child
       int i_city = secondParent.getGenotype().get(i);
       if (valueCopied.containsKey(i_city)) {
         // Value has already been copied
         continue;
       }
-      //
+
+      // Value in parent 2 at position i
       int j_city = firstParent.getGenotype().get(i);
-      // Find location of j in parent 2
+      // Find location of j_city in parent 2
       int j = secondParent.getGenotype().indexOf(j_city); // TODO: SLOW
       while (child_g.get(j) != -1) {
         // Bounce
         j_city = firstParent.getGenotype().get(j);
         j = secondParent.getGenotype().indexOf(j_city);
       }
+
       // Copy element in i to found idx
       child_g.set(j, i_city);
       valueCopied.put(i_city, true);
     }
 
-    // fill in blanks
+    // Fill in blanks
     for (int i = 0; i < n; i++) {
       if (child_g.get(i) == -1) {
         child_g.set(i, secondParent.getGenotype().get(i));
       }
     }
-    Individual child = new Individual(child_g);
-    return child;
+    return new Individual(child_g);
   }
 
 
-  public IntegerPair getRandomSlice(Integer n) {
+  private IntegerPair getRandomSlice(int n) {
     if (n < 1) {
       return new IntegerPair(0, 0);
     }
