@@ -1,14 +1,22 @@
 package uni.evocomp.a1.logging;
 
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import uni.evocomp.a1.Individual;
 import uni.evocomp.a1.TSPProblem;
 import uni.evocomp.util.Pair;
-
-import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Intended for tracking stats throughout a (approx 30) benchmark run. But it can handle as many
@@ -39,6 +47,7 @@ public class BenchmarkStatsTracker implements Serializable {
   private Individual providedBestTour;
 
   private long averageTimePerRun;
+  private double standardDeviation;
   private double averageCost;
   private double minCost;
   private double maxCost;
@@ -60,6 +69,10 @@ public class BenchmarkStatsTracker implements Serializable {
   private long currStartTime;
   private long currEndTime;
 
+  // EA specific stats - Represents the benchmark best (not best for this generation) individual at
+  // this generation number
+  private Map<Integer, Individual> bestIndividualPerGeneration;
+
   /**
    * Initialize a new benchmark.
    *
@@ -72,18 +85,41 @@ public class BenchmarkStatsTracker implements Serializable {
     initializeFullRun();
   }
 
+  public static final void serialise(BenchmarkStatsTracker BENCHMARK) throws IOException {
+    serialise(BENCHMARK, BENCHMARK.getComment());
+  }
+
+  public static final void serialise(BenchmarkStatsTracker BENCHMARK, String filename)
+      throws IOException {
+    filename = filename + serialSuffix;
+    try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename))) {
+      out.writeObject(BENCHMARK);
+    }
+    System.out.println("Serialised data is saved in \"" + filename + "\"");
+  }
+
+  public static final BenchmarkStatsTracker deserialise(String filename)
+      throws IOException, ClassNotFoundException {
+    filename = filename + serialSuffix;
+    try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
+      return (BenchmarkStatsTracker) in.readObject();
+    }
+  }
+
   /** * Initializes all stats for a repeated run (of 30 for local search). */
   private void initializeFullRun() {
     this.bestTourFound = null;
     this.providedBestTour = null;
     this.averageTimePerRun = 0L;
     this.averageCost = 0.0;
+    this.standardDeviation = 0.0;
     this.minCost = Double.MAX_VALUE;
     this.maxCost = Double.MIN_VALUE;
     this.bestTourPerRun = new ArrayList<>();
     this.bestToursFromMaxRun = null;
     this.bestToursFromMinRun = null;
     this.currentRunTours = null;
+    this.bestIndividualPerGeneration = new HashMap<>();
     this.timePerRun = new ArrayList<>();
   }
 
@@ -137,6 +173,10 @@ public class BenchmarkStatsTracker implements Serializable {
     return this.problem;
   }
 
+  public Double getStandardDeviation() {
+    return this.standardDeviation;
+  }
+
   public Double getAvgCost() {
     return this.averageCost;
   }
@@ -165,10 +205,15 @@ public class BenchmarkStatsTracker implements Serializable {
     return this.maxRunIdx;
   }
 
+  public Individual getBestIndividualPerGeneration(int generation) throws Exception {
+    return bestIndividualPerGeneration.get(generation);
+  }
+
   /** Resets currentRunTours to empty List */
   public void startSingleRun() {
     this.currentRunTours = new ArrayList<>();
     this.currStartTime = System.nanoTime();
+    this.bestIndividualPerGeneration = new HashMap<>();
   }
 
   /**
@@ -180,6 +225,16 @@ public class BenchmarkStatsTracker implements Serializable {
    */
   public void newBestIndividualForSingleRun(Individual newBest, Long iterationNumber) {
     this.currentRunTours.add(new Pair<>(new Individual(newBest), iterationNumber));
+  }
+
+  /**
+   * After every generation of the EA, call this to store the best individual of this generation.
+   *
+   * @param genIndividual
+   * @param generationNumber
+   */
+  public void bestIndividualForThisGeneration(Individual genIndividual, int generationNumber) {
+    this.bestIndividualPerGeneration.put(generationNumber, genIndividual);
   }
 
   /**
@@ -214,6 +269,16 @@ public class BenchmarkStatsTracker implements Serializable {
                 .sum()
             / this.bestTourPerRun.size();
 
+    this.standardDeviation =
+        Math.sqrt(
+            this.bestTourPerRun
+                    .stream()
+                    .mapToDouble(
+                        individual ->
+                            Math.pow(individual.getCost(this.problem) - this.averageCost, 2.0))
+                    .sum()
+                / this.bestTourPerRun.size());
+
     // Update Max cost
     if (bestCostForRun > maxCost) {
       maxCost = bestCostForRun;
@@ -240,15 +305,68 @@ public class BenchmarkStatsTracker implements Serializable {
         + ","
         + getAvgCost()
         + ","
-        + (double)getAvgTimeTaken()/1000000000.0
+        + getStandardDeviation()
+        + ","
+        + (double) getAvgTimeTaken() / 1000000000.0
         + "\n";
   }
 
+  private String getEACsvFormat() {
+    try {
+      return getComment()
+          + ","
+          + (getProvidedBestTour() == null ? -1.0 : getProvidedBestTour().getCost(problem))
+          + ","
+          + (getBestIndividualPerGeneration(2000) == null
+              ? -1.0
+              : getBestIndividualPerGeneration(2000).getCost(problem))
+          + ","
+          + (getBestIndividualPerGeneration(5000) == null
+              ? -1.0
+              : getBestIndividualPerGeneration(5000).getCost(problem))
+          + ","
+          + (getBestIndividualPerGeneration(10000) == null
+              ? -1.0
+              : getBestIndividualPerGeneration(10000).getCost(problem))
+          + ","
+          + (getBestIndividualPerGeneration(20000) == null
+              ? -1.0
+              : getBestIndividualPerGeneration(20000).getCost(problem))
+          + "\n";
+    } catch (Exception e) {
+      e.printStackTrace();
+      return getComment()
+          + ","
+          + (getProvidedBestTour() == null ? -1.0 : getProvidedBestTour().getCost(problem))
+          + ",FAIL"
+          + ",FAIL"
+          + ",FAIL"
+          + ",FAIL\n";
+    }
+  }
+
+  public void writeEAGensToFile() {
+    writeEAGensToFile(this.getComment());
+  }
+
+  public void writeEAGensToFile(String fileName) {
+    fileName = fileName + ".gen.csv";
+    System.out.println("Writing Stats to: " + fileName);
+    try {
+      BufferedWriter bw = new BufferedWriter(new FileWriter(fileName, true));
+      bw.write(getEACsvFormat());
+      bw.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
   public void writeToFile() {
-    writeToFile(this.getComment() + ".csv");
+    writeToFile(this.getComment());
   }
 
   public void writeToFile(String fileName) {
+    fileName = fileName + ".csv";
     System.out.println("Writing Stats to: " + fileName);
     try {
       BufferedWriter bw = new BufferedWriter(new FileWriter(fileName));
@@ -261,26 +379,5 @@ public class BenchmarkStatsTracker implements Serializable {
 
   public String getSerialFileName() {
     return this.getComment() + serialSuffix;
-  }
-
-  public static final void serialise(BenchmarkStatsTracker BENCHMARK) throws IOException {
-    serialise(BENCHMARK, BENCHMARK.getComment());
-  }
-
-  public static final void serialise(BenchmarkStatsTracker BENCHMARK, String filename)
-      throws IOException {
-    filename = filename + serialSuffix;
-    try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename))) {
-      out.writeObject(BENCHMARK);
-    }
-    System.out.println("Serialised data is saved in \"" + filename + "\"");
-  }
-
-  public static final BenchmarkStatsTracker deserialise(String filename)
-      throws IOException, ClassNotFoundException {
-    filename = filename + serialSuffix;
-    try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
-      return (BenchmarkStatsTracker) in.readObject();
-    }
   }
 }
