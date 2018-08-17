@@ -216,10 +216,12 @@ public class Individual implements Comparable<Individual>, Serializable {
       if (tour.contains(i)) {
         tour.remove(i);
       } else {
+        System.err.println("Tour doesn't contain expected city: " + i);
         throw exc;
       }
     }
     if (tour.size() != 0) {
+      System.err.println("Tour contained duplicate or error city: ");
       throw exc;
     }
   }

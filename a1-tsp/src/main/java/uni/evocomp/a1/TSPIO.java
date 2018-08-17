@@ -213,7 +213,7 @@ public class TSPIO {
           solution.add(cityIdx);
         }
       }
-      return new Individual(solution, 0.0);
+      return new Individual(solution);
     }
   }
 
