@@ -18,15 +18,15 @@ public class Main {
     "eil51",
     "eil76",
     "eil101",
-    "kroA100"};
-//    "kroC100",
-//    "kroD100",
-//    "lin105",
-//    "pcb442",
-//    "pr2392",
-//    "st70",
-//    "usa13509"
-//  };
+    "kroA100",
+    "kroC100",
+    "kroD100",
+    "lin105",
+    "pcb442",
+    "pr2392",
+    "st70",
+    "usa13509"
+  };
   public static final String testSuffix = ".tsp";
   public static final String tourSuffix = ".opt.tour";
   public static final String a1Prefix = "uni.evocomp.a1";
@@ -165,7 +165,7 @@ public class Main {
     for (String testfile : testNames) {
       testfile = "tests/" + testfile;
       System.out.println("Running testfile: " + testfile);
-      benchmark(testfile, configName, 5);
+      benchmark(testfile, configName, 30);
     }
   }
 }

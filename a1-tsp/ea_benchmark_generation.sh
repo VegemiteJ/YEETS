@@ -41,9 +41,9 @@ mvn jar:jar
 package_path=uni.evocomp.a1
 
 alg_num=1
-for recombine in {{Order,Cycle}Crossover,EdgeRecombination,PMXCrossover} ;do
+for recombine in {CycleCrossover,PMXCrossover} ;do
 
-	for sselection in {Elitism,TournamentSelect,FitnessProportional} ;do
+	for sselection in {Elitism,TournamentSelect} ;do
 
 		# echo "$alg_num"
 
