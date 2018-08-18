@@ -1,11 +1,7 @@
 package uni.evocomp.a1.recombine;
 
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.fail;
-
-import java.util.Random;
 import java.util.Arrays;
-import java.util.concurrent.ThreadLocalRandom;
 import org.junit.Before;
 import org.junit.Test;
 import uni.evocomp.util.IntegerPair;
@@ -36,8 +32,8 @@ public class OrderCrossoverTest {
     assertEquals(Arrays.asList(1, 2, 3, 4, 5, 6), child.getGenotype());
   }
 
-  @Test
-  public void testFuzzed() {
+  @Test(expected = Test.None.class)
+  public void testFuzzed() throws IllegalStateException {
     for (int n = 3; n < 300; n += 1) {
       IntegerPair p = crossover.getRandomSlice(n);
       Individual a = new Individual(n);
@@ -45,7 +41,7 @@ public class OrderCrossoverTest {
       Individual child = crossover.recombine(a, b, p);
       try {
         child.assertIsValidTour();
-      } catch (Exception e) {
+      } catch (IllegalStateException e) {
         System.out.println("n: " + n);
         System.out.println("Pair: " + p);
         System.out.println("a: " + a.getGenotype().toString());

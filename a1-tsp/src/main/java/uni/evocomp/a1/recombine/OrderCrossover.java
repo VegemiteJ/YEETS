@@ -1,5 +1,6 @@
 package uni.evocomp.a1.recombine;
 
+import java.util.Collections;
 import java.util.Random;
 import uni.evocomp.util.Pair;
 import uni.evocomp.util.IntegerPair;
@@ -39,18 +40,17 @@ public class OrderCrossover implements Recombine {
   Individual recombine(Individual firstParent, Individual secondParent, IntegerPair slice)
   throws IllegalArgumentException {
     final int n = firstParent.getGenotype().size();
-    slice.first = slice.first % n;
-    slice.second = slice.second % n;
+    slice.first %= n;
+    slice.second %= n;
 
     // Validate inputs.
     if (slice.first < 0 || slice.second < 0 || slice.first > n || slice.second > n
-        || slice.first.equals(slice.second)
-        || secondParent.getGenotype().size() != n) {
+        || slice.first.equals(slice.second) || secondParent.getGenotype().size() != n) {
       throw new IllegalArgumentException("");
     }
 
     Individual child = new Individual(n);
-    java.util.Collections.fill(child.getGenotype(), 0);
+    Collections.fill(child.getGenotype(), 0);
 
     // Copy slice from first into child.
     for (int i = slice.first; i != slice.second; i = Math.floorMod(i + 1, n)) {
@@ -65,7 +65,7 @@ public class OrderCrossover implements Recombine {
     int next = Math.floorMod(slice.second, n);
     // pos is the position iterating through the second array.
     int pos = next;
-    for (int i = 0; i < n; i += 1) {
+    for (int i = 0; i < n; i++) {
       // If the current element is already in the
       Integer current = secondParent.getGenotype().get(pos);
       pos = Math.floorMod(pos + 1, n);
