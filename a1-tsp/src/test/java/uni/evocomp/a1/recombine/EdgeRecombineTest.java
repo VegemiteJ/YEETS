@@ -7,6 +7,7 @@ import com.sun.javafx.geom.Edge;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import org.junit.Before;
 import org.junit.Test;
 import uni.evocomp.a1.Individual;
@@ -161,7 +162,7 @@ public class EdgeRecombineTest {
     RandomStub random = new RandomStub();
     random.setInt(Arrays.asList(
                // Choice  | Choices | Reason        | Partial result
-           1,  // 1       | All     | Random        | [1]
+           0,  // 1       | All     | Random        | [1]
            0,  // 2       | 2+,3,5  | Common edge   | [1, 2]
            1,  // 4       | 3, 4    | Random choice | [1, 2, 4]
            0,  // 5       | 3, 5    | Common edge   | [1, 2, 4, 5]
@@ -169,5 +170,15 @@ public class EdgeRecombineTest {
     ));
     Individual child = edgeRecombine.recombine(a, b, random);
     assertEquals(child.getGenotype(), Arrays.asList(1, 2, 4, 5, 3));
+  }
+
+  @Test
+  public void testFuzzed() {
+    Random r = new Random();
+    for (int i = 3; i < 300; i += 1) {
+      Individual a = new Individual(i);
+      Individual b = new Individual(i);
+      edgeRecombine.recombine(a, b);
+    }
   }
 }
