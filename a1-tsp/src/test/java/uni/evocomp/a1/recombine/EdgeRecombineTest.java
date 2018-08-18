@@ -174,11 +174,19 @@ public class EdgeRecombineTest {
 
   @Test
   public void testFuzzed() {
-    Random r = new Random();
-    for (int i = 3; i < 300; i += 1) {
-      Individual a = new Individual(i);
-      Individual b = new Individual(i);
-      edgeRecombine.recombine(a, b);
+    for (int n = 3; n < 300; n += 1) {
+      Individual a = new Individual(n);
+      Individual b = new Individual(n);
+      Individual child = edgeRecombine.recombine(a, b);
+      try {
+        child.assertIsValidTour();
+      } catch (Exception e) {
+        System.out.println("n: " + n);
+        System.out.println("a: " + a.getGenotype().toString());
+        System.out.println("b: " + b.getGenotype().toString());
+        System.out.println("child: " + child.getGenotype().toString());
+        throw e;
+      }
     }
   }
 }
