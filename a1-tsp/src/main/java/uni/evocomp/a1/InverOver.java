@@ -6,14 +6,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.Collectors;
-import uni.evocomp.a1.evaluate.Evaluate;
-import uni.evocomp.a1.logging.BenchmarkStatsTracker;
 import uni.evocomp.a1.mutate.Mutate;
 import uni.evocomp.a1.mutate.Invert;
-import uni.evocomp.a1.recombine.Recombine;
-import uni.evocomp.a1.selectparents.SelectParents;
-import uni.evocomp.a1.selectsurvivors.SelectSurvivors;
 import uni.evocomp.a1.Population;
 import uni.evocomp.util.Pair;
 
@@ -36,9 +30,9 @@ public class InverOver {
         List<Individual> populationList;
         populationList.addAll(population.getPopulation());
 
-        while (numGenerations <= 20000) do {
+        while (numGenerations <= 20000) {
             
-            for (Individual individual : population.getPopulation()) do {
+            for (Individual individual : population.getPopulation()) {
                 Individual s0 = Individual(individual);
 
                 int len = s0.getGenotype().size();
@@ -50,7 +44,7 @@ public class InverOver {
 
                 while (true) {
                     int cDash;
-                    if (ThreadLocalRandom.current().nextDouble(1) <= probability) {
+                    if (ThreadLocalRandom.current().nextDouble(1) <= probability) {
                         int indexNext;
                         do {
                             indexNext = ThreadLocalRandom.current().nextInt(0, len);
@@ -65,15 +59,15 @@ public class InverOver {
                     }
                     int cityIndexLast = (s0.getGenotype().indexOf(cDash) - 1 + len) % len;
                     int cityIndexNext = (s0.getGenotype().indexOf(cDash) + 1) % len;
-                    int cityLast = (s0.getGenotype().get(cityIndexLast);
-                    int cityNext = (s0.getGenotype().get(cityIndexNext);
+                    int cityLast = (s0.getGenotype().get(cityIndexLast));
+                    int cityNext = (s0.getGenotype().get(cityIndexNext));
                     if ((cDash == cityLast) || (cDash == cityNext)) {
                         break;
                     }
                     mutator.run(problem, s0, new IntegerPair (cityIndexNext, s0.getGenotype().indexOf(cDash)));
                     city = cDash;
                 }
-                if (s0.getCost(problem) <= individual.getCost(problem)) {
+                if (s0.getCost(problem) <= individual.getCost(problem)) {
                     individual = s0;
                 }
             }
