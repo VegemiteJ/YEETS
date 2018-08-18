@@ -44,7 +44,7 @@ public class OrderCrossover implements Recombine {
 
     // Validate inputs.
     if (slice.first < 0 || slice.second < 0 || slice.first > n || slice.second > n
-        || slice.first == slice.second
+        || slice.first.equals(slice.second)
         || secondParent.getGenotype().size() != n) {
       throw new IllegalArgumentException("");
     }
