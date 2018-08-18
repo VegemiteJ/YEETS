@@ -26,7 +26,7 @@ public class EA {
   BenchmarkStatsTracker bst;
   long generation;
 
-  final long printItr=1000;
+  public long printItr=1000;
 
 
   EA(BenchmarkStatsTracker bst) {
