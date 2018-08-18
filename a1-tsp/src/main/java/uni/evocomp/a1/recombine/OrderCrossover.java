@@ -50,7 +50,7 @@ public class OrderCrossover implements Recombine {
     }
 
     Individual child = new Individual(n);
-    java.util.Collections.fill(child.getGenotype(), new Integer(0));
+    java.util.Collections.fill(child.getGenotype(), 0);
 
     // Copy slice from first into child.
     for (int i = slice.first; i != slice.second; i = Math.floorMod(i + 1, n)) {
@@ -73,6 +73,7 @@ public class OrderCrossover implements Recombine {
         continue;
       }
 
+      assert !child.getGenotype().contains(current): "Child contains element-to-add " + current;
       child.getGenotype().set(next, current);
       next = (next + 1) % n;
     }
@@ -83,7 +84,7 @@ public class OrderCrossover implements Recombine {
   private boolean elementInPopRange(Integer element, Individual population, IntegerPair range) {
     final int n = population.getGenotype().size();
     for (int i = range.first; i != range.second; i = Math.floorMod(i + 1, n)) {
-      if (population.getGenotype().get(i) == element) {
+      if (population.getGenotype().get(i).equals(element)) {
         return true;
       }
     }
