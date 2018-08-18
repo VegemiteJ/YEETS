@@ -9,7 +9,8 @@ import java.util.concurrent.ThreadLocalRandom;
 import uni.evocomp.a1.mutate.Mutate;
 import uni.evocomp.a1.mutate.Invert;
 import uni.evocomp.a1.Population;
-import uni.evocomp.util.Pair;
+import uni.evocomp.a1.TSPProblem;
+import uni.evocomp.util.IntegerPair;
 
 /**
  * Class for InverOver
@@ -27,13 +28,13 @@ public class InverOver {
     public int population(TSPProblem problem, int populationSize, int maxGenerations, double probability) {
         Population population = new Population(problem, populationSize);
         numGenerations = 1;
-        List<Individual> populationList;
+        List<Individual> populationList = new ArrayList<>();
         populationList.addAll(population.getPopulation());
 
         while (numGenerations <= 20000) {
             
             for (Individual individual : population.getPopulation()) {
-                Individual s0 = Individual(individual);
+                Individual s0 = new Individual(individual);
 
                 int len = s0.getGenotype().size();
                 int index =  ThreadLocalRandom.current().nextInt(0, len);
