@@ -73,6 +73,7 @@ public class InverOver {
                 }
             }
         }
+        return Collections.min(population.getPopulation());
     }
     public int getNumGenerations() {
         return numGenerations;
