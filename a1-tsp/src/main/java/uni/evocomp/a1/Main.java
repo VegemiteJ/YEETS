@@ -151,6 +151,7 @@ public class Main {
 
     try {
       BenchmarkStatsTracker.serialise(bst);
+      bst.writeToFile();
     } catch (IOException e) {
       e.printStackTrace();
     }

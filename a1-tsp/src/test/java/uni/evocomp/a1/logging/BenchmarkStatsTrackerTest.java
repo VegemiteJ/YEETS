@@ -318,9 +318,9 @@ public class BenchmarkStatsTrackerTest {
     bst.bestIndividualForThisGeneration(c, 20000);
 
     bst.writeEAGensToFile();
-    assertTrue(new File("testAddedGenerations.gen.csv").exists());
+    assertTrue(new File("testAddedGenerations.gen").exists());
     // Delete
-    new File("testAddedGenerations.gen.csv").delete();
+    new File("testAddedGenerations.gen").delete();
 
   }
 
@@ -341,9 +341,9 @@ public class BenchmarkStatsTrackerTest {
     bst.bestIndividualForThisGeneration(e, 20000);
 
     bst.writeEAGensToFile();
-    assertTrue(new File("testAddedGenerationsAlt.gen.csv").exists());
+    assertTrue(new File("testAddedGenerationsAlt.gen").exists());
     // Delete
-    new File("testAddedGenerationsAlt.gen.csv").delete();
+    new File("testAddedGenerationsAlt.gen").delete();
   }
 
   @Test
@@ -361,8 +361,8 @@ public class BenchmarkStatsTrackerTest {
     bst.bestIndividualForThisGeneration(e, 20000);
 
     bst.writeEAGensToFile();
-    assertTrue(new File("testAddedGenerationsAltAlt.gen.csv").exists());
+    assertTrue(new File("testAddedGenerationsAltAlt.gen").exists());
     // Delete
-    new File("testAddedGenerationsAltAlt.gen.csv").delete();
+    new File("testAddedGenerationsAltAlt.gen").delete();
   }
 }

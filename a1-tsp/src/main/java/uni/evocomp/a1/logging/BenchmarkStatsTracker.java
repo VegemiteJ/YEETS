@@ -350,7 +350,7 @@ public class BenchmarkStatsTracker implements Serializable {
   }
 
   public void writeEAGensToFile(String fileName) {
-    fileName = fileName + ".gen.csv";
+    fileName = fileName + ".gen";
     System.out.println("Writing Stats to: " + fileName);
     try {
       BufferedWriter bw = new BufferedWriter(new FileWriter(fileName, true));

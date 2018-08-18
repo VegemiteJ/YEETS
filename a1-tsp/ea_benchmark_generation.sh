@@ -38,12 +38,12 @@
 target=ea_benchmarks
 mvn jar:jar
 
-package_path=uni.evocomp.ai
+package_path=uni.evocomp.a1
 
 alg_num=1
-for recombine in {{Order,Cycle}Crossover,EdgeRecombination,PMX} ;do
+for recombine in {{Order,Cycle}Crossover,EdgeRecombination,PMXCrossover} ;do
 
-	for sselection in {Elitism,Tournament,FitnessProportional} ;do
+	for sselection in {Elitism,TournamentSelect,FitnessProportional} ;do
 
 		# echo "$alg_num"
 
