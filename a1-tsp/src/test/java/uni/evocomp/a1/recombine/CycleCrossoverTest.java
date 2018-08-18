@@ -99,7 +99,7 @@ public class CycleCrossoverTest {
         System.out.println("a: " + a.getGenotype().toString());
         System.out.println("b: " + b.getGenotype().toString());
         System.out.println("child: " + child.getGenotype().toString());
-        //throw e;
+        throw e;
       }
     }
   }
