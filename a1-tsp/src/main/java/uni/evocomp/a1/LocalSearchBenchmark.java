@@ -34,7 +34,6 @@ public class LocalSearchBenchmark {
           FileReader fr2 = new FileReader(testString + Global.tourSuffix)) {
         problem = io.read(fr1);
         Individual solution = io.readSolution(fr2);
-        solution.setCost(evaluator.evaluate(problem, solution));
         benchmarks.add(new Pair<>(problem, solution));
       } catch (IOException e) {
         e.printStackTrace();
