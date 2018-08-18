@@ -15,16 +15,16 @@ import uni.evocomp.util.Util;
 
 public class Main {
   public static final String[] testNames = {
-    "eil51",
-    "eil76",
-    "eil101",
-    "kroA100",
-    "kroC100",
-    "kroD100",
-    "lin105",
-    "pcb442",
-    "pr2392",
-    "st70",
+//    "eil51",
+//    "eil76",
+//    "eil101",
+//    "kroA100",
+//    "kroC100",
+//    "kroD100",
+//    "lin105",
+//    "pcb442",
+//    "pr2392",
+//    "st70",
     "usa13509"
   };
   public static final String testSuffix = ".tsp";
@@ -117,7 +117,9 @@ public class Main {
 
     EA ea = new EA(bst);
     ea.printItr = 10000;
-    bst.setSolutionTour(optimalSolution);
+    if (optimalSolution != null) {
+      bst.setSolutionTour(optimalSolution);
+    }
     System.out.println(
         "Running benchmark: " + problem.getName() + "(" + problem.getComment() + ")");
     System.out.println("\tConfig: " + name);
