@@ -42,15 +42,15 @@ public class InverOver {
    * @return the best <code>Individual</code> after running for <code>maxGenerations</code>
    *         generations
    */
-  public Individual run(TSPProblem problem, int populationSize, int maxGenerations,
-      double probability) {
+  public Individual run(TSPProblem problem, int populationSize, int maxGenerations, double probability) {
     Population population = new Population(problem, populationSize);
     numGenerations = 1;
+    Individual bestIndividual = Collections.min(population.getPopulation());
+    bst.newBestIndividualForSingleRun(bestIndividual, numGenerations);
     List<Individual> populationList = new ArrayList<>();
     populationList.addAll(population.getPopulation());
 
     while (numGenerations <= maxGenerations) {
-//      System.out.println("Generation " + numGenerations);
       for (Individual individual : population.getPopulation()) {
         Individual s0 = new Individual(individual);
         int len = s0.getGenotype().size();
@@ -91,8 +91,12 @@ public class InverOver {
         }
       }
       numGenerations++;
+      if (Collections.min(population.getPopulation()).compareTo(bestIndividual) < 0) {
+        bestIndividual = Collections.min(population.getPopulation()) ;
+      }
+      bst.bestIndividualForThisGeneration(bestIndividual, (int) numGenerations);
     }
-    return Collections.min(population.getPopulation());
+    return bestIndividual;
   }
 
   /**
