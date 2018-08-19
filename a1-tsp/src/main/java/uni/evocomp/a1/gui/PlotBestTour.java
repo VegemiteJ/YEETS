@@ -23,6 +23,7 @@ import uni.evocomp.util.DoublePair;
 public class PlotBestTour extends Application {
 
   public static String loadName = "usa13509_Jump";
+  public static String problemName = "usa13509.tsp";
   public static boolean plotProvidedBestTour = false;
 
   public static void main(String[] args) {
@@ -103,10 +104,8 @@ public class PlotBestTour extends Application {
       e.printStackTrace();
     }
     TSPProblem problem = null;
-    TSPIO io = new TSPIO();;
-    FileReader fr1 = null;
-    try {
-      fr1 = new FileReader("tests/usa13509.tsp");
+    TSPIO io = new TSPIO();;;
+    try (FileReader fr1 = new FileReader("tests/"+problemName)) {
       problem = io.read(fr1);
     } catch (FileNotFoundException e) {
       e.printStackTrace();
@@ -114,7 +113,6 @@ public class PlotBestTour extends Application {
       e.printStackTrace();
     }
 
-//    TSPProblem problem = bst.getProblem();
     Individual providedBest = bst.getProvidedBestTour();
     Individual bestFoundBySearch = bst.getBestTourFound();
 
