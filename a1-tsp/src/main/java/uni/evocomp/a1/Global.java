@@ -8,16 +8,16 @@ package uni.evocomp.a1;
  */
 public class Global {
   public static final String[] testNames = {
-//    "eil51",
-//    "eil76",
-//    "eil101",
-//    "kroA100",
-//    "kroC100",
-//    "kroD100",
-//    "lin105",
-//    "pcb442",
-//    "pr2392",
-//    "st70",
+    "eil51",
+    "eil76",
+    "eil101",
+    "kroA100",
+    "kroC100",
+    "kroD100",
+    "lin105",
+    "pcb442",
+    "pr2392",
+    "st70",
     "usa13509"
   };
   public static final String testSuffix = ".tsp";
