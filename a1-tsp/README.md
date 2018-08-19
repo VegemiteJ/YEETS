@@ -1,4 +1,12 @@
 # README
+# Group Members:
+Jack Baxter - A1666857, a1666857@student.adelaide.edu.au
+Joshua Log - A1670961, a1670961@student.adelaide.edu.au
+Denton Phosvanh - A1680965, a1680965@student.adelaide.edu.au
+Robert McAuley - A1668724, a1668724@student.adelaide.edu.au
+James Kortman - A1648090, a1648090@student.adelaide.edu.au
+Nehal Jain - A1689549, a1689549@student.adelaide.edu.au
+
 ## Dependencies
 Maven is required to build and run.
 Java Version: 1.8.0_121
