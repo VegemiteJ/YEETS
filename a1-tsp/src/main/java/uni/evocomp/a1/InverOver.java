@@ -101,8 +101,11 @@ public class InverOver {
         }
       }
       numGenerations++;
-      if (Collections.min(population.getPopulation()).compareTo(bestIndividual) < 0) {
-        bestIndividual = Collections.min(population.getPopulation());
+
+      Individual popBest = Collections.min(population.getPopulation());
+      if (popBest.compareTo(bestIndividual) < 0) {
+        bestIndividual = popBest;
+        bst.newBestIndividualForSingleRun(popBest, numGenerations);
       }
       bst.bestIndividualForThisGeneration(bestIndividual, (int) numGenerations);
     }
