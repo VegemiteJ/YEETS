@@ -1,11 +1,16 @@
 package uni.evocomp.a1;
 
+import com.sun.istack.internal.NotNull;
+import com.sun.istack.internal.Nullable;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
+import java.util.stream.Collectors;
 import uni.evocomp.a1.logging.BenchmarkStatsTracker;
 import uni.evocomp.a1.mutate.Mutate;
 import uni.evocomp.a1.recombine.Recombine;
@@ -14,114 +19,59 @@ import uni.evocomp.a1.selectsurvivors.SelectSurvivors;
 import uni.evocomp.util.Util;
 
 public class EABenchmark {
-  public static final String[] testNames = {
-    "eil51",
-    "eil76",
-    "eil101",
-    "kroA100",
-    "kroC100",
-    "kroD100",
-    "lin105",
-    "pcb442",
-    "pr2392",
-    "st70",
-    "usa13509"
-  };
-  public static final String testSuffix = ".tsp";
-  public static final String tourSuffix = ".opt.tour";
-  public static final String a1Prefix = "uni.evocomp.a1";
-
-  static final int totalGenerations = 20000;
 
   /**
-   * Runs an EA benchmark on <code>problem</code>
+   * Runs a single averaged test case
    *
-   * @param testName the name of the test to run, without extension
-   * @param propertiesFileName name of properties file to read customisation from
+   * @param problem
+   * @param totalGenerations
+   * @param timeoutLimit Limit in seconds
+   * @param repeats
+   * @param optimalSolution
+   * @param selectParents
+   * @param recombine
+   * @param mutate
+   * @param mutateProbability
+   * @param selectSurvivors
+   * @param populationSize
    */
-  public static void benchmark(
-      String testName, String propertiesFileName) {
-    // Read a .properties file to figure out which implementations to use and instantiate
-    // one of each using Evaluate, SelectParents, Recombine, Mutate and SelectSurvivors
-    Properties prop = new Properties();
+  private static void averagedSingleTestCaseRun(
+      @NotNull TSPProblem problem,
+      int totalGenerations,
+      long timeoutLimit,
+      int repeats,
+      @Nullable Individual optimalSolution,
+      @NotNull SelectParents selectParents,
+      @NotNull Recombine recombine,
+      @NotNull Mutate mutate,
+      double mutateProbability,
+      @NotNull SelectSurvivors selectSurvivors,
+      int populationSize) {
 
-    SelectParents selectParents;
-    Recombine recombine ;
-    Mutate mutate;
-    SelectSurvivors selectSurvivors;
-    int populationSize;
-    long timeoutLimit;
-    int repeats;
-
-    // Create the objects from the properties file
-    // If a query isn't found (e.g. Evaluate doesn't have an entry, fallback on second arg)
-    // WARNING : EVERY implementation must have a constructor (even if it's blank)
-    // This doesn't have to be a default constructor, it could have arguments
-    try (InputStream input = new FileInputStream(propertiesFileName)) {
-      prop.load(input);
-
-      selectParents =
-          (SelectParents)
-              Util.classFromName(
-                  prop.getProperty(
-                      "SelectParents", Global.a1Prefix + ".selectparents.UniformRandom"));
-      recombine =
-          (Recombine)
-              Util.classFromName(
-                  prop.getProperty("Recombine", Global.a1Prefix + ".recombine.OrderCrossover"));
-      mutate =
-          (Mutate)
-              Util.classFromName(prop.getProperty("Mutate", Global.a1Prefix + ".mutate.Invert"));
-      selectSurvivors =
-          (SelectSurvivors)
-              Util.classFromName(
-                  prop.getProperty(
-                      "SelectSurvivors", Global.a1Prefix + ".selectsurvivors.TournamentSelection"));
-      populationSize = Integer.valueOf(prop.getProperty("PopulationSize", "-1"));
-      timeoutLimit = Long.valueOf(prop.getProperty("TimeoutLimit", "900"));
-      repeats = Integer.valueOf(prop.getProperty("NumberOfRuns", "30"));
-    } catch (Exception ex) {
-      ex.printStackTrace();
-      return;
-    }
-
-    TSPIO io = new TSPIO();
-    TSPProblem problem = null;
-    Individual optimalSolution = null;
-
-    // Read problem and corresponding solution if available
-    try {
-      BufferedReader br1 = new BufferedReader(new FileReader(testName + Global.testSuffix));
-      problem = io.read(br1);
-      BufferedReader br2 = new BufferedReader(new FileReader(testName + Global.tourSuffix));
-      optimalSolution = io.readSolution(br2);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-
-
-    String name = problem.getName()
-        + "_"
-        + selectParents.getClass().getSimpleName()
-        + "_"
-        + recombine.getClass().getSimpleName()
-        + "_"
-        + mutate.getClass().getSimpleName()
-        + "_"
-        + selectSurvivors.getClass().getSimpleName()
-        + "_"
-        + populationSize
-        + ".bst";
-
-    // Record metrics
-    BenchmarkStatsTracker bst =
-        new BenchmarkStatsTracker(name, problem);
-    EA ea = new EA(bst, timeoutLimit);
-    bst.setSolutionTour(optimalSolution);
+    // Create a reasonable name for the stats files
+    String name =
+        problem.getName()
+            + "_"
+            + selectParents.getClass().getSimpleName()
+            + "_"
+            + recombine.getClass().getSimpleName()
+            + "_"
+            + mutate.getClass().getSimpleName()
+            + "_"
+            + selectSurvivors.getClass().getSimpleName()
+            + "_"
+            + populationSize
+            + ".bst";
 
     System.out.println(
         "Running benchmark: " + problem.getName() + "(" + problem.getComment() + ")");
     System.out.println("\tConfig: " + name);
+
+    // Record metrics
+    BenchmarkStatsTracker bst = new BenchmarkStatsTracker(name, problem);
+    bst.setSolutionTour(optimalSolution);
+    EA ea = new EA(bst, timeoutLimit);
+
     long startTime = System.nanoTime();
     for (int i = 0; i < repeats; i++) {
       System.out.println("Repeat: " + i + " of " + repeats);
@@ -132,6 +82,7 @@ public class EABenchmark {
               selectParents,
               recombine,
               mutate,
+              mutateProbability,
               selectSurvivors,
               populationSize,
               totalGenerations);
@@ -151,6 +102,7 @@ public class EABenchmark {
             + (double) (System.nanoTime() - startTime) / 1000000000.0);
     System.out.println("Save file: " + bst.getSerialFileName());
 
+    // Write stats to file
     try {
       bst.writeToFile();
       BenchmarkStatsTracker.serialise(bst);
@@ -159,13 +111,98 @@ public class EABenchmark {
     }
   }
 
-  public static void main(String[] args) {
-    String configName = (args.length < 1 ? "config.properties" : args[0]);
+  /**
+   * Runs an EA benchmark on <code>problem</code>
+   *
+   * @param propertiesFileName name of properties file to read customisation from
+   */
+  public static void benchmark(String propertiesFileName) throws IOException {
+    // Read a .properties file to figure out which implementations to use and instantiate
+    // one of each using Evaluate, SelectParents, Recombine, Mutate and SelectSurvivors
+    Properties prop = new Properties();
 
-    for (String testfile : testNames) {
-      testfile = "tests/" + testfile;
-      System.out.println("Running testfile: " + testfile);
-      benchmark(testfile, configName);
+    List<String> testCases;
+    SelectParents selectParents;
+    Recombine recombine;
+    Mutate mutate;
+    double mutateProbability;
+    SelectSurvivors selectSurvivors;
+    int populationSize;
+    int totalGenerations;
+    long timeoutLimit;
+    int repeats;
+
+    // Create the objects from the properties file
+    // If a query isn't found (e.g. Evaluate doesn't have an entry, fallback on second arg)
+    // WARNING : EVERY implementation must have a constructor (even if it's blank)
+    // This doesn't have to be a default constructor, it could have arguments
+    try (InputStream input = new FileInputStream(propertiesFileName)) {
+      prop.load(input);
+
+      String testPrefix = prop.getProperty("TestDirPrefix", "tests/");
+      testCases =
+          Arrays.asList(
+                  prop.getProperty(
+                          "TestFiles",
+                          "st70,eil51,eil76,eil101,kroA100,kroC100,kroD100,lin105,pcb442,pr2392,usa13509")
+                      .split("\\s*,\\s*"))
+              .stream()
+              .map(testCase -> testPrefix + testCase)
+              .collect(Collectors.toList());
+      selectParents =
+          Util.classFromName(
+              prop.getProperty("SelectParents", Global.a1Prefix + ".selectparents.UniformRandom"));
+      recombine =
+          Util.classFromName(
+              prop.getProperty("Recombine", Global.a1Prefix + ".recombine.OrderCrossover"));
+      mutate = Util.classFromName(prop.getProperty("Mutate", Global.a1Prefix + ".mutate.Invert"));
+      mutateProbability = Double.valueOf(prop.getProperty("MutateProbability", "0.1"));
+      selectSurvivors =
+          Util.classFromName(
+              prop.getProperty(
+                  "SelectSurvivors", Global.a1Prefix + ".selectsurvivors.TournamentSelection"));
+      populationSize = Integer.valueOf(prop.getProperty("PopulationSize", "-1"));
+      totalGenerations = Integer.valueOf(prop.getProperty("TotalGenerations", "20000"));
+      timeoutLimit = Long.valueOf(prop.getProperty("TimeoutLimit", "900"));
+      repeats = Integer.valueOf(prop.getProperty("NumberOfRuns", "30"));
+    } catch (Exception ex) {
+      ex.printStackTrace();
+      return;
     }
+
+    // Run for every defined test case
+    for (String testName : testCases) {
+      TSPIO io = new TSPIO();
+      TSPProblem problem;
+      Individual optimalSolution = null;
+
+      // Read problem and corresponding solution if available
+      BufferedReader br1 = new BufferedReader(new FileReader(testName + Global.testSuffix));
+      problem = io.read(br1);
+      try {
+        BufferedReader br2 = new BufferedReader(new FileReader(testName + Global.tourSuffix));
+        optimalSolution = io.readSolution(br2);
+      } catch (IOException e) {
+        System.out.println("Unable to find optimal solution tour for: " + testName);
+      }
+
+      averagedSingleTestCaseRun(
+          problem,
+          totalGenerations,
+          timeoutLimit,
+          repeats,
+          optimalSolution,
+          selectParents,
+          recombine,
+          mutate,
+          mutateProbability,
+          selectSurvivors,
+          populationSize);
+    }
+  }
+
+  public static void main(String[] args) throws IOException {
+    String configName = (args.length < 1 ? "config.properties" : args[0]);
+    benchmark(configName);
   }
 }

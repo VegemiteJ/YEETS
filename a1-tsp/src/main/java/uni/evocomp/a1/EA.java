@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import uni.evocomp.a1.logging.BenchmarkStatsTracker;
 import uni.evocomp.a1.mutate.Mutate;
 import uni.evocomp.a1.recombine.Recombine;
@@ -21,10 +23,8 @@ import uni.evocomp.util.Pair;
  */
 public class EA {
   BenchmarkStatsTracker bst;
-
   private long printItr;
   private long maxTime; // nanoseconds
-
   private long generation = 0;
 
   EA(BenchmarkStatsTracker bst) {
@@ -61,6 +61,7 @@ public class EA {
    * @param selectParents a class to define how to pair parents together
    * @param recombine a class to define how to recombine parents to produce offspring
    * @param mutate a class to define how to mutate the resulting offspring
+   * @param mutateProbability probability to mutate a given individual
    * @param selectSurvivors a class to define how to select <code>Individuals</code> for next round
    * @param populationSize the size of the population
    * @return the <code>Individual</code> with the best fitness
@@ -70,6 +71,7 @@ public class EA {
       SelectParents selectParents,
       Recombine recombine,
       Mutate mutate,
+      double mutateProbability,
       SelectSurvivors selectSurvivors,
       int populationSize,
       int totalGenerations) {
@@ -94,25 +96,13 @@ public class EA {
       List<Pair<Individual, Individual>> parents = selectParents.selectParents(population);
 
       // 2. recombine pairs of parents
-      List<Individual> offspring = new ArrayList<>();
-      //      offspring = parents.stream()
-      //          // Can't use {} notation in flatMap to produce intermediate variables
-      //          // Unnecessarily calls recombine twice, which already calls recombine twice
-      //          .flatMap(pi ->
-      //          // Pair<Individual, Individual> offspring = recombine.recombine(pi.first,
-      // pi.second);
-      //          Arrays.asList(recombine.recombine(pi.first, pi.second).first,
-      //              recombine.recombine(pi.first, pi.second).second).stream())
-      //          .collect(Collectors.toList());
-
-      // Step 2 but normal for loop. Can't just automagically parallelise but doesn't need to call
-      // recombine twice
-      for (Iterator<Pair<Individual, Individual>> it = parents.iterator(); it.hasNext(); ) {
-        Pair<Individual, Individual> p = it.next();
-        Pair<Individual, Individual> offspringPair = recombine.recombineDouble(p.first, p.second);
-        offspring.add(offspringPair.first);
-        offspring.add(offspringPair.second);
-      }
+      List<Individual> offspring = parents.parallelStream().flatMap(pi -> {
+        Stream.Builder<Individual> offspringStream = Stream.builder();
+        Pair<Individual, Individual> twins = recombine.recombineDouble(pi.first, pi.second);
+        offspringStream.add(twins.first);
+        offspringStream.add(twins.second);
+        return offspringStream.build();
+      }).collect(Collectors.toList());
 
       // 3. mutate resulting offspring and
       // 4. evaluate new candidates, then add these to the population
@@ -120,7 +110,7 @@ public class EA {
           .parallelStream()
           .forEach(
               individual -> {
-                mutate.mutateWithProbability(0.2, problem, individual, ThreadLocalRandom.current());
+                mutate.mutateWithProbability(mutateProbability, problem, individual, ThreadLocalRandom.current());
                 individual.getCost(problem);
               });
       for (Individual i : offspring) population.add(i);
