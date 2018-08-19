@@ -14,13 +14,12 @@ import uni.evocomp.util.IntegerPair;
 /**
  * Class for InverOver
  * 
- * Implements Inver Over Algorithm as described by
+ * Implements inver-over algorithm as described by
  * http://www.cs.adelaide.edu.au/~zbyszek/Papers/p44.pdf
  * 
  * @author Nehal
  *
  */
-
 public class InverOver {
 
   BenchmarkStatsTracker bst;
