@@ -42,60 +42,69 @@ public class InverOver {
    * @return the best <code>Individual</code> after running for <code>maxGenerations</code>
    *         generations
    */
-  public Individual run(TSPProblem problem, int populationSize, int maxGenerations, double probability) {
+  public Individual run(TSPProblem problem, int populationSize, int maxGenerations,
+      double probability) {
+    // Randomly initialise population and store best Individual so far
     Population population = new Population(problem, populationSize);
     numGenerations = 1;
     Individual bestIndividual = Collections.min(population.getPopulation());
     bst.newBestIndividualForSingleRun(bestIndividual, numGenerations);
     List<Individual> populationList = new ArrayList<>();
     populationList.addAll(population.getPopulation());
+    Mutate m = new Invert();
 
+    int numInversions = 0;
     while (numGenerations <= maxGenerations) {
       for (Individual individual : population.getPopulation()) {
-        Individual s0 = new Individual(individual);
-        int len = s0.getGenotype().size();
+        // Select random city c from sDash
+        Individual sDash = new Individual(individual);
+        int len = sDash.getGenotype().size();
         int index = ThreadLocalRandom.current().nextInt(0, len);
-        int city = s0.getGenotype().get(index);
-        List<Integer> visitedCityIndex = new ArrayList<>();
-        visitedCityIndex.add(index);
-        Mutate m = new Invert();
+        int c = sDash.getGenotype().get(index);
 
         while (true) {
           int cDash;
+          // Select a city cDash from the remaining cities in sDash
           if (ThreadLocalRandom.current().nextDouble(1) <= probability) {
             int indexNext;
             do {
               indexNext = ThreadLocalRandom.current().nextInt(0, len);
-            } while (visitedCityIndex.contains(indexNext));
-            cDash = s0.getGenotype().get(indexNext);
+            } while (index == indexNext);
+            cDash = sDash.getGenotype().get(indexNext);
+            // cDash = the city "next to" c in a randomly selected Individual
           } else {
             int iDashIndex = ThreadLocalRandom.current().nextInt(0, populationSize);
             Individual iDash = populationList.get(iDashIndex);
 
-            cDash = iDash.getGenotype().get((iDash.getGenotype().indexOf(city) + 1) % len);
+            cDash = iDash.getGenotype().get((iDash.getGenotype().indexOf(c) + 1) % len);
           }
 
-          int cityIndexLast = (s0.getGenotype().indexOf(city) - 1 + len) % len;
-          int cityIndexNext = (s0.getGenotype().indexOf(city) + 1) % len;
-          int cityLast = (s0.getGenotype().get(cityIndexLast));
-          int cityNext = (s0.getGenotype().get(cityIndexNext));
+          // If cDash is the same city as the next or previous of <code>city</code>
+          int cityIndexLast = (sDash.getGenotype().indexOf(c) - 1 + len) % len;
+          int cityIndexNext = (sDash.getGenotype().indexOf(c) + 1) % len;
+          int cityLast = (sDash.getGenotype().get(cityIndexLast));
+          int cityNext = (sDash.getGenotype().get(cityIndexNext));
           if ((cDash == cityLast) || (cDash == cityNext)) {
             break;
           }
-          m.run(problem, s0, new IntegerPair(cityIndexNext, s0.getGenotype().indexOf(cDash)));
-          city = cDash;
+
+          // Mutate -> Invert the section from next to cDash in sDash
+          m.run(problem, sDash, new IntegerPair(cityIndexNext, sDash.getGenotype().indexOf(cDash)));
+          numInversions++;
+          c = cDash;
         }
 
-        if (s0.getCost(problem) <= individual.getCost(problem)) {
-          individual = s0;
+        if (sDash.getCost(problem) <= individual.getCost(problem)) {
+          individual = sDash;
         }
       }
       numGenerations++;
       if (Collections.min(population.getPopulation()).compareTo(bestIndividual) < 0) {
-        bestIndividual = Collections.min(population.getPopulation()) ;
+        bestIndividual = Collections.min(population.getPopulation());
       }
       bst.bestIndividualForThisGeneration(bestIndividual, (int) numGenerations);
     }
+    System.out.println("Inv: " + numInversions);
     return bestIndividual;
   }
 
