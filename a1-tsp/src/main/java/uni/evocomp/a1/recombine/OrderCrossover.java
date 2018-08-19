@@ -81,10 +81,17 @@ public class OrderCrossover implements Recombine {
     return child;
   }
 
-  private boolean elementInPopRange(Integer element, Individual population, IntegerPair range) {
-    final int n = population.getGenotype().size();
+  /**
+   * Returns true if the city valueof(element) exists in a specific range in tour
+   * @param element
+   * @param individual
+   * @param range
+   * @return
+   */
+  private boolean elementInPopRange(Integer element, Individual individual, IntegerPair range) {
+    final int n = individual.getGenotype().size();
     for (int i = range.first; i != range.second; i = Math.floorMod(i + 1, n)) {
-      if (population.getGenotype().get(i).equals(element)) {
+      if (individual.getGenotype().get(i).equals(element)) {
         return true;
       }
     }
