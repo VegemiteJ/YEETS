@@ -1,29 +1,28 @@
 # README
-# Group Members:
-- Jack Baxter - A1666857, a1666857@student.adelaide.edu.au
-- Joshua Loh - A1670961, a1670961@student.adelaide.edu.au
-- Denton Phosvanh - A1680965, a1680965@student.adelaide.edu.au
-- Robert McAuley - A1668724, a1668724@student.adelaide.edu.au
-- James Kortman - A1648090, a1648090@student.adelaide.edu.au
-- Nehal Jain - A1689549, a1689549@student.adelaide.edu.au
+## Group Members:
+Name | id | email
+--- | --- | ---
+Jack Baxter | a1666857 | a1666857@student.adelaide.edu.au
+Joshua Loh | a1670961 | a1670961@student.adelaide.edu.au
+Denton Phosvanh | a1680965 | a1680965@student.adelaide.edu.au
+Robert McAuley | a1668724 | a1668724@student.adelaide.edu.au
+James Kortman | a1648090 | a1648090@student.adelaide.edu.au
+Nehal Jain | a1689549 | a1689549@student.adelaide.edu.au
 
 ## Dependencies
 - Maven is required to build and run.
 - Java Version: 1.8.0_121
 
 ## Running code
- -`mvn clean`
+- `mvn clean`
 - `mvn compile`
 
-To build the EvolutionaryAlgorithm Jar:
-- `mvn jar:jar@ea`
-
-To build the LocalSearch Jar:
-- `mvn jar:jar@localsearch`
-
-To Run either:
-`java -jar target/EABenchmark.jar`
-`java -jar target/LocalSearch.jar`
+### Building and running individual .jars:
+Algorithm | Build command | Run command
+--- | --- | ---
+EvolutionaryAlgorithm | `mvn jar:jar@ea` | `java -jar target/EABenchmark.jar`
+LocalSearch | `mvn jar:jar@localsearch` | `java -jar target/LocalSearch.jar`
+InverOver | `mvn jar:jar@inverover` | `java -jar target/InverOver.jar`
 
 ## Configuring Evolutionary Algorithm
 Modify config.properties to use the desired mutate, crossover, selection and terminating conditions.
