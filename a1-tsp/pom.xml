@@ -59,6 +59,20 @@
           </archive>
         </configuration>
       </execution>
+      <execution>
+        <id>binks</id>
+        <goals>
+          <goal>jar</goal>
+        </goals>
+        <configuration>
+          <finalName>PlotTour</finalName>
+          <archive>
+            <manifest>
+              <mainClass>uni.evocomp.a1.PlotTour</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+      </execution>
     </executions>
   </plugin>
   <plugin>
@@ -82,6 +96,15 @@
         </goals>
         <configuration>
           <mainClass>uni.evocomp.a1.EABenchmark</mainClass>
+        </configuration>
+      </execution>
+      <execution>
+        <id>plot</id>
+        <goals>
+          <goal>java</goal>
+        </goals>
+        <configuration>
+          <mainClass>uni.evocomp.a1.PlotTour</mainClass>
         </configuration>
       </execution>
     </executions>
