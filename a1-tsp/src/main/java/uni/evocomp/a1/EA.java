@@ -26,8 +26,8 @@ public class EA {
   BenchmarkStatsTracker bst;
   long generation;
 
-  public long printItr=1000;
-
+  public long printItr=2000;
+  private final long maxTime = 900000000000L; // 15 minutes
 
   EA(BenchmarkStatsTracker bst) {
     this.bst = bst;
@@ -69,10 +69,11 @@ public class EA {
     Individual bestIndividual = Collections.min(population.getPopulation());
 
     // TODO : define better terminal condition
+    long start = System.nanoTime();
     generation = 1;
     // Add initial best
     bst.newBestIndividualForSingleRun(bestIndividual, generation);
-    while (generation <= totalGenerations) {
+    while (generation <= totalGenerations && System.nanoTime() - start < maxTime) {
       if (generation % printItr == 0) {
         System.out.println("At iteration " + generation + " of " + totalGenerations);
       }

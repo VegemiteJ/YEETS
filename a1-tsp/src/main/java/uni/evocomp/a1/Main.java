@@ -15,16 +15,16 @@ import uni.evocomp.util.Util;
 
 public class Main {
   public static final String[] testNames = {
-//    "eil51",
-//    "eil76",
-//    "eil101",
-//    "kroA100",
-//    "kroC100",
-//    "kroD100",
-//    "lin105",
-//    "pcb442",
-//    "pr2392",
-//    "st70",
+    "eil51",
+    "eil76",
+    "eil101",
+    "kroA100",
+    "kroC100",
+    "kroD100",
+    "lin105",
+    "pcb442",
+    "pr2392",
+    "st70",
     "usa13509"
   };
   public static final String testSuffix = ".tsp";
@@ -116,7 +116,6 @@ public class Main {
         new BenchmarkStatsTracker(name, problem);
 
     EA ea = new EA(bst);
-    ea.printItr = 10000;
     if (optimalSolution != null) {
       bst.setSolutionTour(optimalSolution);
     }
@@ -160,8 +159,6 @@ public class Main {
   }
 
   public static void main(String[] args) {
-//    String testfile = (args.length > 0 ? args[0] : "tests/eil101");
-//    System.out.println("Test file is " + testfile);
     String configName = (args.length < 1 ? "config.properties" : args[0]);
 
     for (String testfile : testNames) {
