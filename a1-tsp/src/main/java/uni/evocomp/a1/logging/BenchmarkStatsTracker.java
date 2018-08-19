@@ -124,6 +124,7 @@ public class BenchmarkStatsTracker implements Serializable {
   }
 
   public void setSolutionTour(Individual i) {
+    if (i == null) return;
     this.providedBestTour = new Individual(i);
   }
 

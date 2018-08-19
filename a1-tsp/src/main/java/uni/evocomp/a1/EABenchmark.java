@@ -13,7 +13,7 @@ import uni.evocomp.a1.selectparents.SelectParents;
 import uni.evocomp.a1.selectsurvivors.SelectSurvivors;
 import uni.evocomp.util.Util;
 
-public class Main {
+public class EABenchmark {
   public static final String[] testNames = {
     "eil51",
     "eil76",
@@ -38,19 +38,20 @@ public class Main {
    *
    * @param testName the name of the test to run, without extension
    * @param propertiesFileName name of properties file to read customisation from
-   * @param repeats how many times to repeat the benchmark
    */
   public static void benchmark(
-      String testName, String propertiesFileName, int repeats) {
+      String testName, String propertiesFileName) {
     // Read a .properties file to figure out which implementations to use and instantiate
     // one of each using Evaluate, SelectParents, Recombine, Mutate and SelectSurvivors
     Properties prop = new Properties();
 
-    SelectParents selectParents = null;
-    Recombine recombine = null;
-    Mutate mutate = null;
-    SelectSurvivors selectSurvivors = null;
-    int populationSize = -1;
+    SelectParents selectParents;
+    Recombine recombine ;
+    Mutate mutate;
+    SelectSurvivors selectSurvivors;
+    int populationSize;
+    long timeoutLimit;
+    int repeats;
 
     // Create the objects from the properties file
     // If a query isn't found (e.g. Evaluate doesn't have an entry, fallback on second arg)
@@ -77,6 +78,8 @@ public class Main {
                   prop.getProperty(
                       "SelectSurvivors", Global.a1Prefix + ".selectsurvivors.TournamentSelection"));
       populationSize = Integer.valueOf(prop.getProperty("PopulationSize", "-1"));
+      timeoutLimit = Long.valueOf(prop.getProperty("TimeoutLimit", "900"));
+      repeats = Integer.valueOf(prop.getProperty("NumberOfRuns", "30"));
     } catch (Exception ex) {
       ex.printStackTrace();
       return;
@@ -94,7 +97,6 @@ public class Main {
       optimalSolution = io.readSolution(br2);
     } catch (IOException e) {
       e.printStackTrace();
-      optimalSolution = null;
     }
 
 
@@ -114,11 +116,9 @@ public class Main {
     // Record metrics
     BenchmarkStatsTracker bst =
         new BenchmarkStatsTracker(name, problem);
+    EA ea = new EA(bst, timeoutLimit);
+    bst.setSolutionTour(optimalSolution);
 
-    EA ea = new EA(bst);
-    if (optimalSolution != null) {
-      bst.setSolutionTour(optimalSolution);
-    }
     System.out.println(
         "Running benchmark: " + problem.getName() + "(" + problem.getComment() + ")");
     System.out.println("\tConfig: " + name);
@@ -141,6 +141,7 @@ public class Main {
       System.out.println("Known Best Solution: " + optimalSolution.getCost(problem));
     }
     System.out.println("Avg: " + bst.getAvgCost());
+    System.out.println("StdDev: " + bst.getStandardDeviation());
     System.out.println("Min: " + bst.getMinCost());
     System.out.println("Max: " + bst.getMaxCost());
     System.out.println(
@@ -151,8 +152,8 @@ public class Main {
     System.out.println("Save file: " + bst.getSerialFileName());
 
     try {
-      BenchmarkStatsTracker.serialise(bst);
       bst.writeToFile();
+      BenchmarkStatsTracker.serialise(bst);
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -164,7 +165,7 @@ public class Main {
     for (String testfile : testNames) {
       testfile = "tests/" + testfile;
       System.out.println("Running testfile: " + testfile);
-      benchmark(testfile, configName, 30);
+      benchmark(testfile, configName);
     }
   }
 }
