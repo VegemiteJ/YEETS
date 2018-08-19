@@ -71,8 +71,8 @@ public class InverOver {
                         
                         cDash = iDash.getGenotype().get((iDash.getGenotype().indexOf(city) + 1 ) % len);
                     }
-                    int cityIndexLast = (s0.getGenotype().indexOf(cDash) - 1 + len) % len;
-                    int cityIndexNext = (s0.getGenotype().indexOf(cDash) + 1) % len;
+                    int cityIndexLast = (s0.getGenotype().indexOf(city) - 1 + len) % len;
+                    int cityIndexNext = (s0.getGenotype().indexOf(city) + 1) % len;
                     int cityLast = (s0.getGenotype().get(cityIndexLast));
                     int cityNext = (s0.getGenotype().get(cityIndexNext));
                     if ((cDash == cityLast) || (cDash == cityNext)) {
