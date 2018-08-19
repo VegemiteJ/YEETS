@@ -1,11 +1,10 @@
 package uni.evocomp.a1;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import uni.evocomp.a1.logging.BenchmarkStatsTracker;
 import uni.evocomp.a1.mutate.Mutate;
 import uni.evocomp.a1.mutate.Invert;
 import uni.evocomp.a1.Population;
@@ -15,7 +14,7 @@ import uni.evocomp.util.IntegerPair;
 /**
  * Class for InverOver
  * 
- * Able to ___
+ * Implements Inver Over Algorithm as described by http://www.cs.adelaide.edu.au/~zbyszek/Papers/p44.pdf 
  * 
  * @author Nehal
  *
@@ -23,25 +22,39 @@ import uni.evocomp.util.IntegerPair;
 
 public class InverOver {
 
-    Integer numGenerations; 
+    BenchmarkStatsTracker bst;
+    long numGenerations;
+    
+    final long printItr=1000;
+    
+    InverOver(BenchmarkStatsTracker bst) {
+      this.bst = bst;
+    }
 
-    public int population(TSPProblem problem, int populationSize, int maxGenerations, double probability) {
+    /**
+     * Description of the function
+     * 
+     * @param problem 
+     * @param populationSize
+     * @param maxGenerations
+     * @param probability of random inversion
+     * @return The best individual is returned
+     */
+    public Individual run(TSPProblem problem, int populationSize, int maxGenerations, double probability) {
         Population population = new Population(problem, populationSize);
         numGenerations = 1;
         List<Individual> populationList = new ArrayList<>();
         populationList.addAll(population.getPopulation());
 
-        while (numGenerations <= 20000) {
-            
+        while (numGenerations <= maxGenerations) { 
             for (Individual individual : population.getPopulation()) {
                 Individual s0 = new Individual(individual);
-
                 int len = s0.getGenotype().size();
                 int index =  ThreadLocalRandom.current().nextInt(0, len);
                 int city = s0.getGenotype().get(index);
-                List<Integer> visitedCityIndex = new ArrayList<Integer>();
+                List<Integer> visitedCityIndex = new ArrayList<>();
                 visitedCityIndex.add(index);
-                Mutate mutator = new Invert();
+                Mutate m = new Invert();
 
                 while (true) {
                     int cDash;
@@ -65,17 +78,24 @@ public class InverOver {
                     if ((cDash == cityLast) || (cDash == cityNext)) {
                         break;
                     }
-                    mutator.run(problem, s0, new IntegerPair (cityIndexNext, s0.getGenotype().indexOf(cDash)));
+                    m.run(problem, s0, new IntegerPair (cityIndexNext, s0.getGenotype().indexOf(cDash)));
                     city = cDash;
                 }
+
                 if (s0.getCost(problem) <= individual.getCost(problem)) {
                     individual = s0;
                 }
             }
+            numGenerations++;
         }
         return Collections.min(population.getPopulation());
     }
-    public int getNumGenerations() {
+
+    /**
+     * Gets the current number of generations
+     * @return number of generations is returned
+     */
+    public long getNumGenerations() {
         return numGenerations;
     }
 }
