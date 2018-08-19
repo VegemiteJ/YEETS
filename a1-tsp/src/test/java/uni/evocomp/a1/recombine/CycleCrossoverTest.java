@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import uni.evocomp.a1.Individual;
 import uni.evocomp.a1.TSPProblem;
+import uni.evocomp.util.IntegerPair;
 import uni.evocomp.util.Pair;
 import uni.evocomp.util.Util;
 
@@ -84,4 +85,21 @@ public class CycleCrossoverTest {
     assertEquals(expA, result1.second);
   }
 
+  @Test
+  public void testFuzzed() {
+    for (int n = 3; n < 300; n += 1) {
+      Individual a = new Individual(n);
+      Individual b = new Individual(n);
+      Individual child = crossover.recombine(a, b);
+      try {
+        child.assertIsValidTour();
+      } catch (Exception e) {
+        System.out.println("n: " + n);
+        System.out.println("a: " + a.getGenotype().toString());
+        System.out.println("b: " + b.getGenotype().toString());
+        System.out.println("child: " + child.getGenotype().toString());
+        throw e;
+      }
+    }
+  }
 }

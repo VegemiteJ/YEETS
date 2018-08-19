@@ -1,5 +1,6 @@
 package uni.evocomp.a1;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,25 +17,27 @@ public class LocalSearchBenchmark {
   public static final String[] mutationNames = {"Jump", "Exchange", "2-Opt"};
   public static final int repeats = 30;
 
-  LocalSearchBenchmark() {
-    // Assume we create a local search function with parameters
-    // new LocalSearch(problem, mutator)
-
-    // and there is a search that returns it's best guess
-
+  LocalSearchBenchmark() throws IOException {
+    System.out.println("Version 2");
     TSPIO io = new TSPIO();
     ArrayList<Pair<TSPProblem, Individual>> benchmarks = new ArrayList<>();
     for (String testString : Global.testNames) {
-      TSPProblem problem = null;
-      try (FileReader fr1 = new FileReader(testString + Global.testSuffix);
-          FileReader fr2 = new FileReader(testString + Global.tourSuffix)) {
-        problem = io.read(fr1);
-        Individual solution = io.readSolution(fr2);
-        benchmarks.add(new Pair<>(problem, solution));
+      testString = "tests/" + testString;
+      Individual solution = null;
+
+      // If throws - don't continue
+      TSPProblem problem = io.read(new FileReader(testString + Global.testSuffix));
+      // Allowed to throw
+      try (FileReader fr2 = new FileReader(testString + Global.tourSuffix)) {
+        solution = io.readSolution(fr2);
+        solution.setCost(solution.getCost(problem));
+      } catch (FileNotFoundException e) {
+        System.out.println("Tour file not found for: " + testString);
       } catch (IOException e) {
         e.printStackTrace();
-        benchmarks.add(new Pair<>(problem, null));
+        System.exit(10);
       }
+      benchmarks.add(new Pair<>(problem, solution));
     }
     for (Pair<TSPProblem, Individual> benchmark : benchmarks) {
       TSPProblem problemDef = benchmark.first;
@@ -63,6 +66,7 @@ public class LocalSearchBenchmark {
           bst.endSingleRun(ls.getTotalIterations());
         }
         System.out.println("Avg cost: " + bst.getAvgCost());
+        System.out.println("StdDev cost: " + bst.getStandardDeviation());
         System.out.println("Min cost: " + bst.getMinCost());
         System.out.println("Max cost: " + bst.getMaxCost());
         System.out.println(
@@ -71,8 +75,8 @@ public class LocalSearchBenchmark {
             + (double) (System.nanoTime() - startTime) / 1000000000.0);
         System.out.println("Save file: " + bst.getSerialFileName());
         try {
-          BenchmarkStatsTracker.serialise(bst);
           bst.writeToFile();
+          BenchmarkStatsTracker.serialise(bst);
         } catch (IOException e) {
           e.printStackTrace();
         }
@@ -80,7 +84,7 @@ public class LocalSearchBenchmark {
     }
   }
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws IOException {
     new LocalSearchBenchmark();
   }
 }

@@ -1,5 +1,7 @@
 package uni.evocomp.a1.gui;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,14 +13,17 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
+import uni.evocomp.a1.Global;
 import uni.evocomp.a1.Individual;
+import uni.evocomp.a1.TSPIO;
 import uni.evocomp.a1.TSPProblem;
 import uni.evocomp.a1.logging.BenchmarkStatsTracker;
 import uni.evocomp.util.DoublePair;
 
 public class PlotBestTour extends Application {
 
-  public static String loadName = "pcb442_config.properties";
+  public static String loadName = "usa13509_Jump";
+  public static String problemName = "usa13509.tsp";
   public static boolean plotProvidedBestTour = false;
 
   public static void main(String[] args) {
@@ -98,8 +103,16 @@ public class PlotBestTour extends Application {
     } catch (ClassNotFoundException e) {
       e.printStackTrace();
     }
+    TSPProblem problem = null;
+    TSPIO io = new TSPIO();;;
+    try (FileReader fr1 = new FileReader("tests/"+problemName)) {
+      problem = io.read(fr1);
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
 
-    TSPProblem problem = bst.getProblem();
     Individual providedBest = bst.getProvidedBestTour();
     Individual bestFoundBySearch = bst.getBestTourFound();
 
