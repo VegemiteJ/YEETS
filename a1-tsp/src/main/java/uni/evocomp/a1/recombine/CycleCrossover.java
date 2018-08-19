@@ -26,8 +26,8 @@ public class CycleCrossover implements Recombine {
    * @param idx
    * @param parentA
    * @param parentB
-   * @param childA    Must be a List of size parentA.size()
-   * @param childB    Must be a List of size parentB.size()
+   * @param childA Must be a List of size parentA.size()
+   * @param childB Must be a List of size parentB.size()
    */
   private void runSingleCycle(
       int terminatingValue,
@@ -39,11 +39,11 @@ public class CycleCrossover implements Recombine {
     int aValue = terminatingValue;
     int bValue;
     do {
-      childA[idx] = aValue;        // (a)
-      bValue = parentB.get(idx);      // (b)
+      childA[idx] = aValue;               // (a)
+      bValue = parentB.get(idx);          // (b)
       childB[idx] = bValue;
-      idx = parentA.indexOf(bValue);  // (c)
-      aValue = parentA.get(idx);      // (d)
+      idx = parentA.indexOf(bValue);      // (c)
+      aValue = parentA.get(idx);          // (d)
     } while (aValue != terminatingValue); // (e)
   }
 
@@ -84,6 +84,7 @@ public class CycleCrossover implements Recombine {
 
   /**
    * Returns index of next matching position containing 0
+   * 
    * @param childA
    * @param i
    * @return
