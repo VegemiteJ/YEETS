@@ -17,7 +17,7 @@ import uni.evocomp.util.Util;
 public class IndividualTest {
 
   TSPProblem problem;
-  
+
   @Before
   public void setUp() throws Exception {
     List<List<Double>> weights = new ArrayList<>();
@@ -34,7 +34,7 @@ public class IndividualTest {
     problem = new TSPProblem(weights);
 
   }
-  
+
   private boolean didThrowException(Individual i) {
     try {
       i.assertIsValidTour();
@@ -272,5 +272,28 @@ public class IndividualTest {
     assertEquals(12.0, j.getCost(problem), 0);
 
     assertEquals(i.getCost(problem), j.getCost(problem), 0);
+  }
+
+  /**
+   * Test that the copy ctor actually performs a deep copy of everything. i.e. changing the copy
+   * should have no result on the original
+   */
+  @Test
+  public void testCopyCtorDeepCopy() {
+    // Create an Individual and a copy using the copy ctor
+    // They should be the same
+    Individual src = new Individual(Arrays.asList(2, 1, 3), problem);
+    Individual copy = new Individual(src);
+    assertEquals(src.getGenotype(), copy.getGenotype());
+    assertEquals(src.getCost(problem), copy.getCost(problem));
+    assertFalse(src.getGenotype() == copy.getGenotype());
+    assertTrue(src.equals(copy));
+
+    // Changing the copy shouldn't affect the src
+    Collections.sort(copy.getGenotype());
+    assertEquals(Arrays.asList(2, 1, 3), src.getGenotype());
+    assertEquals(Arrays.asList(1, 2, 3), copy.getGenotype());
+    assertFalse(src.getGenotype().equals(copy.getGenotype()));
+    assertFalse(src.equals(copy));
   }
 }
