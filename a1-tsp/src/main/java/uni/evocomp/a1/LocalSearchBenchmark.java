@@ -21,7 +21,7 @@ public class LocalSearchBenchmark {
   public static final String[] mutationNames = {"2-Opt"};
   public static final int repeats = 30;
 
-  LocalSearchBenchmark() {
+  LocalSearchBenchmark() throws IOException {
     // Assume we create a local search function with parameters
     // new LocalSearch(problem, mutator)
 
@@ -34,20 +34,20 @@ public class LocalSearchBenchmark {
     for (String testString : Global.testNames) {
       TSPProblem problem = null;
       testString = "tests/" + testString;
-      try {
-        FileReader fr1 = new FileReader(testString + Global.testSuffix);
-        problem = io.read(fr1);
-        FileReader fr2 = new FileReader(testString + Global.tourSuffix);
-        Individual solution = io.readSolution(fr2);
+      Individual solution = null;
+      // If throws - don't continue
+      problem = io.read(new FileReader(testString + Global.testSuffix));
+      // Allowed to throw
+      try (FileReader fr2 = new FileReader(testString + Global.tourSuffix)) {
+        solution = io.readSolution(fr2);
         solution.setCost(evaluator.evaluate(problem, solution));
-        benchmarks.add(new Pair<>(problem, solution));
       } catch (FileNotFoundException e) {
         e.printStackTrace();
-        benchmarks.add(new Pair<>(problem, null));
       } catch (IOException e) {
         e.printStackTrace();
         System.exit(10);
       }
+      benchmarks.add(new Pair<>(problem, solution));
     }
     for (Pair<TSPProblem, Individual> benchmark : benchmarks) {
       TSPProblem problemDef = benchmark.first;
@@ -91,7 +91,7 @@ public class LocalSearchBenchmark {
     }
   }
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws IOException {
     new LocalSearchBenchmark();
   }
 }
