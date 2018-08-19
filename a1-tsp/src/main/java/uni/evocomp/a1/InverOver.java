@@ -13,10 +13,10 @@ import uni.evocomp.util.IntegerPair;
 
 /**
  * Class for InverOver
- * 
+ *
  * Implements inver-over algorithm as described by
  * http://www.cs.adelaide.edu.au/~zbyszek/Papers/p44.pdf
- * 
+ *
  * @author Nehal
  *
  */
@@ -33,7 +33,7 @@ public class InverOver {
 
   /**
    * Run InverOver on a problem to produce the best Individual
-   * 
+   *
    * @param problem
    * @param populationSize
    * @param maxGenerations how many generations to run
@@ -54,7 +54,7 @@ public class InverOver {
 
     int numInversions = 0;
     while (numGenerations <= maxGenerations) {
-        for (Individual individual : population.getPopulation()) {
+      for (Individual individual : population.getPopulation()) {
         // Select random city c from sDash
         Individual sDash = new Individual(individual);
         List<Integer> sDashTour = sDash.getGenotype(); // this gets used a lot
@@ -96,7 +96,8 @@ public class InverOver {
         }
 
         if (sDash.getCost(problem) <= individual.getCost(problem)) {
-          individual = sDash;
+          individual.setGenotype(sDash.getGenotype());
+          individual.setCost(sDash.getCost(problem));
         }
       }
       numGenerations++;
@@ -111,7 +112,7 @@ public class InverOver {
 
   /**
    * Gets the current number of generations
-   * 
+   *
    * @return number of generations is returned
    */
   public long getNumGenerations() {

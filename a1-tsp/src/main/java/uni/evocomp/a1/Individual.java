@@ -115,6 +115,10 @@ public class Individual implements Comparable<Individual>, Serializable {
     return genotype;
   }
 
+  public void setGenotype(List<Integer> g) {
+    genotype = g;
+  }
+
   /**
    * return the cost of this Individual with respect to a TSPProblem. Updates the cost if the dirty
    * bit is set
