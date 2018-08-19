@@ -158,7 +158,9 @@ public class Util {
   public static <T> T classFromName(String name)
       throws ClassNotFoundException, InstantiationException, IllegalAccessException,
           IllegalArgumentException, InvocationTargetException {
-    Class cl = Class.forName(name, true, Thread.currentThread().getContextClassLoader());
+
+//    Thread.currentThread().getContextClassLoader()
+    Class cl = Class.forName(name, true, ClassLoader.getSystemClassLoader());
     Constructor constructors[] = cl.getConstructors();
     T out = (T) constructors[0].newInstance(new Object[0]);
     return out;
