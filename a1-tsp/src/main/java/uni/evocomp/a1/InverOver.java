@@ -50,7 +50,7 @@ public class InverOver {
     populationList.addAll(population.getPopulation());
 
     while (numGenerations <= maxGenerations) {
-      System.out.println("Generation " + numGenerations);
+//      System.out.println("Generation " + numGenerations);
       for (Individual individual : population.getPopulation()) {
         Individual s0 = new Individual(individual);
         int len = s0.getGenotype().size();
@@ -63,28 +63,23 @@ public class InverOver {
         while (true) {
           int cDash;
           if (ThreadLocalRandom.current().nextDouble(1) <= probability) {
-            // System.out.print("If");
             int indexNext;
             do {
               indexNext = ThreadLocalRandom.current().nextInt(0, len);
             } while (visitedCityIndex.contains(indexNext));
             cDash = s0.getGenotype().get(indexNext);
-            // System.out.println(" .. done");
           } else {
-            // System.out.print("Else");
             int iDashIndex = ThreadLocalRandom.current().nextInt(0, populationSize);
             Individual iDash = populationList.get(iDashIndex);
 
             cDash = iDash.getGenotype().get((iDash.getGenotype().indexOf(city) + 1) % len);
-            // System.out.println(" .. done");
           }
 
-          int cityIndexLast = (s0.getGenotype().indexOf(cDash) - 1 + len) % len;
-          int cityIndexNext = (s0.getGenotype().indexOf(cDash) + 1) % len;
+          int cityIndexLast = (s0.getGenotype().indexOf(city) - 1 + len) % len;
+          int cityIndexNext = (s0.getGenotype().indexOf(city) + 1) % len;
           int cityLast = (s0.getGenotype().get(cityIndexLast));
           int cityNext = (s0.getGenotype().get(cityIndexNext));
           if ((cDash == cityLast) || (cDash == cityNext)) {
-            System.out.println("Breaking loop");
             break;
           }
           m.run(problem, s0, new IntegerPair(cityIndexNext, s0.getGenotype().indexOf(cDash)));

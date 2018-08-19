@@ -14,7 +14,6 @@ import uni.evocomp.a1.logging.BenchmarkStatsTracker;
  * @author Nehal
  *
  */
-
 public class InverOverBenchmark {
 
   public static void benchmark(String testName, String propertiesFileName, int populationSize,
@@ -48,7 +47,7 @@ public class InverOverBenchmark {
       System.out.println("Repeat i " + i);
       bst.startSingleRun();
       // Probability is 0.02 based on paper
-      Individual run = inverOver.run(problem, 50, 100, 0.02);
+      Individual run = inverOver.run(problem, 50, 20000, 0.02);
       bst.endSingleRun(inverOver.getNumGenerations());
     }
     if (optimalSolution != null) {
