@@ -71,10 +71,14 @@ public class InverOverBenchmark {
   }
 
   public static void main(String[] args) {
-    String testfile = (args.length > 0 ? args[0] : "tests/eil51");
-    System.out.println("Test file is " + testfile);
+    //String testfile = (args.length > 0 ? args[0] : "tests/eil51");
+    //System.out.println("Test file is " + testfile);
 
-    String configName = (args.length < 1 ? "config.properties" : args[0]);
-    benchmark(testfile, configName, 50, 30);
+    //String configName = (args.length < 1 ? "config.properties" : args[0]);
+
+    for (String testString : Global.testNames) {
+      testString = "tests/" + testString;
+      benchmark(testString, "", 50, 30);
+    }
   }
 }
