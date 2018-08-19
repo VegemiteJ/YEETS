@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import uni.evocomp.a1.evaluate.Evaluate;
 import uni.evocomp.a1.logging.BenchmarkStatsTracker;
 import uni.evocomp.a1.mutate.Mutate;
 import uni.evocomp.util.IntegerPair;
@@ -45,7 +44,9 @@ public class RandomizedLocalSearch extends LocalSearch {
       modifyAccessOrdering(innerIdx);
       madeChange = false;
       for (Integer anOuterIdx : outerIdx) {
-        if (System.nanoTime() - start > maxTime) break loops;
+        if (System.nanoTime() - start > maxTime) {
+          break loops;
+        }
         for (Integer anInnerIdx : innerIdx) {
           Individual s = new Individual(currentBestIndividual);
           IntegerPair indexPair = new IntegerPair(anOuterIdx, anInnerIdx);

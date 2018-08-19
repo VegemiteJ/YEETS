@@ -8,7 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 import uni.evocomp.a1.Individual;
 import uni.evocomp.a1.TSPProblem;
-import uni.evocomp.a1.evaluate.EvaluateEuclid;
 import uni.evocomp.a1.mutate.Mutate;
 import uni.evocomp.a1.mutate.Swap;
 import uni.evocomp.util.IntegerPair;
@@ -18,11 +17,9 @@ import uni.evocomp.util.IntegerPair;
  */
 public class SwapTest {
 
-  private TSPProblem p;
-  private EvaluateEuclid eval2D;
+  private TSPProblem problem;
   private List<Integer> original;
   private Mutate m;
-  private Double initialCost;
 
   @Before
   public void setUp() throws Exception {
@@ -39,96 +36,75 @@ public class SwapTest {
     // 0,1,2
     // 3,4,5
     // 6,7,8
-    p = new TSPProblem(weights);
+    problem = new TSPProblem(weights);
     original = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
-    eval2D = new EvaluateEuclid();
-    initialCost = eval2D.evaluate(p, new Individual(original, 0.0));
   }
 
   @Test
   public void testSwapValid() {
-    Individual i = new Individual(new ArrayList<>(original), initialCost);
-    m.run(p, i, new IntegerPair(1, 4));
+    Individual i = new Individual(new ArrayList<>(original));
+    m.run(problem, i, new IntegerPair(1, 4));
     assertEquals(i.getGenotype(), Arrays.asList(1, 5, 3, 4, 2));
-    double cost = eval2D.evaluate(p, i);
-    assertEquals(cost, i.getCost(p), 0.00001);
   }
 
   @Test
   public void testSwapSameIndex() {
-    Individual i = new Individual(new ArrayList<>(original), initialCost);
-    m.run(p, i, new IntegerPair(2, 2));
+    Individual i = new Individual(new ArrayList<>(original));
+    m.run(problem, i, new IntegerPair(2, 2));
     assertEquals(i.getGenotype(), original);
-    double cost = eval2D.evaluate(p, i);
-    assertEquals(cost, i.getCost(p), 0.00001);
   }
 
   @Test
   public void testSwapBadOrder() {
-    Individual i = new Individual(new ArrayList<>(original), initialCost);
-    m.run(p, i, new IntegerPair(4, 1));
+    Individual i = new Individual(new ArrayList<>(original));
+    m.run(problem, i, new IntegerPair(4, 1));
     assertEquals(i.getGenotype(), Arrays.asList(1, 5, 3, 4, 2));
-    double cost = eval2D.evaluate(p, i);
-    assertEquals(cost, i.getCost(p), 0.00001);
   }
 
   @Test(expected = IndexOutOfBoundsException.class)
   public void testSwapOutOfBoundsLow() {
-    Individual i = new Individual(new ArrayList<>(original), initialCost);
-    m.run(p, i, new IntegerPair(-1, 4));
+    Individual i = new Individual(new ArrayList<>(original));
+    m.run(problem, i, new IntegerPair(-1, 4));
     assertEquals(i.getGenotype(), original);
-    double cost = eval2D.evaluate(p, i);
-    assertEquals(cost, i.getCost(p), 0.00001);
   }
 
   @Test(expected = IndexOutOfBoundsException.class)
   public void testSwapOutOfBoundsHigh() {
-    Individual i = new Individual(new ArrayList<>(original), initialCost);
-    m.run(p, i, new IntegerPair(1, 10));
+    Individual i = new Individual(new ArrayList<>(original));
+    m.run(problem, i, new IntegerPair(1, 10));
     assertEquals(i.getGenotype(), original);
-    double cost = eval2D.evaluate(p, i);
-    assertEquals(cost, i.getCost(p), 0.00001);
   }
 
   @Test
   public void testSwapEnds1() {
-    Individual i = new Individual(new ArrayList<>(original), initialCost);
-    m.run(p, i, new IntegerPair(0, 4));
+    Individual i = new Individual(new ArrayList<>(original));
+    m.run(problem, i, new IntegerPair(0, 4));
     assertEquals(i.getGenotype(), Arrays.asList(5, 2, 3, 4, 1));
-    double cost = eval2D.evaluate(p, i);
-    assertEquals(cost, i.getCost(p), 0.00001);
   }
 
   @Test
   public void testSwapEnds2() {
-    Individual i = new Individual(new ArrayList<>(original), initialCost);
-    m.run(p, i, new IntegerPair(4, 0));
+    Individual i = new Individual(new ArrayList<>(original));
+    m.run(problem, i, new IntegerPair(4, 0));
     assertEquals(i.getGenotype(), Arrays.asList(5, 2, 3, 4, 1));
-    double cost = eval2D.evaluate(p, i);
-    assertEquals(cost, i.getCost(p), 0.00001);
   }
 
   @Test
   public void testSwapNextToEachOther() {
-    Individual i = new Individual(new ArrayList<>(original), initialCost);
-    m.run(p, i, new IntegerPair(2, 3));
+    Individual i = new Individual(new ArrayList<>(original));
+    m.run(problem, i, new IntegerPair(2, 3));
     assertEquals(i.getGenotype(), Arrays.asList(1, 2, 4, 3, 5));
-    double cost = eval2D.evaluate(p, i);
-    assertEquals(cost, i.getCost(p), 0.00001);
   }
 
-  @Test
+  @Test(expected = Test.None.class)
   public void testValidFuzz() {
-    int size = p.getSize();
+    int size = problem.getSize();
     for (int i = 0; i < size; i++) {
       for (int j = 0; j < size; j++) {
-        Individual individual = new Individual(original, p);
+        Individual individual = new Individual(original, problem);
         IntegerPair pair = new IntegerPair(i, j);
 
-        m.run(p, individual, pair);
-
-        double cost = eval2D.evaluate(p, individual);
-        assertEquals(individual.getCost(p), cost, 0.00001);
+        m.run(problem, individual, pair);
       }
     }
   }

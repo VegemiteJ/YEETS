@@ -19,7 +19,6 @@ public class LocalSearchBenchmark {
 
   LocalSearchBenchmark() throws IOException {
     System.out.println("Version 2");
-
     TSPIO io = new TSPIO();
     ArrayList<Pair<TSPProblem, Individual>> benchmarks = new ArrayList<>();
     for (String testString : Global.testNames) {
@@ -57,20 +56,23 @@ public class LocalSearchBenchmark {
         Mutate mutationFunction = mutationFunctions[mi];
 
         LocalSearch ls = new RandomizedLocalSearch(problemDef, mutationFunction);
-        BenchmarkStatsTracker bst = new BenchmarkStatsTracker(problemDef.getName()+"_"+mutationNames[mi], problemDef);
+        BenchmarkStatsTracker bst =
+            new BenchmarkStatsTracker(problemDef.getName() + "_" + mutationNames[mi], problemDef);
         bst.setSolutionTour(benchmark.second);
         long startTime = System.nanoTime();
         for (int i = 0; i < repeats; i++) {
           bst.startSingleRun();
-          Individual result = ls.solve(bst);
+          ls.solve(bst);
           bst.endSingleRun(ls.getTotalIterations());
         }
         System.out.println("Avg cost: " + bst.getAvgCost());
         System.out.println("StdDev cost: " + bst.getStandardDeviation());
         System.out.println("Min cost: " + bst.getMinCost());
         System.out.println("Max cost: " + bst.getMaxCost());
-        System.out.println("Avg search Elapsed Time (s): " + (double)bst.getAvgTimeTaken()/1000000000.0);
-        System.out.println("Benchmark Total Elapsed Time (s): " + (double)(System.nanoTime()-startTime)/1000000000.0);
+        System.out.println(
+            "Avg search Elapsed Time (s): " + (double) bst.getAvgTimeTaken() / 1000000000.0);
+        System.out.println("Benchmark Total Elapsed Time (s): "
+            + (double) (System.nanoTime() - startTime) / 1000000000.0);
         System.out.println("Save file: " + bst.getSerialFileName());
         try {
           bst.writeToFile();
