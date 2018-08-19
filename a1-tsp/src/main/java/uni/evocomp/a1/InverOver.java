@@ -55,10 +55,8 @@ public class InverOver {
     // Termination condition:
     // - when reaching the max generations; or
     // - the best cost has not changed in 10 generations
-    int numInversions = 0;
     int numGensSameCost = 0;
     while (numGenerations <= maxGenerations && numGensSameCost < 1000) {
-//      System.out.println("numGensSameCost: " + numGensSameCost + " : " + bestIndividual.getCost(problem));
       for (Individual individual : population.getPopulation()) {
         // Select random city c from sDash
         Individual sDash = new Individual(individual);
@@ -95,7 +93,6 @@ public class InverOver {
 
           // Mutate -> Invert the section from next to cDash in sDash
           m.run(problem, sDash, new IntegerPair(cityIndexNext, sDashTour.indexOf(cDash)));
-          numInversions++;
           c = cDash;
         }
 
@@ -110,7 +107,6 @@ public class InverOver {
       boolean changedBestCost = false;
       if (popBest.compareTo(bestIndividual) < 0) {
         bestIndividual = popBest;
-//        System.out.println("Gotem: " + bestIndividual.getCost(problem));
         bst.newBestIndividualForSingleRun(popBest, numGenerations);
         changedBestCost = true;
       }
@@ -122,14 +118,13 @@ public class InverOver {
       }
       bst.bestIndividualForThisGeneration(bestIndividual, (int) numGenerations);
     }
-    System.out.println("Inv: " + numInversions);
     return bestIndividual;
   }
 
   /**
    * Gets the current number of generations
    *
-   * @return number of generations is returned
+   * @return the number of generations passed so far
    */
   public long getNumGenerations() {
     return numGenerations;

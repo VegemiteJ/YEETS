@@ -34,6 +34,7 @@ public class InverOverBenchmark {
     }
 
     // Record metrics
+    @SuppressWarnings("null")
     BenchmarkStatsTracker bst =
         new BenchmarkStatsTracker(problem.getName() + "_InverOver", problem);
 
@@ -44,10 +45,9 @@ public class InverOverBenchmark {
     bst.setSolutionTour(optimalSolution);
     long startTime = System.nanoTime();
     for (int i = 0; i < repeats; i++) {
-      System.out.println("Repeat i " + i);
       bst.startSingleRun();
       // Probability is 0.02 based on paper
-      Individual run = inverOver.run(problem, populationSize, 20000, 0.02);
+      inverOver.run(problem, populationSize, 20000, 0.02);
       bst.endSingleRun(inverOver.getNumGenerations());
     }
     if (optimalSolution != null) {
@@ -72,11 +72,6 @@ public class InverOverBenchmark {
   }
 
   public static void main(String[] args) {
-    //String testfile = (args.length > 0 ? args[0] : "tests/eil51");
-    //System.out.println("Test file is " + testfile);
-
-    //String configName = (args.length < 1 ? "config.properties" : args[0]);
-
     for (String testString : Global.testNames) {
       testString = "tests/" + testString;
       benchmark(testString, "", 50, 30);
