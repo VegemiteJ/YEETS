@@ -54,12 +54,13 @@ public class InverOver {
 
     int numInversions = 0;
     while (numGenerations <= maxGenerations) {
-      for (Individual individual : population.getPopulation()) {
+        for (Individual individual : population.getPopulation()) {
         // Select random city c from sDash
         Individual sDash = new Individual(individual);
-        int len = sDash.getGenotype().size();
+        List<Integer> sDashTour = sDash.getGenotype(); // this gets used a lot
+        int len = sDashTour.size();
         int index = ThreadLocalRandom.current().nextInt(0, len);
-        int c = sDash.getGenotype().get(index);
+        int c = sDashTour.get(index);
 
         while (true) {
           int cDash;
@@ -69,7 +70,7 @@ public class InverOver {
             do {
               indexNext = ThreadLocalRandom.current().nextInt(0, len);
             } while (index == indexNext);
-            cDash = sDash.getGenotype().get(indexNext);
+            cDash = sDashTour.get(indexNext);
             // cDash = the city "next to" c in a randomly selected Individual
           } else {
             int iDashIndex = ThreadLocalRandom.current().nextInt(0, populationSize);
@@ -79,16 +80,17 @@ public class InverOver {
           }
 
           // If cDash is the same city as the next or previous of <code>city</code>
-          int cityIndexLast = (sDash.getGenotype().indexOf(c) - 1 + len) % len;
-          int cityIndexNext = (sDash.getGenotype().indexOf(c) + 1) % len;
-          int cityLast = (sDash.getGenotype().get(cityIndexLast));
-          int cityNext = (sDash.getGenotype().get(cityIndexNext));
+          int cityAtC = sDashTour.indexOf(c);
+          int cityIndexLast = (cityAtC - 1 + len) % len;
+          int cityIndexNext = (cityAtC + 1) % len;
+          int cityLast = (sDashTour.get(cityIndexLast));
+          int cityNext = (sDashTour.get(cityIndexNext));
           if ((cDash == cityLast) || (cDash == cityNext)) {
             break;
           }
 
           // Mutate -> Invert the section from next to cDash in sDash
-          m.run(problem, sDash, new IntegerPair(cityIndexNext, sDash.getGenotype().indexOf(cDash)));
+          m.run(problem, sDash, new IntegerPair(cityIndexNext, sDashTour.indexOf(cDash)));
           numInversions++;
           c = cDash;
         }
