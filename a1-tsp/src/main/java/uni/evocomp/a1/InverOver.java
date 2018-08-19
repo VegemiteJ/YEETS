@@ -14,7 +14,8 @@ import uni.evocomp.util.IntegerPair;
 /**
  * Class for InverOver
  * 
- * Implements Inver Over Algorithm as described by http://www.cs.adelaide.edu.au/~zbyszek/Papers/p44.pdf 
+ * Implements Inver Over Algorithm as described by
+ * http://www.cs.adelaide.edu.au/~zbyszek/Papers/p44.pdf
  * 
  * @author Nehal
  *
@@ -22,83 +23,91 @@ import uni.evocomp.util.IntegerPair;
 
 public class InverOver {
 
-    BenchmarkStatsTracker bst;
-    long numGenerations;
-    
-    final long printItr=1000;
-    
-    InverOver(BenchmarkStatsTracker bst) {
-      this.bst = bst;
-    }
+  BenchmarkStatsTracker bst;
+  long numGenerations;
 
-    /**
-     * Description of the function
-     * 
-     * @param problem 
-     * @param populationSize
-     * @param maxGenerations
-     * @param probability of random inversion
-     * @return The best individual is returned
-     */
-    public Individual run(TSPProblem problem, int populationSize, int maxGenerations, double probability) {
-        Population population = new Population(problem, populationSize);
-        numGenerations = 1;
-        List<Individual> populationList = new ArrayList<>();
-        populationList.addAll(population.getPopulation());
+  final long printItr = 1000;
 
-        while (numGenerations <= maxGenerations) { 
-            for (Individual individual : population.getPopulation()) {
-                Individual s0 = new Individual(individual);
-                int len = s0.getGenotype().size();
-                int index =  ThreadLocalRandom.current().nextInt(0, len);
-                int city = s0.getGenotype().get(index);
-                List<Integer> visitedCityIndex = new ArrayList<>();
-                visitedCityIndex.add(index);
-                Mutate m = new Invert();
+  InverOver(BenchmarkStatsTracker bst) {
+    this.bst = bst;
+  }
 
-                while (true) {
-                    int cDash;
-                    if (ThreadLocalRandom.current().nextDouble(1) <= probability) {
-                        int indexNext;
-                        do {
-                            indexNext = ThreadLocalRandom.current().nextInt(0, len);
-                        } while (visitedCityIndex.contains(indexNext)) ;
-                        cDash = s0.getGenotype().get(indexNext);    
-                    }
-                    else { 
-                        int iDashIndex = ThreadLocalRandom.current().nextInt(0, populationSize);
-                        Individual iDash = populationList.get(iDashIndex); 
-                        
-                        cDash = iDash.getGenotype().get((iDash.getGenotype().indexOf(city) + 1 ) % len);
-                    }
-                    int cityIndexLast = (s0.getGenotype().indexOf(cDash) - 1 + len) % len;
-                    int cityIndexNext = (s0.getGenotype().indexOf(cDash) + 1) % len;
-                    int cityLast = (s0.getGenotype().get(cityIndexLast));
-                    int cityNext = (s0.getGenotype().get(cityIndexNext));
-                    if ((cDash == cityLast) || (cDash == cityNext)) {
-                        break;
-                    }
-                    m.run(problem, s0, new IntegerPair (cityIndexNext, s0.getGenotype().indexOf(cDash)));
-                    city = cDash;
-                }
+  /**
+   * Run InverOver on a problem to produce the best Individual
+   * 
+   * @param problem
+   * @param populationSize
+   * @param maxGenerations how many generations to run
+   * @param probability of random inversion
+   * @return the best <code>Individual</code> after running for <code>maxGenerations</code>
+   *         generations
+   */
+  public Individual run(TSPProblem problem, int populationSize, int maxGenerations,
+      double probability) {
+    Population population = new Population(problem, populationSize);
+    numGenerations = 1;
+    List<Individual> populationList = new ArrayList<>();
+    populationList.addAll(population.getPopulation());
 
-                if (s0.getCost(problem) <= individual.getCost(problem)) {
-                    individual = s0;
-                }
-            }
-            numGenerations++;
+    while (numGenerations <= maxGenerations) {
+      System.out.println("Generation " + numGenerations);
+      for (Individual individual : population.getPopulation()) {
+        Individual s0 = new Individual(individual);
+        int len = s0.getGenotype().size();
+        int index = ThreadLocalRandom.current().nextInt(0, len);
+        int city = s0.getGenotype().get(index);
+        List<Integer> visitedCityIndex = new ArrayList<>();
+        visitedCityIndex.add(index);
+        Mutate m = new Invert();
+
+        while (true) {
+          int cDash;
+          if (ThreadLocalRandom.current().nextDouble(1) <= probability) {
+            // System.out.print("If");
+            int indexNext;
+            do {
+              indexNext = ThreadLocalRandom.current().nextInt(0, len);
+            } while (visitedCityIndex.contains(indexNext));
+            cDash = s0.getGenotype().get(indexNext);
+            // System.out.println(" .. done");
+          } else {
+            // System.out.print("Else");
+            int iDashIndex = ThreadLocalRandom.current().nextInt(0, populationSize);
+            Individual iDash = populationList.get(iDashIndex);
+
+            cDash = iDash.getGenotype().get((iDash.getGenotype().indexOf(city) + 1) % len);
+            // System.out.println(" .. done");
+          }
+
+          int cityIndexLast = (s0.getGenotype().indexOf(cDash) - 1 + len) % len;
+          int cityIndexNext = (s0.getGenotype().indexOf(cDash) + 1) % len;
+          int cityLast = (s0.getGenotype().get(cityIndexLast));
+          int cityNext = (s0.getGenotype().get(cityIndexNext));
+          if ((cDash == cityLast) || (cDash == cityNext)) {
+            System.out.println("Breaking loop");
+            break;
+          }
+          m.run(problem, s0, new IntegerPair(cityIndexNext, s0.getGenotype().indexOf(cDash)));
+          city = cDash;
         }
-        return Collections.min(population.getPopulation());
-    }
 
-    /**
-     * Gets the current number of generations
-     * @return number of generations is returned
-     */
-    public long getNumGenerations() {
-        return numGenerations;
+        if (s0.getCost(problem) <= individual.getCost(problem)) {
+          individual = s0;
+        }
+      }
+      numGenerations++;
     }
+    return Collections.min(population.getPopulation());
+  }
+
+  /**
+   * Gets the current number of generations
+   * 
+   * @return number of generations is returned
+   */
+  public long getNumGenerations() {
+    return numGenerations;
+  }
 }
-    
 
 
