@@ -15,8 +15,10 @@ import uni.evocomp.util.Pair;
 
 public class LocalSearchBenchmark {
 
-  public static final Mutate[] mutationFunctions = {new Jump(), new Swap(), new Invert()};
-  public static final String[] mutationNames = {"Jump", "Exchange", "2-Opt"};
+//  public static final Mutate[] mutationFunctions = {new Jump(), new Swap(), new Invert()};
+//  public static final String[] mutationNames = {"Jump", "Exchange", "2-Opt"};
+  public static final Mutate[] mutationFunctions = {new Invert()};
+  public static final String[] mutationNames = {"2-Opt"};
   public static final int repeats = 30;
 
   LocalSearchBenchmark() {
@@ -80,8 +82,8 @@ public class LocalSearchBenchmark {
         System.out.println("Benchmark Total Elapsed Time (s): " + (double)(System.nanoTime()-startTime)/1000000000.0);
         System.out.println("Save file: " + bst.getSerialFileName());
         try {
-          BenchmarkStatsTracker.serialise(bst);
           bst.writeToFile();
+          BenchmarkStatsTracker.serialise(bst);
         } catch (IOException e) {
           e.printStackTrace();
         }
