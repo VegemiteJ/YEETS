@@ -117,5 +117,3 @@ public class InverOver {
     return numGenerations;
   }
 }
-
-

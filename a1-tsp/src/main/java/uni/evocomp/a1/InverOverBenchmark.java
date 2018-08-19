@@ -47,13 +47,14 @@ public class InverOverBenchmark {
       System.out.println("Repeat i " + i);
       bst.startSingleRun();
       // Probability is 0.02 based on paper
-      Individual run = inverOver.run(problem, 50, 20000, 0.02);
+      Individual run = inverOver.run(problem, populationSize, 20000, 0.02);
       bst.endSingleRun(inverOver.getNumGenerations());
     }
     if (optimalSolution != null) {
       System.out.println("Known Best Solution: " + optimalSolution.getCost(problem));
     }
     System.out.println("Avg: " + bst.getAvgCost());
+    System.out.println("StdDev: " + bst.getStandardDeviation());
     System.out.println("Min: " + bst.getMinCost());
     System.out.println("Max: " + bst.getMaxCost());
     System.out
@@ -74,7 +75,6 @@ public class InverOverBenchmark {
     System.out.println("Test file is " + testfile);
 
     String configName = (args.length < 1 ? "config.properties" : args[0]);
-    benchmark(testfile, configName, 20, 3);
+    benchmark(testfile, configName, 50, 30);
   }
 }
-
