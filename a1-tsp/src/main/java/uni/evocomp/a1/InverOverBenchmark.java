@@ -64,6 +64,7 @@ public class InverOverBenchmark {
     System.out.println("Save file: " + bst.getSerialFileName());
 
     try {
+      bst.writeToFile();
       BenchmarkStatsTracker.serialise(bst);
     } catch (IOException e) {
       e.printStackTrace();
