@@ -43,7 +43,7 @@ package_path=uni.evocomp.a1
 alg_num=1
 for recombine in {CycleCrossover,PMXCrossover} ;do
 
-	for sselection in {Elitism,TournamentSelect} ;do
+	for sselection in {Elitism,TournamentSelection} ;do
 
 		# echo "$alg_num"
 
@@ -79,5 +79,5 @@ done
 
 # symlink the .jar
 if [ ! -L "$target/a1-tsp.jar" ] ;then
-	ln -s "target/a1-tsp.jar" "$target/a1-tsp.jar"
+	ln -s "$(realpath target/a1-tsp-0.1.jar)" "$target/a1-tsp.jar"
 fi
