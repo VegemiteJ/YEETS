@@ -9,12 +9,32 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import org.junit.Before;
 import org.junit.Test;
 import uni.evocomp.util.Matrix;
 import uni.evocomp.util.Util;
 
 public class IndividualTest {
 
+  TSPProblem problem;
+  
+  @Before
+  public void setUp() throws Exception {
+    List<List<Double>> weights = new ArrayList<>();
+    for (int i = 0; i < 3; i++) {
+      weights.add(new ArrayList<>());
+      for (int j = 0; j < 3; j++) {
+        weights.get(i).add((double) 3 * i + j);
+      }
+    }
+    // weights in matrix form
+    // 0,1,2
+    // 3,4,5
+    // 6,7,8
+    problem = new TSPProblem(weights);
+
+  }
+  
   private boolean didThrowException(Individual i) {
     try {
       i.assertIsValidTour();
@@ -34,26 +54,26 @@ public class IndividualTest {
 
   @Test(expected = Test.None.class)
   public void testValidTourWhenNormal() {
-    new Individual(Arrays.asList(1, 5, 2, 3, 4), 0.0);
+    new Individual(Arrays.asList(1, 5, 2, 3, 4));
   }
 
   @Test
   public void testInvalidTourBadIndex() {
-    Individual i = new Individual(Arrays.asList(1, 5, 2, -1, 4), 0.0);
+    Individual i = new Individual(Arrays.asList(1, 5, 2, -1, 4));
     Boolean result = didThrowException(i);
     assertTrue(result);
   }
 
   @Test
   public void testInvalidTourMissingIndex() {
-    Individual i = new Individual(Arrays.asList(1, 5, 2, 4), 0.0);
+    Individual i = new Individual(Arrays.asList(1, 5, 2, 4));
     assertTrue(didThrowException(i));
   }
 
   @Test
   public void testEqualsOverrideHappy() {
-    Individual i = new Individual(Arrays.asList(1, 2, 3, 4), 0.0);
-    Individual j = new Individual(Arrays.asList(1, 2, 3, 4), 1.0);
+    Individual i = new Individual(Arrays.asList(1, 2, 3, 4));
+    Individual j = new Individual(Arrays.asList(1, 2, 3, 4));
 
     assertTrue(i.equals(j));
     assertTrue(j.equals(i));
@@ -64,8 +84,8 @@ public class IndividualTest {
   @SuppressWarnings("unlikely-arg-type")
   @Test
   public void testEqualsOverrideSad() {
-    Individual i = new Individual(Arrays.asList(1, 2, 3, 4), 0.0);
-    Individual j = new Individual(Arrays.asList(1, 2, 4, 3), 1.0);
+    Individual i = new Individual(Arrays.asList(1, 2, 3, 4));
+    Individual j = new Individual(Arrays.asList(1, 2, 4, 3));
 
     assertFalse(i.equals(j));
     assertFalse(j.equals(i));
@@ -125,8 +145,7 @@ public class IndividualTest {
   public void testSerialiseCustom() throws IOException, ClassNotFoundException {
     // Create and serialise an object
     String outName = "testSerialiseCustom.ser";
-    List<Integer> array = Arrays.asList(1, 2, 3, 4);
-    Individual i = new Individual(array, 0.0);
+    Individual i = new Individual(Arrays.asList(1, 2, 3), problem);
     Individual.serialise(i, outName);
 
     // Verify the file has been written
@@ -134,8 +153,7 @@ public class IndividualTest {
 
     // Read back and check same
     Individual recreate = Individual.deserialise(outName);
-    assertEquals(0.0, recreate.getCost(new TSPProblem()), 0);
-    assertEquals(array, recreate.getGenotype());
+    assertEquals(12.0, recreate.getCost(problem), 0.0);
 
     // Clean up the file created by serialise()
     new File(outName).delete();
@@ -214,7 +232,45 @@ public class IndividualTest {
     WhiteBoxIndividual i = new WhiteBoxIndividual(2);
     assertEquals(true, i.getDirty());
 
-    double cost = i.getCost(p);
+    i.getCost(p);
     assertEquals(false, i.getDirty());
+  }
+
+  @Test
+  public void testSimpleTour1() {
+    // 1,2,3 -> 1+5+6 = 12
+    List<Integer> tour = new ArrayList<>(Arrays.asList(1, 2, 3));
+    Individual i = new Individual(tour);
+    assertEquals(12.0, i.getCost(problem), 0);
+  }
+
+  @Test
+  public void testSimpleTour2() {
+    // 1,2,3,2,1 -> 1+5+7+3+0 = 16
+    List<Integer> tour = new ArrayList<>(Arrays.asList(1, 2, 3, 2, 1));
+    Individual i = new Individual(tour);
+    assertEquals(16.0, i.getCost(problem), 0);
+  }
+
+  @Test
+  public void testSimpleTour3() {
+    // 3,1,2,1,2,3 -> 6+1+3+1+5+8=24
+    List<Integer> tour = new ArrayList<>(Arrays.asList(3, 1, 2, 1, 2, 3));
+    Individual i = new Individual(tour);
+    assertEquals(24.0, i.getCost(problem), 0);
+  }
+
+  @Test
+  public void testWrapCost() {
+    // same loop, just starting at different position
+    List<Integer> tour = new ArrayList<>(Arrays.asList(1, 2, 3));
+    Individual i = new Individual(tour);
+    assertEquals(12.0, i.getCost(problem), 0);
+
+    List<Integer> tour2 = new ArrayList<>(Arrays.asList(2, 3, 1));
+    Individual j = new Individual(tour2);
+    assertEquals(12.0, j.getCost(problem), 0);
+
+    assertEquals(i.getCost(problem), j.getCost(problem), 0);
   }
 }
