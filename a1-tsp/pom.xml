@@ -46,6 +46,20 @@
         </configuration>
       </execution>
       <execution>
+        <id>inverover</id>
+        <goals>
+          <goal>jar</goal>
+        </goals>
+        <configuration>
+          <finalName>InverOver</finalName>
+          <archive>
+            <manifest>
+              <mainClass>uni.evocomp.a1.InverOverBenchmark</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+      </execution>
+      <execution>
         <id>ea</id>
         <goals>
           <goal>jar</goal>
@@ -80,6 +94,15 @@
     <artifactId>exec-maven-plugin</artifactId>
     <version>1.2.1</version>
     <executions>
+      <execution>
+        <id>inverover</id>
+        <goals>
+          <goal>java</goal>
+        </goals>
+        <configuration>
+          <mainClass>uni.evocomp.a1.InverOverBenchmark</mainClass>
+        </configuration>
+      </execution>
       <execution>
         <id>localsearch</id>
         <goals>

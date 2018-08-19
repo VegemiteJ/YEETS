@@ -44,7 +44,11 @@ public class Individual implements Comparable<Individual>, Serializable {
    * @param src source Individual object to copy construct
    */
   public Individual(Individual src) {
-    this.genotype = new ArrayList<>(src.getGenotype());
+    // e x p l i c i t
+    this.genotype = new ArrayList<>(src.getGenotype().size());
+    for (Integer i : src.getGenotype()) {
+      this.genotype.add(new Integer(i));
+    }
     this.setCost(src.cost);
     // Copy src dirty bit is expected behaviour per chat on #87
     this.dirty = src.dirty;
@@ -109,6 +113,10 @@ public class Individual implements Comparable<Individual>, Serializable {
 
   public List<Integer> getGenotype() {
     return genotype;
+  }
+
+  public void setGenotype(List<Integer> g) {
+    genotype = g;
   }
 
   /**
