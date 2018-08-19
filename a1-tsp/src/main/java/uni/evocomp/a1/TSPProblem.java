@@ -17,7 +17,7 @@ public class TSPProblem implements Serializable {
   private String type; // tour or TSP
   private String edgeWeightType; // For this assignment, will always be EUC_2D, but it can be EUC_3D
   private List<DoublePair> points; // points for all the cities (x, y)
-  private Matrix weights;
+  transient private Matrix weights;
 
   public TSPProblem() {
     name = "";

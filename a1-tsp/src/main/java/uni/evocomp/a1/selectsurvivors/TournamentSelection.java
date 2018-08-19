@@ -37,9 +37,9 @@ public class TournamentSelection implements SelectSurvivors {
   private double p;
 
   public TournamentSelection() {
-    tournamentSize = 10;
+    tournamentSize = 8;
     survivalProportion = 0.5;
-    p = 0.65;
+    p = 0.55;
   }
 
   /**

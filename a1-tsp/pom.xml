@@ -33,7 +33,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>uni.evocomp.a1.LocalSearchBenchmark</mainClass>
+              <mainClass>uni.evocomp.a1.EABenchmark</mainClass>
             </manifest>
           </archive>
         </configuration>
@@ -50,7 +50,7 @@
           </execution>
         </executions>
         <configuration>
-          <mainClass>uni.evocomp.a1.LocalSearchBenchmark</mainClass>
+          <mainClass>uni.evocomp.a1.EABenchmark</mainClass>
         </configuration>
       </plugin>
     </plugins>
