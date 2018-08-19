@@ -1,4 +1,4 @@
-package uni.evocomp.a1.gui;
+package uni.evocomp.a1;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -13,28 +13,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
-import uni.evocomp.a1.Global;
-import uni.evocomp.a1.Individual;
-import uni.evocomp.a1.TSPIO;
-import uni.evocomp.a1.TSPProblem;
 import uni.evocomp.a1.logging.BenchmarkStatsTracker;
 import uni.evocomp.util.DoublePair;
 
-public class PlotBestTour extends Application {
-
-  public static String loadName = "usa13509_Jump";
-  public static String problemName = "usa13509.tsp";
-  public static boolean plotProvidedBestTour = false;
-
-  public static void main(String[] args) {
-    if (args.length > 0) {
-      loadName = args[0];
-    }
-    if (args.length > 1) {
-      plotProvidedBestTour = true;
-    }
-    launch(args);
-  }
+public class PlotTour extends Application {
+  public static String loadName = "graphics/eil51_2-Opt";
+  public static String problemName = "tests/eil51.tsp";
+  public static boolean plotProvidedBestTour = true;
 
   private List<Circle> plotCities(
       List<DoublePair> cities, Integer initialCity, int xSize, int ySize, int xOff, int yOff) {
@@ -104,8 +89,8 @@ public class PlotBestTour extends Application {
       e.printStackTrace();
     }
     TSPProblem problem = null;
-    TSPIO io = new TSPIO();;;
-    try (FileReader fr1 = new FileReader("tests/"+problemName)) {
+    TSPIO io = new TSPIO();
+    try (FileReader fr1 = new FileReader(problemName)) {
       problem = io.read(fr1);
     } catch (FileNotFoundException e) {
       e.printStackTrace();
@@ -129,7 +114,7 @@ public class PlotBestTour extends Application {
     List<DoublePair> cities = problem.getPoints();
     Group box = new Group();
 
-    List<Circle> cityPoints = plotCities(cities, genotype.get(0), 1200, 800, 100, 50);
+    List<Circle> cityPoints = plotCities(cities, genotype.get(0), 1200, 800, 50, 50);
     for (Circle c : cityPoints) {
       box.getChildren().add(c);
     }
@@ -143,5 +128,19 @@ public class PlotBestTour extends Application {
 
     stage.setScene(scene);
     stage.show();
+  }
+
+  public static void main(String[] args) {
+    if (args.length > 0) {
+      loadName = args[0];
+    }
+    if (args.length > 1) {
+      problemName = args[1];
+    }
+    if (args.length > 2) {
+      plotProvidedBestTour = true;
+      System.out.println("Plotting optimal tour");
+    }
+    launch(args);
   }
 }
