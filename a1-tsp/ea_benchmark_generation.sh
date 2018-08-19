@@ -36,14 +36,14 @@
 # done
 
 target=ea_benchmarks
-mvn jar:jar
+mvn jar:jar@ea
 
 package_path=uni.evocomp.a1
 
 alg_num=1
-for recombine in {CycleCrossover,PMXCrossover} ;do
+for recombine in {{Cycle,PMX,Order}Crossover,EdgeRecombination} ;do
 
-	for sselection in {Elitism,TournamentSelection} ;do
+	for sselection in {Elitism,TournamentSelection,FitnessProportional} ;do
 
 		# echo "$alg_num"
 
@@ -78,6 +78,6 @@ done
 
 
 # symlink the .jar
-if [ ! -L "$target/a1-tsp.jar" ] ;then
-	ln -s "$(realpath target/a1-tsp-0.1.jar)" "$target/a1-tsp.jar"
+if [ ! -L "$target/EABenchmark.jar" ] ;then
+	ln -s "$(realpath target/EABenchmark.jar)" "$target/a1-tsp.jar"
 fi
