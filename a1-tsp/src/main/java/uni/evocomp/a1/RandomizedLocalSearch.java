@@ -14,8 +14,8 @@ public class RandomizedLocalSearch extends LocalSearch {
   private final boolean USE_RANDOM = true;
   private final long maxTime = 300000000000L; // 5 minutes
 
-  RandomizedLocalSearch(TSPProblem problem, Evaluate evaluate, Mutate mutationFunction) {
-    super(problem, evaluate, mutationFunction);
+  RandomizedLocalSearch(TSPProblem problem, Mutate mutationFunction) {
+    super(problem, mutationFunction);
   }
 
   private void modifyAccessOrdering(List<Integer> idxAccessOrdering) {

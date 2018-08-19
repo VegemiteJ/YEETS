@@ -4,8 +4,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import uni.evocomp.a1.evaluate.Evaluate;
-import uni.evocomp.a1.evaluate.EvaluateEuclid;
 import uni.evocomp.a1.logging.BenchmarkStatsTracker;
 import uni.evocomp.a1.mutate.Invert;
 import uni.evocomp.a1.mutate.Jump;
@@ -15,34 +13,27 @@ import uni.evocomp.util.Pair;
 
 public class LocalSearchBenchmark {
 
-//  public static final Mutate[] mutationFunctions = {new Jump(), new Swap(), new Invert()};
-//  public static final String[] mutationNames = {"Jump", "Exchange", "2-Opt"};
-  public static final Mutate[] mutationFunctions = {new Invert()};
-  public static final String[] mutationNames = {"2-Opt"};
+  public static final Mutate[] mutationFunctions = {new Jump(), new Swap(), new Invert()};
+  public static final String[] mutationNames = {"Jump", "Exchange", "2-Opt"};
   public static final int repeats = 30;
 
   LocalSearchBenchmark() throws IOException {
-    // Assume we create a local search function with parameters
-    // new LocalSearch(problem, mutator)
-
-    // and there is a search that returns it's best guess
     System.out.println("Version 2");
-    Evaluate evaluator = new EvaluateEuclid();
 
     TSPIO io = new TSPIO();
     ArrayList<Pair<TSPProblem, Individual>> benchmarks = new ArrayList<>();
     for (String testString : Global.testNames) {
-      TSPProblem problem = null;
       testString = "tests/" + testString;
       Individual solution = null;
+
       // If throws - don't continue
-      problem = io.read(new FileReader(testString + Global.testSuffix));
+      TSPProblem problem = io.read(new FileReader(testString + Global.testSuffix));
       // Allowed to throw
       try (FileReader fr2 = new FileReader(testString + Global.tourSuffix)) {
         solution = io.readSolution(fr2);
-        solution.setCost(evaluator.evaluate(problem, solution));
+        solution.setCost(solution.getCost(problem));
       } catch (FileNotFoundException e) {
-        e.printStackTrace();
+        System.out.println("Tour file not found for: " + testString);
       } catch (IOException e) {
         e.printStackTrace();
         System.exit(10);
@@ -65,7 +56,7 @@ public class LocalSearchBenchmark {
         System.out.println("  " + mutationNames[mi]);
         Mutate mutationFunction = mutationFunctions[mi];
 
-        LocalSearch ls = new RandomizedLocalSearch(problemDef, evaluator, mutationFunction);
+        LocalSearch ls = new RandomizedLocalSearch(problemDef, mutationFunction);
         BenchmarkStatsTracker bst = new BenchmarkStatsTracker(problemDef.getName()+"_"+mutationNames[mi], problemDef);
         bst.setSolutionTour(benchmark.second);
         long startTime = System.nanoTime();
