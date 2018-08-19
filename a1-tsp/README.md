@@ -1,25 +1,25 @@
 # README
 # Group Members:
-Jack Baxter - A1666857, a1666857@student.adelaide.edu.au
-Joshua Log - A1670961, a1670961@student.adelaide.edu.au
-Denton Phosvanh - A1680965, a1680965@student.adelaide.edu.au
-Robert McAuley - A1668724, a1668724@student.adelaide.edu.au
-James Kortman - A1648090, a1648090@student.adelaide.edu.au
-Nehal Jain - A1689549, a1689549@student.adelaide.edu.au
+- Jack Baxter - A1666857, a1666857@student.adelaide.edu.au
+- Joshua Loh - A1670961, a1670961@student.adelaide.edu.au
+- Denton Phosvanh - A1680965, a1680965@student.adelaide.edu.au
+- Robert McAuley - A1668724, a1668724@student.adelaide.edu.au
+- James Kortman - A1648090, a1648090@student.adelaide.edu.au
+- Nehal Jain - A1689549, a1689549@student.adelaide.edu.au
 
 ## Dependencies
-Maven is required to build and run.
-Java Version: 1.8.0_121
+- Maven is required to build and run.
+- Java Version: 1.8.0_121
 
 ## Running code
-`mvn clean`
-`mvn compile`
+ -`mvn clean`
+- `mvn compile`
 
 To build the EvolutionaryAlgorithm Jar:
-`mvn jar:jar@ea`
+- `mvn jar:jar@ea`
 
 To build the LocalSearch Jar:
-`mvn jar:jar@localsearch`
+- `mvn jar:jar@localsearch`
 
 To Run either:
 `java -jar target/EABenchmark.jar`
@@ -27,6 +27,7 @@ To Run either:
 
 ## Configuring Evolutionary Algorithm
 Modify config.properties to use the desired mutate, crossover, selection and terminating conditions.
+
 An example layout:
 ```
 // Default config file for TSP solution
@@ -50,5 +51,5 @@ TestFiles=st70,eil51,eil76,eil101,kroA100,kroC100,kroD100,lin105,usa13509
 ```
 
 ## Phoenix run script generation
-ea_benchmark_generation.sh creates a series of folders for phoenix runs.
-It creates different combinations of operators + population sizes.
+- ea_benchmark_generation.sh creates a series of folders for phoenix runs.
+- It creates different combinations of operators + population sizes.
