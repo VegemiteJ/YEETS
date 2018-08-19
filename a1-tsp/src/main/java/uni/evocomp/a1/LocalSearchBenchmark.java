@@ -3,8 +3,6 @@ package uni.evocomp.a1;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import uni.evocomp.a1.evaluate.Evaluate;
-import uni.evocomp.a1.evaluate.EvaluateEuclid;
 import uni.evocomp.a1.logging.BenchmarkStatsTracker;
 import uni.evocomp.a1.mutate.Invert;
 import uni.evocomp.a1.mutate.Jump;
@@ -23,8 +21,6 @@ public class LocalSearchBenchmark {
     // new LocalSearch(problem, mutator)
 
     // and there is a search that returns it's best guess
-
-    Evaluate evaluator = new EvaluateEuclid();
 
     TSPIO io = new TSPIO();
     ArrayList<Pair<TSPProblem, Individual>> benchmarks = new ArrayList<>();
@@ -56,20 +52,23 @@ public class LocalSearchBenchmark {
         System.out.println("  " + mutationNames[mi]);
         Mutate mutationFunction = mutationFunctions[mi];
 
-        LocalSearch ls = new RandomizedLocalSearch(problemDef, evaluator, mutationFunction);
-        BenchmarkStatsTracker bst = new BenchmarkStatsTracker(problemDef.getName()+"_"+mutationNames[mi], problemDef);
+        LocalSearch ls = new RandomizedLocalSearch(problemDef, mutationFunction);
+        BenchmarkStatsTracker bst =
+            new BenchmarkStatsTracker(problemDef.getName() + "_" + mutationNames[mi], problemDef);
         bst.setSolutionTour(benchmark.second);
         long startTime = System.nanoTime();
         for (int i = 0; i < repeats; i++) {
           bst.startSingleRun();
-          Individual result = ls.solve(bst);
+          ls.solve(bst);
           bst.endSingleRun(ls.getTotalIterations());
         }
         System.out.println("Avg cost: " + bst.getAvgCost());
         System.out.println("Min cost: " + bst.getMinCost());
         System.out.println("Max cost: " + bst.getMaxCost());
-        System.out.println("Avg search Elapsed Time (s): " + (double)bst.getAvgTimeTaken()/1000000000.0);
-        System.out.println("Benchmark Total Elapsed Time (s): " + (double)(System.nanoTime()-startTime)/1000000000.0);
+        System.out.println(
+            "Avg search Elapsed Time (s): " + (double) bst.getAvgTimeTaken() / 1000000000.0);
+        System.out.println("Benchmark Total Elapsed Time (s): "
+            + (double) (System.nanoTime() - startTime) / 1000000000.0);
         System.out.println("Save file: " + bst.getSerialFileName());
         try {
           BenchmarkStatsTracker.serialise(bst);
