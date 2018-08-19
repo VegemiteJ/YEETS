@@ -1,7 +1,5 @@
 package uni.evocomp.a1;
 
-import com.sun.istack.internal.NotNull;
-import com.sun.istack.internal.Nullable;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileReader;
@@ -36,16 +34,16 @@ public class EABenchmark {
    * @param populationSize
    */
   private static void averagedSingleTestCaseRun(
-      @NotNull TSPProblem problem,
+      TSPProblem problem,
       int totalGenerations,
       long timeoutLimit,
       int repeats,
-      @Nullable Individual optimalSolution,
-      @NotNull SelectParents selectParents,
-      @NotNull Recombine recombine,
-      @NotNull Mutate mutate,
+      Individual optimalSolution,
+      SelectParents selectParents,
+      Recombine recombine,
+      Mutate mutate,
       double mutateProbability,
-      @NotNull SelectSurvivors selectSurvivors,
+      SelectSurvivors selectSurvivors,
       int populationSize) {
 
     // Create a reasonable name for the stats files
