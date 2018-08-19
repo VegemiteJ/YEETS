@@ -1,13 +1,9 @@
 package uni.evocomp.a1;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import uni.evocomp.a1.evaluate.Evaluate;
 import uni.evocomp.a1.logging.BenchmarkStatsTracker;
 import uni.evocomp.a1.mutate.Mutate;
 import uni.evocomp.util.IntegerPair;
@@ -17,8 +13,8 @@ public class RandomizedLocalSearch extends LocalSearch {
   private final boolean USE_RANDOM = true;
   private final long maxTime = 300000000000L; // 5 minutes
 
-  RandomizedLocalSearch(TSPProblem problem, Evaluate evaluate, Mutate mutationFunction) {
-    super(problem, evaluate, mutationFunction);
+  RandomizedLocalSearch(TSPProblem problem, Mutate mutationFunction) {
+    super(problem, mutationFunction);
   }
 
   private void modifyAccessOrdering(List<Integer> idxAccessOrdering) {
@@ -31,6 +27,7 @@ public class RandomizedLocalSearch extends LocalSearch {
   public Individual solve(BenchmarkStatsTracker bst) {
     // Initial solution
     this.currentBestIndividual = new Individual(problem);
+    bst.newBestIndividualForSingleRun(this.currentBestIndividual, 0L);
 
     List<Integer> outerIdx =
         IntStream.range(0, this.problem.getSize() - 1).boxed().collect(Collectors.toList());
@@ -47,7 +44,9 @@ public class RandomizedLocalSearch extends LocalSearch {
       modifyAccessOrdering(innerIdx);
       madeChange = false;
       for (Integer anOuterIdx : outerIdx) {
-        if (System.nanoTime() - start > maxTime) break loops;
+        if (System.nanoTime() - start > maxTime) {
+          break loops;
+        }
         for (Integer anInnerIdx : innerIdx) {
           Individual s = new Individual(currentBestIndividual);
           IntegerPair indexPair = new IntegerPair(anOuterIdx, anInnerIdx);

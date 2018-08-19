@@ -1,7 +1,5 @@
 package uni.evocomp.a1;
 
-import com.sun.istack.internal.NotNull;
-import com.sun.istack.internal.Nullable;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileReader;
@@ -36,16 +34,16 @@ public class EABenchmark {
    * @param populationSize
    */
   private static void averagedSingleTestCaseRun(
-      @NotNull TSPProblem problem,
+      TSPProblem problem,
       int totalGenerations,
       long timeoutLimit,
       int repeats,
-      @Nullable Individual optimalSolution,
-      @NotNull SelectParents selectParents,
-      @NotNull Recombine recombine,
-      @NotNull Mutate mutate,
+      Individual optimalSolution,
+      SelectParents selectParents,
+      Recombine recombine,
+      Mutate mutate,
       double mutateProbability,
-      @NotNull SelectSurvivors selectSurvivors,
+      SelectSurvivors selectSurvivors,
       int populationSize) {
 
     // Create a reasonable name for the stats files
@@ -118,7 +116,7 @@ public class EABenchmark {
    */
   public static void benchmark(String propertiesFileName) throws IOException {
     // Read a .properties file to figure out which implementations to use and instantiate
-    // one of each using Evaluate, SelectParents, Recombine, Mutate and SelectSurvivors
+    // one of each using SelectParents, Recombine, Mutate and SelectSurvivors
     Properties prop = new Properties();
 
     List<String> testCases;
@@ -133,7 +131,7 @@ public class EABenchmark {
     int repeats;
 
     // Create the objects from the properties file
-    // If a query isn't found (e.g. Evaluate doesn't have an entry, fallback on second arg)
+    // If a query isn't found (e.g. Mutate doesn't have an entry, fallback on second arg)
     // WARNING : EVERY implementation must have a constructor (even if it's blank)
     // This doesn't have to be a default constructor, it could have arguments
     try (InputStream input = new FileInputStream(propertiesFileName)) {
