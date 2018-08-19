@@ -52,8 +52,13 @@ public class InverOver {
     populationList.addAll(population.getPopulation());
     Mutate m = new Invert();
 
+    // Termination condition:
+    // - when reaching the max generations; or
+    // - the best cost has not changed in 10 generations
     int numInversions = 0;
-    while (numGenerations <= maxGenerations) {
+    int numGensSameCost = 0;
+    while (numGenerations <= maxGenerations && numGensSameCost < 1000) {
+//      System.out.println("numGensSameCost: " + numGensSameCost + " : " + bestIndividual.getCost(problem));
       for (Individual individual : population.getPopulation()) {
         // Select random city c from sDash
         Individual sDash = new Individual(individual);
@@ -75,7 +80,6 @@ public class InverOver {
           } else {
             int iDashIndex = ThreadLocalRandom.current().nextInt(0, populationSize);
             Individual iDash = populationList.get(iDashIndex);
-
             cDash = iDash.getGenotype().get((iDash.getGenotype().indexOf(c) + 1) % len);
           }
 
@@ -103,9 +107,18 @@ public class InverOver {
       numGenerations++;
 
       Individual popBest = Collections.min(population.getPopulation());
+      boolean changedBestCost = false;
       if (popBest.compareTo(bestIndividual) < 0) {
         bestIndividual = popBest;
+//        System.out.println("Gotem: " + bestIndividual.getCost(problem));
         bst.newBestIndividualForSingleRun(popBest, numGenerations);
+        changedBestCost = true;
+      }
+
+      if (changedBestCost) {
+        numGensSameCost = 0;
+      } else {
+        numGensSameCost++;
       }
       bst.bestIndividualForThisGeneration(bestIndividual, (int) numGenerations);
     }
