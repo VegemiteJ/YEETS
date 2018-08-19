@@ -16,43 +16,76 @@
     </dependency>
   </dependencies>
   <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.0</version>
+  <plugins>
+  <plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-compiler-plugin</artifactId>
+    <version>3.8.0</version>
+    <configuration>
+      <source>1.8</source>
+      <target>1.8</target>
+    </configuration>
+  </plugin>
+  <plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-jar-plugin</artifactId>
+    <version>2.4</version>
+    <executions>
+      <execution>
+        <id>localsearch</id>
+        <goals>
+          <goal>jar</goal>
+        </goals>
         <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>2.4</version>
-        <configuration>
+          <finalName>LocalSearch</finalName>
           <archive>
             <manifest>
               <mainClass>uni.evocomp.a1.LocalSearchBenchmark</mainClass>
             </manifest>
           </archive>
         </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <version>1.2.1</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>java</goal>
-            </goals>
-          </execution>
-        </executions>
+      </execution>
+      <execution>
+        <id>ea</id>
+        <goals>
+          <goal>jar</goal>
+        </goals>
+        <configuration>
+          <finalName>EABenchmark</finalName>
+          <archive>
+            <manifest>
+              <mainClass>uni.evocomp.a1.EABenchmark</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+      </execution>
+    </executions>
+  </plugin>
+  <plugin>
+    <groupId>org.codehaus.mojo</groupId>
+    <artifactId>exec-maven-plugin</artifactId>
+    <version>1.2.1</version>
+    <executions>
+      <execution>
+        <id>localsearch</id>
+        <goals>
+          <goal>java</goal>
+        </goals>
         <configuration>
           <mainClass>uni.evocomp.a1.LocalSearchBenchmark</mainClass>
         </configuration>
-      </plugin>
-    </plugins>
+      </execution>
+      <execution>
+        <id>ea</id>
+        <goals>
+          <goal>java</goal>
+        </goals>
+        <configuration>
+          <mainClass>uni.evocomp.a1.EABenchmark</mainClass>
+        </configuration>
+      </execution>
+    </executions>
+  </plugin>
+  </plugins>
   </build>
 </project>

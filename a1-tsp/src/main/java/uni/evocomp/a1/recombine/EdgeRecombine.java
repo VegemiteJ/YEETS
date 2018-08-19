@@ -32,7 +32,7 @@ public class EdgeRecombine implements Recombine {
 
     // First pick an initial element at random
     List<Integer> offspring = new ArrayList<>();
-    offspring.add(random.nextInt(n));
+    offspring.add(random.nextInt(n) + 1);
 
     while (offspring.size() < n) {
       Integer current = offspring.get(offspring.size() - 1);
@@ -62,12 +62,14 @@ public class EdgeRecombine implements Recombine {
       } else if (candidatesWithShortestList.size() > 0) {
         selected = candidatesWithShortestList.get(random.nextInt(candidatesWithShortestList.size()));
       } else {
-        selected = random.nextInt(n - offspring.size());
+        selected = random.nextInt(n - offspring.size()) + 1;
         while (offspring.contains(selected)) {
           selected += 1;
         }
       }
       assert !offspring.contains(selected);
+      assert selected > 0;
+      assert selected <= n;
 
       offspring.add(selected);
       table.removeEdgesTo(selected);
@@ -122,7 +124,11 @@ public class EdgeRecombine implements Recombine {
     }
 
     public TableEntry entry(Integer i) {
-      return entries.get(i - 1);
+      try {
+        return entries.get(i - 1);
+      } catch (ArrayIndexOutOfBoundsException e) {
+        throw new IllegalArgumentException("Attempt to get table entry: " + i);
+      }
     }
 
     public void sortEntries() {

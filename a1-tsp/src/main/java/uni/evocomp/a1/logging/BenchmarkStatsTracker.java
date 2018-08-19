@@ -124,9 +124,8 @@ public class BenchmarkStatsTracker implements Serializable {
   }
 
   public void setSolutionTour(Individual i) {
-    if (i != null) {
-      this.providedBestTour = new Individual(i);
-    }
+    if (i == null) return;
+    this.providedBestTour = new Individual(i);
   }
 
   public Individual getBestTourFound() {
@@ -347,12 +346,39 @@ public class BenchmarkStatsTracker implements Serializable {
     }
   }
 
+  private String getEACsvFormatAlt() {
+    try {
+      String init = getComment()
+          + ","
+          + (getProvidedBestTour() == null ? -1.0 : getProvidedBestTour().getCost(problem));
+          for (int i = 10; i <= 20000; i+=50) {
+            Individual indiv = getBestIndividualPerGeneration(i);
+            if (indiv == null) {
+              init += ",-1";
+            } else {
+              init += "," + indiv.getCost(problem);
+            }
+          }
+          init += "\n";
+          return init;
+    } catch (Exception e) {
+      e.printStackTrace();
+      return getComment()
+          + ","
+          + (getProvidedBestTour() == null ? -1.0 : getProvidedBestTour().getCost(problem))
+          + ",FAIL"
+          + ",FAIL"
+          + ",FAIL"
+          + ",FAIL\n";
+    }
+  }
+
   public void writeEAGensToFile() {
     writeEAGensToFile(this.getComment());
   }
 
   public void writeEAGensToFile(String fileName) {
-    fileName = fileName + ".gen.csv";
+    fileName = fileName + ".gen";
     System.out.println("Writing Stats to: " + fileName);
     try {
       BufferedWriter bw = new BufferedWriter(new FileWriter(fileName, true));

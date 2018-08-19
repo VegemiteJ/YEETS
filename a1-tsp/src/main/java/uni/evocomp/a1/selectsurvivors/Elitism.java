@@ -21,8 +21,8 @@ import uni.evocomp.a1.TSPProblem;
  * <pre>
  * - Most EAs use fixed population size so need a way of going from (parents + offspring) to next generation
  * - Often deterministic
- *   – Fitness based : e.g., rank parents + offspring and take best
- *   – Age based: make as many offspring as parents and delete all parents
+ *   Fitness based : e.g., rank parents + offspring and take best
+ *   Age based: make as many offspring as parents and delete all parents
  * - Sometimes do combination (elitism)
  * </pre>
  * 
