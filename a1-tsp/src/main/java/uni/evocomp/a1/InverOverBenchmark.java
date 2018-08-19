@@ -35,7 +35,7 @@ public class InverOverBenchmark {
 
     // Record metrics
     BenchmarkStatsTracker bst =
-        new BenchmarkStatsTracker(problem.getName() + "_" + propertiesFileName, problem);
+        new BenchmarkStatsTracker(problem.getName() + "_InverOver", problem);
 
     InverOver inverOver = new InverOver(bst);
     System.out
