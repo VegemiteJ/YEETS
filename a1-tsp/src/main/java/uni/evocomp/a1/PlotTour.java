@@ -98,6 +98,7 @@ public class PlotTour extends Application {
       e.printStackTrace();
     }
 
+    @SuppressWarnings("null")
     Individual providedBest = bst.getProvidedBestTour();
     Individual bestFoundBySearch = bst.getBestTourFound();
 
@@ -111,6 +112,7 @@ public class PlotTour extends Application {
     }
     System.out.println("Best Tour Found Cost: " + bestFoundBySearch.getCost(problem));
     List<Integer> genotype = plotting.getGenotype();
+    @SuppressWarnings("null")
     List<DoublePair> cities = problem.getPoints();
     Group box = new Group();
 

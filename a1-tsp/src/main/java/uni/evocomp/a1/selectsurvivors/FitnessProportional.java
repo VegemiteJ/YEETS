@@ -2,7 +2,6 @@ package uni.evocomp.a1.selectsurvivors;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -73,6 +72,5 @@ public class FitnessProportional implements SelectSurvivors {
   private double calcFitness(Individual individual, TSPProblem problem) {
     return maxCost - individual.getCost(problem) + 1;
   }
-
 
 }

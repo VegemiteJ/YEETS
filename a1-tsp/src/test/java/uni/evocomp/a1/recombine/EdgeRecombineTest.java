@@ -1,17 +1,11 @@
 package uni.evocomp.a1.recombine;
 
 import static junit.framework.Assert.assertEquals;
-import static org.junit.Assert.assertArrayEquals;
-
-import com.sun.javafx.geom.Edge;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
 import org.junit.Before;
 import org.junit.Test;
 import uni.evocomp.a1.Individual;
-import uni.evocomp.util.IntegerPair;
 import uni.evocomp.util.Pair;
 import uni.evocomp.util.RandomStub;
 
@@ -111,7 +105,7 @@ public class EdgeRecombineTest {
   public void testRecombineWorks() {
     Individual a = new Individual(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9));
     Individual b = new Individual(Arrays.asList(9, 3, 7, 8, 2, 6, 5, 1, 4));
-    Individual child = edgeRecombine.recombine(a, b);
+    edgeRecombine.recombine(a, b);
   }
 
   @Test
@@ -172,9 +166,9 @@ public class EdgeRecombineTest {
     assertEquals(child.getGenotype(), Arrays.asList(1, 2, 4, 5, 3));
   }
 
-  @Test
+  @Test(expected = Test.None.class)
   public void testFuzzed() {
-    for (int n = 3; n < 300; n += 1) {
+    for (int n = 3; n < 300; n++) {
       Individual a = new Individual(n);
       Individual b = new Individual(n);
       Individual child = edgeRecombine.recombine(a, b);

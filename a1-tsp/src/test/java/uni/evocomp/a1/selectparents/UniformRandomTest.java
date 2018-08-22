@@ -36,12 +36,12 @@ public class UniformRandomTest {
 
     population = new Population();
     // construct individuals using integer lists
-    i0 = new Individual(Arrays.asList(1, 2, 3, 4, 5)); // 40
-    i1 = new Individual(Arrays.asList(1, 3, 2, 5, 4)); // 50
-    i2 = new Individual(Arrays.asList(5, 1, 2, 3, 4)); // 44
-    i3 = new Individual(Arrays.asList(1, 3, 2, 4, 5)); // 54
-    i4 = new Individual(Arrays.asList(5, 2, 1, 4, 3)); // 52
-    i5 = new Individual(Arrays.asList(1, 5, 2, 4, 3)); // 48
+    i0 = new Individual(Arrays.asList(1, 2, 3, 4, 5), problem); // 40
+    i1 = new Individual(Arrays.asList(1, 3, 2, 5, 4), problem); // 50
+    i2 = new Individual(Arrays.asList(5, 1, 2, 3, 4), problem); // 44
+    i3 = new Individual(Arrays.asList(1, 3, 2, 4, 5), problem); // 54
+    i4 = new Individual(Arrays.asList(5, 2, 1, 4, 3), problem); // 52
+    i5 = new Individual(Arrays.asList(1, 5, 2, 4, 3), problem); // 48
 
     population.add(i0);
     population.add(i1);

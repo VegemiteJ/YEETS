@@ -26,7 +26,8 @@ public class LocalSearchBenchmark {
       Individual solution = null;
 
       // If throws - don't continue
-      TSPProblem problem = io.read(new FileReader(testString + Global.testSuffix));
+      FileReader fr = new FileReader(testString + Global.testSuffix);
+      TSPProblem problem = io.read(fr);
       // Allowed to throw
       try (FileReader fr2 = new FileReader(testString + Global.tourSuffix)) {
         solution = io.readSolution(fr2);
@@ -36,6 +37,8 @@ public class LocalSearchBenchmark {
       } catch (IOException e) {
         e.printStackTrace();
         System.exit(10);
+      } finally {
+        fr.close();
       }
       benchmarks.add(new Pair<>(problem, solution));
     }

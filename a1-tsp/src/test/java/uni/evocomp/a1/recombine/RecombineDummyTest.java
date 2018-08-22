@@ -1,10 +1,7 @@
 package uni.evocomp.a1.recombine;
 
-import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
-import uni.evocomp.a1.Individual;
-import uni.evocomp.util.Pair;
 
 public class RecombineDummyTest {
 

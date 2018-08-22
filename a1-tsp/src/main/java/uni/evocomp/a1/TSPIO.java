@@ -146,9 +146,13 @@ public class TSPIO {
     try (BufferedReader br = new BufferedReader(r)) {
       boolean header = true; // 1 for header, 0 for body
       String line = new String();
+      @SuppressWarnings("unused")
       String name = new String();
+      @SuppressWarnings("unused")
       String comment = new String();
+      @SuppressWarnings("unused")
       String type = new String();
+      @SuppressWarnings("unused")
       int dimension = 0;
       List<Integer> solution = new ArrayList<>();
 

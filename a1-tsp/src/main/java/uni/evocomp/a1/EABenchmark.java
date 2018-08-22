@@ -74,16 +74,15 @@ public class EABenchmark {
     for (int i = 0; i < repeats; i++) {
       System.out.println("Repeat: " + i + " of " + repeats);
       bst.startSingleRun();
-      Individual result =
-          ea.solve(
-              problem,
-              selectParents,
-              recombine,
-              mutate,
-              mutateProbability,
-              selectSurvivors,
-              populationSize,
-              totalGenerations);
+      ea.solve(
+          problem,
+          selectParents,
+          recombine,
+          mutate,
+          mutateProbability,
+          selectSurvivors,
+          populationSize,
+          totalGenerations);
       bst.endSingleRun(ea.getGeneration());
     }
     if (optimalSolution != null) {
@@ -175,13 +174,19 @@ public class EABenchmark {
       Individual optimalSolution = null;
 
       // Read problem and corresponding solution if available
+      @SuppressWarnings("resource")
       BufferedReader br1 = new BufferedReader(new FileReader(testName + Global.testSuffix));
+      BufferedReader br2 = null;
       problem = io.read(br1);
       try {
-        BufferedReader br2 = new BufferedReader(new FileReader(testName + Global.tourSuffix));
+        br2 = new BufferedReader(new FileReader(testName + Global.tourSuffix));
         optimalSolution = io.readSolution(br2);
       } catch (IOException e) {
         System.out.println("Unable to find optimal solution tour for: " + testName);
+      } finally {
+        if (br2 != null) {
+          br2.close();
+        }
       }
 
       averagedSingleTestCaseRun(

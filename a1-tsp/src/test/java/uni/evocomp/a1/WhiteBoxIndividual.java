@@ -10,6 +10,11 @@ import java.util.List;
  */
 public class WhiteBoxIndividual extends Individual {
 
+  /**
+   * 
+   */
+  private static final long serialVersionUID = -2859327363229532819L;
+
   public WhiteBoxIndividual() {
     super();
   }
