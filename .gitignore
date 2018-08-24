@@ -99,3 +99,4 @@ fabric.properties
 *.ser
 
 ea_benchmarks
+/bin/

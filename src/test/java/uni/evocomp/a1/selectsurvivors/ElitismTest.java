@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 import org.junit.Before;
 import org.junit.Test;
+import uni.evocomp.a1.Global;
 import uni.evocomp.a1.Individual;
 import uni.evocomp.a1.Population;
 import uni.evocomp.a1.TSPIO;
@@ -26,7 +27,7 @@ public class ElitismTest {
   @Before
   public void setUp() throws Exception {
     TSPIO io = new TSPIO();
-    try (Reader r = new FileReader("tests/custom/test1.tsp")) {
+    try (Reader r = new FileReader(Global.testPath + "/custom/test1.tsp")) {
       problem = io.read(r);
     } catch (IOException e) {
       e.printStackTrace();

@@ -23,4 +23,5 @@ public class Global {
   public static final String testSuffix = ".tsp";
   public static final String tourSuffix = ".opt.tour";
   public static final String a1Prefix = "uni.evocomp.a1";
+  public static final String testPath = "tests/a1";
 }
