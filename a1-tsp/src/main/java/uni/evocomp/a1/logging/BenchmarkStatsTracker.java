@@ -346,33 +346,6 @@ public class BenchmarkStatsTracker implements Serializable {
     }
   }
 
-  private String getEACsvFormatAlt() {
-    try {
-      String init = getComment()
-          + ","
-          + (getProvidedBestTour() == null ? -1.0 : getProvidedBestTour().getCost(problem));
-          for (int i = 10; i <= 20000; i+=50) {
-            Individual indiv = getBestIndividualPerGeneration(i);
-            if (indiv == null) {
-              init += ",-1";
-            } else {
-              init += "," + indiv.getCost(problem);
-            }
-          }
-          init += "\n";
-          return init;
-    } catch (Exception e) {
-      e.printStackTrace();
-      return getComment()
-          + ","
-          + (getProvidedBestTour() == null ? -1.0 : getProvidedBestTour().getCost(problem))
-          + ",FAIL"
-          + ",FAIL"
-          + ",FAIL"
-          + ",FAIL\n";
-    }
-  }
-
   public void writeEAGensToFile() {
     writeEAGensToFile(this.getComment());
   }

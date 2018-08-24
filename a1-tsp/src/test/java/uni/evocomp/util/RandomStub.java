@@ -18,6 +18,11 @@ import java.util.Random;
  *
  */
 public class RandomStub extends Random {
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 339958409297547859L;
+
   // Fields
   private List<Integer> ints;
   private int intCounter;

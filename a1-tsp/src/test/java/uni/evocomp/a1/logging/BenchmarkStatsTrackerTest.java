@@ -330,7 +330,6 @@ public class BenchmarkStatsTrackerTest {
 
     Individual a = new Individual(Arrays.asList(1, 2, 3), 5.0);
     Individual b = new Individual(Arrays.asList(3, 1, 2), 9.0);
-    Individual c = new Individual(Arrays.asList(2, 3, 1), 2.0);
     Individual d = new Individual(Arrays.asList(3, 2, 1), 1.0);
     Individual e = new Individual(Arrays.asList(2, 1, 3), 4.0);
 
@@ -351,9 +350,6 @@ public class BenchmarkStatsTrackerTest {
     BenchmarkStatsTracker bst = new BenchmarkStatsTracker("testAddedGenerationsAltAlt", problem);
 
     Individual a = new Individual(Arrays.asList(1, 2, 3), 5.0);
-    Individual b = new Individual(Arrays.asList(3, 1, 2), 9.0);
-    Individual c = new Individual(Arrays.asList(2, 3, 1), 2.0);
-    Individual d = new Individual(Arrays.asList(3, 2, 1), 1.0);
     Individual e = new Individual(Arrays.asList(2, 1, 3), 4.0);
 
     bst.bestIndividualForThisGeneration(a, 2000);

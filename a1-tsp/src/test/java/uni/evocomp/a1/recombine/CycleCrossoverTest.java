@@ -6,7 +6,6 @@ import org.junit.Before;
 import org.junit.Test;
 import uni.evocomp.a1.Individual;
 import uni.evocomp.a1.TSPProblem;
-import uni.evocomp.util.IntegerPair;
 import uni.evocomp.util.Pair;
 import uni.evocomp.util.Util;
 
