@@ -1,5 +1,5 @@
 # YEETS - Yearning to Explore Evolutionary TSP Solvers
-YEETS is a framework for implementing evolutionary algorithms for the Travelling Salesmand Problem (TSP).
+YEETS is a framework for implementing evolutionary algorithms for the Travelling Salesman Problem (TSP).
 
 ## Group Members:
 Name | id | email
