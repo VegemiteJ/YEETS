@@ -180,7 +180,7 @@ public class TSPIOTest {
   @Test
   public void testVerificationPCB442() {
     TSPProblem localProblem = null;
-    try (BufferedReader br = new BufferedReader(new FileReader("tests/pcb442.tsp"))) {
+    try (BufferedReader br = new BufferedReader(new FileReader(Global.testPath + "/pcb442.tsp"))) {
       localProblem = io.read(br);
     } catch (IOException e) {
       e.printStackTrace();

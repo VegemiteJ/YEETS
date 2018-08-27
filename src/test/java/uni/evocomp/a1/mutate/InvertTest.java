@@ -30,9 +30,7 @@ public class InvertTest {
       weights.add(new ArrayList<>());
       for (int j = 0; j < 5; j++) {
         weights.get(i).add((double) i + j);
-        System.out.print(weights.get(i).get(j) + " ");
       }
-      System.out.println();
     }
     // weights in matrix form
     // 0,1,2,3,4

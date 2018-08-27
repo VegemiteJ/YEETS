@@ -6,6 +6,7 @@ import java.io.Reader;
 import java.util.Arrays;
 import org.junit.Test;
 import junit.framework.TestCase;
+import uni.evocomp.a1.Global;
 import uni.evocomp.a1.Individual;
 import uni.evocomp.a1.Population;
 import uni.evocomp.a1.TSPIO;
@@ -31,7 +32,7 @@ public class TournamentSelectionTest extends TestCase {
     // set up the random stub
     rand = new RandomStub();
     TSPIO io = new TSPIO();
-    try (Reader r = new FileReader("tests/custom/test1.tsp")) {
+    try (Reader r = new FileReader(Global.testPath + "/custom/test1.tsp")) {
       problem = io.read(r);
     } catch (IOException e) {
       e.printStackTrace();
